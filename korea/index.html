@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>대한민국 맛집 아카이브 | ssungjun travel</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Archivo:wght@600;700;800&family=Noto+Sans+KR:wght@400;500;700;900&display=swap');
+
+        :root {
+            --bg: #f4f7f9;
+            --panel: #ffffff;
+            --ink: #1b2431;
+            --muted: #5f6979;
+            --line: #d6dee8;
+            --primary: #0f5fa8;
+            --primary-dark: #0b467d;
+            --mint: #d9f0ea;
+            --sky: #dcebf8;
+            --sand: #f4e8d3;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: "Noto Sans KR", sans-serif;
+            color: var(--ink);
+            background:
+                radial-gradient(circle at 10% 0%, #dcebf8 0%, transparent 28%),
+                radial-gradient(circle at 100% 12%, #ddeee8 0%, transparent 22%),
+                linear-gradient(180deg, #f7fafc 0%, #f2f5f7 100%);
+        }
+
+        .container {
+            max-width: 1160px;
+            margin: 0 auto;
+            padding: 24px 18px 80px;
+        }
+
+        .top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 18px;
+        }
+
+        .brand {
+            font-family: "Archivo", sans-serif;
+            font-weight: 800;
+            letter-spacing: 0.3px;
+            font-size: 24px;
+        }
+
+        .back {
+            text-decoration: none;
+            border: 1px solid var(--line);
+            background: #fff;
+            color: var(--ink);
+            border-radius: 999px;
+            padding: 10px 14px;
+            font-weight: 700;
+            font-size: 14px;
+        }
+
+        .hero {
+            border: 1px solid var(--line);
+            background: linear-gradient(160deg, #ffffff 0%, #f8fbff 100%);
+            border-radius: 28px;
+            padding: 32px 24px;
+            box-shadow: 0 16px 32px rgba(28, 55, 83, 0.08);
+            margin-bottom: 20px;
+        }
+
+        .hero h1 {
+            margin: 0 0 10px;
+            line-height: 1.08;
+            font-size: clamp(34px, 5.8vw, 62px);
+            font-weight: 900;
+            letter-spacing: -0.5px;
+        }
+
+        .hero p {
+            margin: 0 0 16px;
+            color: var(--muted);
+            font-size: 16px;
+        }
+
+        .chip-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .chip {
+            border-radius: 999px;
+            padding: 7px 10px;
+            font-size: 12px;
+            font-weight: 700;
+            border: 1px solid transparent;
+        }
+
+        .chip.mint {
+            background: var(--mint);
+            color: #145b49;
+            border-color: #bedfd3;
+        }
+
+        .chip.sky {
+            background: var(--sky);
+            color: #1d4f7a;
+            border-color: #c6dff4;
+        }
+
+        .chip.sand {
+            background: var(--sand);
+            color: #6a4d1f;
+            border-color: #e6d6b8;
+        }
+
+        .region-wrap {
+            display: grid;
+            gap: 16px;
+        }
+
+        .region {
+            background: var(--panel);
+            border: 1px solid var(--line);
+            border-radius: 22px;
+            padding: 18px;
+            box-shadow: 0 10px 20px rgba(26, 51, 72, 0.06);
+        }
+
+        .region-head {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+
+        .region h2 {
+            margin: 0;
+            font-size: 24px;
+        }
+
+        .badge {
+            border-radius: 999px;
+            border: 1px solid #c2d8ef;
+            background: #edf5fd;
+            color: #175183;
+            font-size: 12px;
+            font-weight: 800;
+            padding: 6px 10px;
+        }
+
+        .cities {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 10px;
+        }
+
+        .city {
+            border: 1px solid var(--line);
+            border-radius: 14px;
+            padding: 12px;
+            background: #fff;
+        }
+
+        .city strong {
+            font-size: 16px;
+            display: block;
+            margin-bottom: 6px;
+        }
+
+        .city p {
+            margin: 0;
+            color: var(--muted);
+            font-size: 13px;
+            line-height: 1.45;
+        }
+
+        .hint {
+            margin-top: 6px;
+            font-size: 12px;
+            color: #607385;
+            font-weight: 700;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 18px;
+            color: #657183;
+            font-size: 13px;
+        }
+
+        @media (max-width: 980px) {
+            .cities {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+        }
+
+        @media (max-width: 640px) {
+            .cities {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="top">
+            <div class="brand">KOREA FOOD ARCHIVE</div>
+            <a class="back" href="../">여행 허브로 돌아가기</a>
+        </div>
+
+        <section class="hero">
+            <h1>🇰🇷 대한민국<br>지역별 맛집 아카이브</h1>
+            <p>이 페이지는 지역 단위로 맛집 정보를 쌓아두는 상위 템플릿입니다. 도시별 카드에 맛집 목록을 계속 추가해 확장할 수 있습니다.</p>
+            <div class="chip-row">
+                <span class="chip mint">권역별 정리</span>
+                <span class="chip sky">도시별 맛집 누적</span>
+                <span class="chip sand">장기 보관용</span>
+            </div>
+        </section>
+
+        <div class="region-wrap">
+            <section class="region">
+                <div class="region-head">
+                    <h2>수도권</h2>
+                    <span class="badge">SEOUL AREA</span>
+                </div>
+                <div class="cities">
+                    <div class="city"><strong>서울</strong><p>강남/을지로/성수/홍대 등 지역별 맛집을 계속 추가하세요.</p><div class="hint">현재 0개</div></div>
+                    <div class="city"><strong>인천</strong><p>송도/차이나타운/구월동 중심으로 정리해두면 좋습니다.</p><div class="hint">현재 0개</div></div>
+                    <div class="city"><strong>경기</strong><p>수원/성남/고양/판교 등 도시별 하위 정리용 카드입니다.</p><div class="hint">현재 0개</div></div>
+                </div>
+            </section>
+
+            <section class="region">
+                <div class="region-head">
+                    <h2>강원·충청</h2>
+                    <span class="badge">CENTRAL</span>
+                </div>
+                <div class="cities">
+                    <div class="city"><strong>강원</strong><p>강릉/속초/춘천 중심으로 로컬 맛집 축적.</p><div class="hint">현재 0개</div></div>
+                    <div class="city"><strong>대전</strong><p>성심당권역/유성/둔산 등 테마로 분리 가능.</p><div class="hint">현재 0개</div></div>
+                    <div class="city"><strong>충청권</strong><p>천안/청주/세종/공주 등 권역 단위로 관리.</p><div class="hint">현재 0개</div></div>
+                </div>
+            </section>
+
+            <section class="region">
+                <div class="region-head">
+                    <h2>전라·경상·제주</h2>
+                    <span class="badge">SOUTH</span>
+                </div>
+                <div class="cities">
+                    <div class="city"><strong>전라권</strong><p>전주/여수/광주/목포의 지역별 특화 음식 중심.</p><div class="hint">현재 0개</div></div>
+                    <div class="city"><strong>경상권</strong><p>부산/대구/울산/경주 등 관광동선 기반 정리.</p><div class="hint">현재 0개</div></div>
+                    <div class="city"><strong>제주</strong><p>동부/서부/서귀포권으로 나누면 유지가 쉽습니다.</p><div class="hint">현재 0개</div></div>
+                </div>
+            </section>
+        </div>
+
+        <div class="footer">korea regional food archive · ssungjun travel</div>
+    </div>
+</body>
+</html>
