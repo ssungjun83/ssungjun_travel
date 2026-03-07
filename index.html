@@ -485,7 +485,11 @@
             const data = routeDescriptions[routeId];
             let html = `<h3 class="text-2xl font-bold text-stone-800 mb-2">${data.title}</h3><p class="text-stone-600 mb-6">${data.desc}</p><div class="space-y-4">`;
             data.items.forEach(item => {
-                html += `<div class="flex items-start p-4 rounded-xl hover:bg-stone-50 transition-colors border border-stone-100"><div class="text-3xl mr-4">${item.icon}</div><div><h4 class="font-bold text-stone-800 text-lg">${item.name} <span class="text-xs font-normal text-stone-400 ml-2">${item.region}</span></h4><p class="text-sm text-orange-700 font-medium my-1">${item.menu}</p><p class="text-sm text-stone-600 line-clamp-2">${item.desc}</p></div></div>`;
+                const addr = restaurantAddresses[item.id] || {
+                    cn: "주소 정보 준비 중",
+                    en: "Address info pending"
+                };
+                html += `<div class="flex items-start p-4 rounded-xl hover:bg-stone-50 transition-colors border border-stone-100"><div class="text-3xl mr-4">${item.icon}</div><div><h4 class="font-bold text-stone-800 text-lg">${item.name} <span class="text-xs font-normal text-stone-400 ml-2">${item.region}</span></h4><p class="text-sm text-orange-700 font-medium my-1">${item.menu}</p><p class="text-sm text-stone-600 line-clamp-2">${item.desc}</p><p class="text-xs text-stone-500 mt-2"><strong>중문:</strong> ${addr.cn}</p><p class="text-xs text-stone-500"><strong>English:</strong> ${addr.en}</p></div></div>`;
             });
             html += `</div>`;
             container.innerHTML = html;
