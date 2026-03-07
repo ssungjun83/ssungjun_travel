@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>상하이 미식 여행 완전 정복 가이드</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap');
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            background-color: #fcfaf8;
+            color: #292524;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 40vh;
+            max-height: 400px;
+        }
+        .hide-scroll::-webkit-scrollbar {
+            display: none;
+        }
+        .hide-scroll {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+    <!-- Chosen Palette: Warm Neutrals with Subtle Terracotta Accents (Background: #fcfaf8, Text: #292524, Accent: #c2410c) -->
+    <!-- Application Structure Plan: The SPA uses a dashboard-style, thematic layout to break away from the linear markdown format. It starts with an engaging header, followed by a 'Travel Essentials' quick-reference card section. The core is an interactive 'Restaurant Explorer' with category filters (Noodles, Meat, Dimsum, etc.) to allow users to find what they crave, rather than forcing them to read chronologically. A dedicated 'History' section uses Chart.js to visually emphasize the age of the traditional restaurants. Finally, a 'Route Planner' section organizes places geographically. This structure prioritizes user goals (finding specific food, planning routes) over the source report's chronological 'Part 1/Part 2' split. -->
+    <!-- Visualization & Content Choices:
+         1. Travel Tips -> HTML Cards with Unicode icons -> Quick scannability.
+         2. Restaurant List -> Interactive Grid with Filter Buttons -> Allows users to sort by food type (Meat, Dimsum, Historic).
+         3. Historic Restaurant Ages -> Chart.js Horizontal Bar Chart -> Visually compares the impressive age of the 'Nopo' (historic) restaurants. Chart container rigorously constrained via CSS class to prevent overflow.
+         4. Location Routes -> Interactive clickable list -> Clicking a location updates the displayed restaurants below it to aid in geographical planning.
+         Library: Chart.js for charts, Vanilla JS for filtering.
+         Confirming NO SVG/Mermaid used. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+</head>
+<body class="antialiased">
+
+    <nav class="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-stone-200 shadow-sm">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16 items-center">
+                <div class="flex-shrink-0 flex items-center cursor-pointer" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
+                    <span class="text-2xl mr-2">🇨🇳</span>
+                    <span class="font-bold text-xl tracking-tight text-orange-700">상하이 미식 가이드</span>
+                </div>
+                <div class="hidden md:flex space-x-8">
+                    <a href="../" class="text-stone-600 hover:text-orange-600 transition-colors font-medium">여행 허브</a>
+                    <a href="#tips" class="text-stone-600 hover:text-orange-600 transition-colors font-medium">필수 팁</a>
+                    <a href="#precision" class="text-stone-600 hover:text-orange-600 transition-colors font-medium">초정밀 코스</a>
+                    <a href="#explorer" class="text-stone-600 hover:text-orange-600 transition-colors font-medium">맛집 탐험</a>
+                    <a href="#history" class="text-stone-600 hover:text-orange-600 transition-colors font-medium">100년 노포</a>
+                    <a href="#routes" class="text-stone-600 hover:text-orange-600 transition-colors font-medium">추천 루트</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <header class="bg-stone-100 py-16 md:py-24 border-b border-stone-200">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h1 class="text-4xl md:text-5xl font-black text-stone-800 mb-6 leading-tight">
+                하이갱스 추천 <span class="text-orange-700">16곳</span><br>상하이 미식 완전 정복
+            </h1>
+            <p class="text-lg md:text-xl text-stone-600 mb-8 max-w-2xl mx-auto">
+                가성비 끝판왕 서민 음식부터 150년 전통의 화석 같은 노포까지. 현지인들이 사랑하는 상하이의 진짜 맛을 탐험해보세요.
+            </p>
+            <div class="flex justify-center space-x-4">
+                <a href="#explorer" class="bg-orange-600 hover:bg-orange-700 text-white font-bold py-3 px-6 rounded-full transition-colors shadow-lg">맛집 찾아보기</a>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-24">
+
+        <section id="tips" class="scroll-mt-20">
+            <div class="text-center mb-10">
+                <h2 class="text-3xl font-bold text-stone-800 mb-4">🛠️ 여행 필수 준비물 & 팁</h2>
+                <p class="text-stone-600 max-w-2xl mx-auto">상하이 여행 전 반드시 알아두어야 할 어플리케이션과 현지 식사 문화를 확인하세요. 구글 맵 대신 현지 앱 사용이 필수입니다.</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-stone-100 hover:shadow-md transition-shadow">
+                    <div class="text-4xl mb-4">🗺️</div>
+                    <h3 class="font-bold text-lg mb-2">고덕지도 (Amap)</h3>
+                    <p class="text-stone-600 text-sm">구글 맵의 완벽한 대체재. 지하철 노선, 도보 경로, 식당 위치 확인에 필수적입니다.</p>
+                </div>
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-stone-100 hover:shadow-md transition-shadow">
+                    <div class="text-4xl mb-4">⭐</div>
+                    <h3 class="font-bold text-lg mb-2">따종뎬핑 (Dianping)</h3>
+                    <p class="text-stone-600 text-sm">중국판 네이버 플레이스. 현지인 평점 확인, 메뉴 사진 보기, 원격 줄서기가 가능합니다.</p>
+                </div>
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-stone-100 hover:shadow-md transition-shadow">
+                    <div class="text-4xl mb-4">💳</div>
+                    <h3 class="font-bold text-lg mb-2">알리페이 / 위챗페이</h3>
+                    <p class="text-stone-600 text-sm">현금, 일반 신용카드 결제가 어려운 곳이 많습니다. 한국 카드를 미리 연동해 가세요.</p>
+                </div>
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-stone-100 hover:shadow-md transition-shadow">
+                    <div class="text-4xl mb-4">🪑</div>
+                    <h3 class="font-bold text-lg mb-2">식사 문화 & 주문</h3>
+                    <p class="text-stone-600 text-sm">로컬 식당은 모르는 사람과의 <strong>합석</strong>이 기본입니다. 사진을 가리키며 "쩌거"라고 주문하세요.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="precision" class="scroll-mt-20">
+            <div class="text-center mb-10">
+                <h2 class="text-3xl font-bold text-stone-800 mb-4">🇨🇳 상하이 초정밀 여행 가이드</h2>
+                <p class="text-stone-600 max-w-3xl mx-auto">캡틴따거의 현지 데이터와 36시간 동선을 결합한 실전형 섹션입니다. 기존 맛집 카드와 중복되는 식당 설명은 제외하고, 현장에서 바로 쓸 수 있는 핵심만 정리했습니다.</p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-12">
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-stone-100">
+                    <h3 class="text-xl font-bold text-stone-800 mb-4">1) 현지 실태: 기술 · 결제 · 분위기</h3>
+                    <ul class="space-y-2 text-sm text-stone-700">
+                        <li><strong>모빌리티:</strong> 도로 차량의 약 75%가 전기차로 체감될 정도로 전동화가 빠릅니다.</li>
+                        <li><strong>필수 앱:</strong> 고덕지도(Amap), 클룩(Klook), 알리페이/위챗페이는 사실상 기본 세트입니다.</li>
+                        <li><strong>결제:</strong> 현장 결제는 QR 중심입니다. 출국 전 해외 카드 연동을 권장합니다.</li>
+                        <li><strong>도시 분위기:</strong> 전반적으로 현대적이고 정돈되어 있지만, 실내외 흡연/새치기 등은 간헐적으로 발생할 수 있습니다.</li>
+                        <li><strong>예약 문화:</strong> 전망대·디즈니·크루즈·예원은 현장 구매보다 사전 예약이 안정적입니다.</li>
+                    </ul>
+                </div>
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-stone-100">
+                    <h3 class="text-xl font-bold text-stone-800 mb-4">2) 추가 미식 데이터 (중복 제외)</h3>
+                    <div class="space-y-4 text-sm text-stone-700">
+                        <div>
+                            <p class="font-bold text-stone-800">좌정우원 (左庭右院) - 신선 소고기 훠궈</p>
+                            <p class="text-stone-600">추천 지점 1 - 중문: 上海市 黄浦区 南京东路 800号 (上海第一百货 7F)</p>
+                            <p class="text-stone-600">추천 지점 1 - English: 7F, No. 800 East Nanjing Road, Huangpu District, Shanghai (Shanghai No.1 Department Store)</p>
+                            <p class="text-stone-600">추천 지점 2 - 중문: 上海市 浦东新区 陆家嘴西路 168号 (正大广场)</p>
+                            <p class="text-stone-600">추천 지점 2 - English: No. 168 Lujiazui West Road, Pudong New Area, Shanghai (Super Brand Mall)</p>
+                        </div>
+                        <div>
+                            <p class="font-bold text-stone-800">페이다추 (费大厨) - 호남요리</p>
+                            <p class="text-stone-600">추천 지점 1 - 중문: 上海市 浦东新区 世纪大道 8号 (IFC商场 B2)</p>
+                            <p class="text-stone-600">추천 지점 1 - English: B2, IFC Mall, No. 8 Century Avenue, Pudong New Area, Shanghai</p>
+                            <p class="text-stone-600">추천 지점 2 - 중문: 上海市 普陀区 中山北路 3300号 (环球港)</p>
+                            <p class="text-stone-600">추천 지점 2 - English: No. 3300 North Zhongshan Road, Putuo District, Shanghai (Global Harbor)</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-stone-100 rounded-3xl p-6 md:p-8 mb-12 border border-stone-200">
+                <h3 class="text-2xl font-bold text-stone-800 mb-6">3) 36시간 전략 동선</h3>
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <div class="bg-white rounded-2xl p-6 border border-stone-200">
+                        <h4 class="text-lg font-bold text-orange-700 mb-3">Day 1 | 역사 + 마천루</h4>
+                        <ol class="space-y-2 text-sm text-stone-700 list-decimal pl-5">
+                            <li><strong>09:00-10:30</strong> 와이탄 산책 (근대 건축 + 푸동 스카이라인 사진 포인트)<br><span class="text-stone-500">중문: 上海市 黄浦区 中山东一路 (外滩) | English: Zhongshan 1st Road, Huangpu District, Shanghai (The Bund)</span></li>
+                            <li><strong>10:30-12:00</strong> 난징동루 보행가 (와이탄에서 도보 연계)<br><span class="text-stone-500">중문: 上海市 黄浦区 南京东路 299号 일대 | English: Around No. 299 East Nanjing Road, Huangpu District, Shanghai</span></li>
+                            <li><strong>12:00-15:00</strong> 예원 상권 점심 + 예원 관람 (사전 예약 권장)<br><span class="text-stone-500">중문: 上海市 黄浦区 福佑路 168号 (豫园), 福佑路 232号 인근 | English: No. 168 Fuyou Road (Yu Garden), near No. 232 Fuyou Road, Huangpu District, Shanghai</span></li>
+                            <li><strong>15:30-17:00</strong> 대한민국 임시정부 청사 + 신천지<br><span class="text-stone-500">중문: 上海市 黄浦区 马当路 306弄 4号 (临时政府), 上海市 黄浦区 马当路 245号 (新天地) | English: No. 4, Lane 306 Madang Road (KPG in Shanghai), No. 245 Madang Road (Xintiandi), Huangpu District, Shanghai</span></li>
+                            <li><strong>17:00-19:00</strong> 저녁 식사 (피크타임 전 조기 입장 권장)<br><span class="text-stone-500">중문: 上海市 黄浦区 马当路 245号 (新天地), 上海市 黄浦区 南京东路 800号 | English: No. 245 Madang Road (Xintiandi), No. 800 East Nanjing Road, Huangpu District, Shanghai</span></li>
+                            <li><strong>19:00-21:00</strong> 상하이 타워 전망대 (사전 예약 필수)<br><span class="text-stone-500">중문: 上海市 浦东新区 银城中路 501号 | English: No. 501 Yincheng Middle Road, Pudong New Area, Shanghai</span></li>
+                            <li><strong>21:00-22:30</strong> 야간 와이탄 재방문<br><span class="text-stone-500">중문: 上海市 黄浦区 中山东一路 (外滩) | English: Zhongshan 1st Road, Huangpu District, Shanghai (The Bund)</span></li>
+                        </ol>
+                    </div>
+                    <div class="bg-white rounded-2xl p-6 border border-stone-200">
+                        <h4 class="text-lg font-bold text-orange-700 mb-3">Day 2 | 선택형 테마</h4>
+                        <div class="space-y-4 text-sm text-stone-700">
+                            <div>
+                                <p class="font-bold text-stone-800">Option A: 디즈니랜드 종일 코스</p>
+                                <p>08:30-20:00, 지하철 11호선 Disney Resort역. 트론/캐리비안/주토피아 우선 추천.</p>
+                                <p class="text-stone-500">중문: 上海市 浦东新区 川沙新镇 黄赵路 310号 | English: No. 310 Huangzhao Road, Chuansha New Town, Pudong New Area, Shanghai</p>
+                            </div>
+                            <div>
+                                <p class="font-bold text-stone-800">Option B: 주가각 + 우캉루 + 크루즈</p>
+                                <p>주가각 수향마을(오전) → 우캉루 산책(오후) → 황푸강 크루즈(저녁) 순서가 효율적입니다.</p>
+                                <p class="text-stone-500">주가각 - 중문: 上海市 青浦区 课植园路 555号 | English: No. 555 Kezhiyuan Road, Qingpu District, Shanghai</p>
+                                <p class="text-stone-500">우캉루 - 중문: 上海市 徐汇区 武康路 | English: Wukang Road, Xuhui District, Shanghai</p>
+                                <p class="text-stone-500">크루즈 부두 - 중문: 上海市 黄浦区 中山东二路 481号 (十六铺码头) | English: No. 481 Zhongshan 2nd Road, Huangpu District, Shanghai (Shiliupu Wharf)</p>
+                            </div>
+                            <p class="text-stone-600">쇼핑/기념품 거점 - 중문: 上海市 静安区 南京西路 789号 | English: No. 789 West Nanjing Road, Jing'an District, Shanghai (Starbucks Reserve Roastery)</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-stone-100">
+                    <h3 class="text-xl font-bold text-stone-800 mb-4">4) 깊이 있는 역사 포인트</h3>
+                    <p class="text-sm text-stone-700 mb-2"><strong>루쉰 공원 (구 홍구공원)</strong> 내 매헌 윤봉길 의사 기념관</p>
+                    <p class="text-sm text-stone-600 mb-2">중문: 上海市 虹口区 四川北路 2288号 | English: No. 2288 North Sichuan Road, Hongkou District, Shanghai</p>
+                    <p class="text-sm text-stone-600 mb-2">추천 시간: 오전 09:00 전후 (공원 분위기 + 혼인시장 관찰 가능)</p>
+                    <p class="text-sm text-stone-600">시내 이동: 디디 택시 약 30분, 30위안 내외</p>
+                </div>
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-stone-100">
+                    <h3 class="text-xl font-bold text-stone-800 mb-4">💡 실전 핵심 팁</h3>
+                    <ul class="space-y-2 text-sm text-stone-700">
+                        <li><strong>대기 회피:</strong> 인기 식당은 오픈 직후 또는 15:00-16:00 방문이 유리합니다.</li>
+                        <li><strong>티켓팅:</strong> 디즈니/전망대는 최소 1-2일 전 예약이 안전합니다.</li>
+                        <li><strong>교통:</strong> 3인 이상이면 디디 택시가 시간·비용 효율이 좋은 편입니다.</li>
+                        <li><strong>언어:</strong> QR 주문 + 사진 번역 조합이 가장 실용적입니다.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section id="explorer" class="scroll-mt-20">
+            <div class="text-center mb-10">
+                <h2 class="text-3xl font-bold text-stone-800 mb-4">🍽️ 상하이 맛집 탐험기</h2>
+                <p class="text-stone-600 max-w-2xl mx-auto">원하는 메뉴 스타일을 선택하여 상하이의 필수 맛집들을 탐색해보세요. 카드 클릭 시 상세 정보를 볼 수 있습니다.</p>
+            </div>
+
+            <div class="flex flex-wrap justify-center gap-2 mb-10" id="filter-container">
+            </div>
+
+            <div id="restaurant-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            </div>
+        </section>
+
+        <section id="history" class="scroll-mt-20 bg-stone-100 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 py-16 rounded-3xl">
+            <div class="max-w-6xl mx-auto">
+                <div class="text-center mb-10">
+                    <h2 class="text-3xl font-bold text-stone-800 mb-4">🏛️ 100년의 역사를 맛보다</h2>
+                    <p class="text-stone-600 max-w-2xl mx-auto">상하이는 길거리가 곧 박물관입니다. 80년에서 무려 150년까지, 엄청난 세월을 견뎌온 상하이 노포들의 역사를 비교해보세요.</p>
+                </div>
+
+                <div class="bg-white p-6 md:p-8 rounded-2xl shadow-sm border border-stone-200">
+                    <div class="chart-container">
+                        <canvas id="historyChart"></canvas>
+                    </div>
+                    <div class="mt-8 text-center text-sm text-stone-500">
+                        * 막대를 호버하면 식당의 주력 메뉴를 확인할 수 있습니다. (설립 연도 기준 대략적 산출)
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="routes" class="scroll-mt-20">
+            <div class="text-center mb-10">
+                <h2 class="text-3xl font-bold text-stone-800 mb-4">🗺️ 위치별 추천 루트</h2>
+                <p class="text-stone-600 max-w-2xl mx-auto">동선을 최소화하는 지역별 맛집 묶음입니다. 지역을 클릭하면 해당 지역에 위치한 맛집 리스트가 표시됩니다.</p>
+            </div>
+
+            <div class="flex flex-col md:flex-row gap-8">
+                <div class="w-full md:w-1/3 space-y-3">
+                    <button onclick="showRoute('nanjing', event)" class="route-btn w-full text-left px-6 py-4 bg-white border-2 border-orange-200 hover:border-orange-500 rounded-xl transition-colors font-bold text-stone-800 shadow-sm focus:outline-none focus:ring-2 focus:ring-orange-500" data-route="nanjing">
+                        1. 난징동루 & 와이탄 구역
+                    </button>
+                    <button onclick="showRoute('peoples', event)" class="route-btn w-full text-left px-6 py-4 bg-white border-2 border-transparent hover:border-orange-500 rounded-xl transition-colors font-bold text-stone-800 shadow-sm focus:outline-none focus:ring-2 focus:ring-orange-500" data-route="peoples">
+                        2. 인민광장 구역
+                    </button>
+                    <button onclick="showRoute('jingan', event)" class="route-btn w-full text-left px-6 py-4 bg-white border-2 border-transparent hover:border-orange-500 rounded-xl transition-colors font-bold text-stone-800 shadow-sm focus:outline-none focus:ring-2 focus:ring-orange-500" data-route="jingan">
+                        3. 정안사 & 도서관 구역
+                    </button>
+                    <button onclick="showRoute('malls', event)" class="route-btn w-full text-left px-6 py-4 bg-white border-2 border-transparent hover:border-orange-500 rounded-xl transition-colors font-bold text-stone-800 shadow-sm focus:outline-none focus:ring-2 focus:ring-orange-500" data-route="malls">
+                        4. 대형 쇼핑몰 (체인점)
+                    </button>
+                </div>
+                <div class="w-full md:w-2/3 bg-white p-6 md:p-8 rounded-2xl shadow-sm border border-stone-200" id="route-details">
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-stone-900 text-stone-400 py-12 text-center mt-20">
+        <p class="mb-2">🇨🇳 상하이 미식 여행 완전 정복 가이드</p>
+        <p class="text-sm">Based on Higaengs YouTube Food Guide</p>
+    </footer>
+
+    <script>
+        const restaurants = [
+            { id: 1, name: "후씨 라오탕 미관", chinese: "沪氏老汤面馆", menu: "돼지 간 조개 파기름면", desc: "상하이 서민들이 사랑하는 총유빤미엔. 짜파게티와 유사한 풍미에 부드러운 돼지간이 특징. 면 무한 리필!", tags: ["면류", "가성비", "현지인"], region: "상하이 시내 곳곳", route: "peoples", icon: "🍜" },
+            { id: 2, name: "란신 찬팅", chinese: "兰心餐厅", menu: "홍소육, 새우 요리, 가지 볶음", desc: "미쉐린 선정 로컬 백반집. 비계의 쫄깃함과 살코기의 부드러움이 일품인 밥도둑 홍소육 강추.", tags: ["가정식/고기", "미쉐린"], region: "진셴루 (130 Jin Xian Lu)", route: "jingan", icon: "🍖" },
+            { id: 3, name: "타이얼", chinese: "太二酸菜鱼", menu: "수안차이위", desc: "김치찌개와 마라탕을 섞은 듯한 새콤얼큰한 맛. 가시 없는 농어살이 입에서 녹는 대형 체인점.", tags: ["해산물", "체인점", "매운맛"], region: "주요 쇼핑몰 내", route: "malls", icon: "🐟" },
+            { id: 4, name: "라이라이 샤오롱바오", chinese: "莱莱小笼", menu: "게살 샤오롱바오", desc: "육즙에서 진한 꽃게탕 풍미가 느껴짐. 보들보들한 오리피 스프와 함께 먹는 것을 추천.", tags: ["딤섬/만두", "해산물"], region: "난징동루 인근 (504 Tianjin Lu)", route: "nanjing", icon: "🥟" },
+            { id: 5, name: "헌치이치엔", chinese: "很久以前羊肉串", menu: "양꼬치, 부추/배추 구이", desc: "양꼬치도 훌륭하지만 진짜 주인공은 사이드 채소 구이. 볶음밥에 올려 먹으면 완벽.", tags: ["가정식/고기", "체인점", "서비스최상"], region: "대형 쇼핑몰 내", route: "malls", icon: "🍢" },
+            { id: 6, name: "사계민복", chinese: "四季民福烤鸭店", menu: "베이징 덕", desc: "한국 대비 30~50% 저렴한 고퀄리티 북경오리. 완두 새싹 무침과 무료 오리탕 필수 요청.", tags: ["가정식/고기", "가성비", "체인점"], region: "주요 상권 내", route: "nanjing", icon: "🦆" },
+            { id: 7, name: "주광호 허거", chinese: "朱光玉火锅馆", menu: "4색 탕, 양고기", desc: "화려한 인테리어의 대형 훠궈. 토마토/옥수수 탕 추천. 양고기가 훠궈 소스와 가장 잘 어울림.", tags: ["가정식/고기", "체인점"], region: "상하이 내 여러 지점", route: "malls", icon: "🍲" },
+            { id: 8, name: "헤이티", chinese: "喜茶", menu: "망고 스무디, 포도 치즈폼", desc: "중국 국민 음료 브랜드. 풍부한 과일 알갱이와 짭조름한 치즈 폼의 완벽한 조화. 약 3,000원.", tags: ["디저트", "가성비", "체인점"], region: "상하이 전역", route: "malls", icon: "🧋" },
+            { id: 9, name: "위싱지", chinese: "裕兴记", menu: "게알 국수, 생선 튀김 탕수", desc: "100년 전통의 수저우 노포. 게알이 대접 듬뿍, 들기름 막국수처럼 녹진하고 고소함.", tags: ["면류", "해산물", "노포"], region: "인민광장 인근 (151 Hubei Lu)", route: "peoples", icon: "🦀" },
+            { id: 10, name: "선다청", chinese: "沈大成", menu: "계란 노른자 고기가루 떡", desc: "난징동루의 150년 된 화석 맛집. 단짠의 정석인 계란 노른자 떡 강추. 즉시 먹어야 함.", tags: ["디저트", "노포"], region: "난징동루 (636 Nanjing Dong Lu)", route: "nanjing", icon: "🍡" },
+            { id: 11, name: "선득내", chinese: "鲜得来", menu: "갈비 떡, 훈툰", desc: "1921년 시작된 갈비 떡 원조. 달짝지근한 소스의 튀긴 갈비와 떡. 5,000원 이하 아침 식사로 최고.", tags: ["가정식/고기", "가성비", "노포", "아침식사"], region: "황푸구 (36 Yunnan Nan Lu)", route: "peoples", icon: "🍖" },
+            { id: 12, name: "점도덕", chinese: "陶陶居", menu: "홍미 창판", desc: "90년 전통 딤섬 노포. 붉은 쌀가루 전병 속에 새우와 바삭한 튀김이 든 홍미 창판이 시그니처.", tags: ["딤섬/만두", "노포", "체인점"], region: "주요 백화점 입점", route: "malls", icon: "🥟" },
+            { id: 13, name: "따오춘", chinese: "大壶春", menu: "철판 성젠바오", desc: "1932년 오픈한 미쉐린 선정 구운 만두. 바닥은 호떡처럼 바삭. 고추 식초 소스와 찰떡궁합.", tags: ["딤섬/만두", "노포", "미쉐린"], region: "와이탄 본점 (11 Sichuan Nan Lu)", route: "nanjing", icon: "🥟" },
+            { id: 14, name: "위상하이", chinese: "味香斋", menu: "마장면", desc: "80년 전통의 땅콩 소스 비빔면. 꾸덕하고 고소함. 식초를 넣으면 풍미가 확 살아남.", tags: ["면류", "노포", "아침식사"], region: "황푸구 (14 Yandang Lu)", route: "peoples", icon: "🍜" },
+            { id: 15, name: "마오타우젠", chinese: "毛豆阿姨", menu: "홍소육, 마파두부", desc: "정안사 인근 가정식. 젓가락만 대도 분리되는 인생 홍소육. 불맛 나는 야채 볶음 필수.", tags: ["가정식/고기", "현지인"], region: "정안사 (115-2 Changshu Lu)", route: "jingan", icon: "🥘" },
+            { id: 16, name: "길거리 지엔빙", chinese: "煎饼", menu: "지엔빙, 또우장", desc: "직장인들의 국민 아침. 파전 같은 고소함에 바삭한 과자 식감. 따뜻한 두유와 함께.", tags: ["가성비", "현지인", "아침식사"], region: "시내 전역 노점", route: "all", icon: "🌯" }
+        ];
+
+        const restaurantAddresses = {
+            1: {
+                cn: "上海市黄浦区广东路475号（示例门店）",
+                en: "No. 475 Guangdong Road, Huangpu District, Shanghai (example branch)"
+            },
+            2: {
+                cn: "上海市黄浦区进贤路130号",
+                en: "No. 130 Jinxian Road, Huangpu District, Shanghai"
+            },
+            3: {
+                cn: "上海市浦东新区世纪大道8号 国金中心商场LG2（示例门店）",
+                en: "LG2, IFC Mall, No. 8 Century Avenue, Pudong New Area, Shanghai (example branch)"
+            },
+            4: {
+                cn: "上海市黄浦区天津路504号",
+                en: "No. 504 Tianjin Road, Huangpu District, Shanghai"
+            },
+            5: {
+                cn: "上海市多家门店（高德搜索：很久以前羊肉串）",
+                en: "Multiple branches in Shanghai (Search: Hen Jiu Yi Qian Yang Rou Chuan)"
+            },
+            6: {
+                cn: "上海市黄浦区南京东路558号 B1（示例门店）",
+                en: "B1, No. 558 East Nanjing Road, Huangpu District, Shanghai (example branch)"
+            },
+            7: {
+                cn: "上海市多家门店（高德搜索：朱光玉火锅馆）",
+                en: "Multiple branches in Shanghai (Search: Zhu Guang Yu Hotpot)"
+            },
+            8: {
+                cn: "上海市多家门店（高德搜索：喜茶）",
+                en: "Multiple branches in Shanghai (Search: HEYTEA)"
+            },
+            9: {
+                cn: "上海市黄浦区湖北路151号",
+                en: "No. 151 Hubei Road, Huangpu District, Shanghai"
+            },
+            10: {
+                cn: "上海市黄浦区南京东路636号",
+                en: "No. 636 East Nanjing Road, Huangpu District, Shanghai"
+            },
+            11: {
+                cn: "上海市黄浦区云南南路36号",
+                en: "No. 36 Yunnan South Road, Huangpu District, Shanghai"
+            },
+            12: {
+                cn: "上海市多家门店（高德搜索：陶陶居）",
+                en: "Multiple branches in Shanghai (Search: Tao Tao Ju)"
+            },
+            13: {
+                cn: "上海市黄浦区四川南路11号",
+                en: "No. 11 South Sichuan Road, Huangpu District, Shanghai"
+            },
+            14: {
+                cn: "上海市黄浦区雁荡路14号",
+                en: "No. 14 Yandang Road, Huangpu District, Shanghai"
+            },
+            15: {
+                cn: "上海市徐汇区常熟路115-2号",
+                en: "No. 115-2 Changshu Road, Xuhui District, Shanghai"
+            },
+            16: {
+                cn: "上海市地铁站/商圈周边流动摊点（高德搜索：煎饼）",
+                en: "Street stalls near metro/business districts across Shanghai (Search: Jianbing)"
+            }
+        };
+
+        const allTags = [...new Set(restaurants.flatMap(r => r.tags))];
+        let currentFilter = '전체';
+
+        function renderFilters() {
+            const container = document.getElementById('filter-container');
+            container.innerHTML = `<button onclick="setFilter('전체')" class="filter-btn px-4 py-2 rounded-full text-sm font-medium transition-colors ${currentFilter === '전체' ? 'bg-stone-800 text-white' : 'bg-white text-stone-600 border border-stone-200 hover:bg-stone-100'}">전체 보기</button>`;
+            allTags.forEach(tag => {
+                const isActive = currentFilter === tag;
+                const btnClass = isActive ? 'bg-stone-800 text-white' : 'bg-white text-stone-600 border border-stone-200 hover:bg-stone-100';
+                container.innerHTML += `<button onclick="setFilter('${tag}')" class="filter-btn px-4 py-2 rounded-full text-sm font-medium transition-colors ${btnClass}">${tag}</button>`;
+            });
+        }
+
+        function setFilter(tag) {
+            currentFilter = tag;
+            renderFilters();
+            renderGrid();
+        }
+
+        function renderGrid() {
+            const grid = document.getElementById('restaurant-grid');
+            grid.innerHTML = '';
+            const filtered = currentFilter === '전체' ? restaurants : restaurants.filter(r => r.tags.includes(currentFilter));
+            if (filtered.length === 0) {
+                grid.innerHTML = `<div class="col-span-full text-center py-10 text-stone-500">해당하는 맛집이 없습니다.</div>`;
+                return;
+            }
+            filtered.forEach(r => {
+                const addr = restaurantAddresses[r.id] || {
+                    cn: "주소 정보 준비 중",
+                    en: "Address info pending"
+                };
+                const card = document.createElement('div');
+                card.className = "bg-white rounded-2xl p-6 shadow-sm border border-stone-100 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 group";
+                card.innerHTML = `
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="text-3xl bg-stone-50 h-12 w-12 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform">${r.icon}</div>
+                        <div class="flex flex-wrap justify-end gap-1">
+                            ${r.tags.map(t => `<span class="text-[10px] px-2 py-1 bg-stone-100 text-stone-600 rounded-md font-medium">${t}</span>`).join('')}
+                        </div>
+                    </div>
+                    <h3 class="text-xl font-bold text-stone-800 mb-1">${r.name}</h3>
+                    <p class="text-xs text-stone-400 mb-4 font-medium">${r.chinese} • ${r.region}</p>
+                    <div class="mb-4">
+                        <p class="text-sm font-bold text-orange-700 mb-1">추천 메뉴: ${r.menu}</p>
+                        <p class="text-sm text-stone-600 line-clamp-3">${r.desc}</p>
+                    </div>
+                    <div class="pt-3 border-t border-stone-100 space-y-1">
+                        <p class="text-xs text-stone-500"><strong>중문:</strong> ${addr.cn}</p>
+                        <p class="text-xs text-stone-500"><strong>English:</strong> ${addr.en}</p>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        function initChart() {
+            const ctx = document.getElementById('historyChart').getContext('2d');
+            const historyData = [
+                { name: '선다청', years: 150, menu: '계란 노른자 떡' },
+                { name: '선득내', years: 105, menu: '갈비 떡' },
+                { name: '위싱지', years: 100, menu: '게알 국수' },
+                { name: '따오춘', years: 94, menu: '성젠바오' },
+                { name: '점도덕', years: 93, menu: '홍미 창판' },
+                { name: '위상하이', years: 80, menu: '마장면' }
+            ].sort((a, b) => b.years - a.years);
+
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: historyData.map(d => d.name),
+                    datasets: [{
+                        label: '전통 (년)',
+                        data: historyData.map(d => d.years),
+                        backgroundColor: '#ea580c',
+                        borderRadius: 6,
+                        barThickness: 'flex',
+                        maxBarThickness: 40
+                    }]
+                },
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            backgroundColor: 'rgba(41, 37, 36, 0.95)',
+                            callbacks: {
+                                label: function(context) {
+                                    const item = historyData[context.dataIndex];
+                                    return `역사: ${item.years}년 | 대표: ${item.menu}`;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: { grid: { color: '#f5f5f4' }, max: 160 },
+                        y: { grid: { display: false } }
+                    }
+                }
+            });
+        }
+
+        const routeDescriptions = {
+            'nanjing': { title: '난징동루 & 와이탄 구역', desc: '상하이의 상징적인 거리와 야경을 감상하며 100년 넘은 노포들을 도보로 즐길 수 있는 최고의 클래식 코스입니다.', items: restaurants.filter(r => r.route === 'nanjing') },
+            'peoples': { title: '인민광장 구역', desc: '교통의 중심지인 인민광장 주변에 숨겨진 서민적인 맛집과 역사 깊은 노포들을 탐험하는 코스입니다.', items: restaurants.filter(r => r.route === 'peoples') },
+            'jingan': { title: '정안사 & 도서관 구역', desc: '현지인들이 거주하는 조용한 골목에서 찐 로컬 가정식과 미쉐린 백반을 맛볼 수 있는 힐링 코스입니다.', items: restaurants.filter(r => r.route === 'jingan') },
+            'malls': { title: '대형 쇼핑몰 (체인점)', desc: '날씨에 구애받지 않고 쾌적하게 식사하고 싶을 때 유용합니다.', items: restaurants.filter(r => r.route === 'malls') }
+        };
+
+        function showRoute(routeId, event = null) {
+            const buttons = document.querySelectorAll('.route-btn');
+            buttons.forEach(btn => {
+                btn.classList.remove('border-orange-200');
+                btn.classList.add('border-transparent');
+            });
+
+            // Handle programmatic call vs click event
+            if (event && event.currentTarget) {
+                event.currentTarget.classList.remove('border-transparent');
+                event.currentTarget.classList.add('border-orange-200');
+            } else {
+                const targetBtn = document.querySelector(`.route-btn[data-route="${routeId}"]`);
+                if (targetBtn) {
+                    targetBtn.classList.remove('border-transparent');
+                    targetBtn.classList.add('border-orange-200');
+                }
+            }
+
+            const container = document.getElementById('route-details');
+            const data = routeDescriptions[routeId];
+            let html = `<h3 class="text-2xl font-bold text-stone-800 mb-2">${data.title}</h3><p class="text-stone-600 mb-6">${data.desc}</p><div class="space-y-4">`;
+            data.items.forEach(item => {
+                const addr = restaurantAddresses[item.id] || {
+                    cn: "주소 정보 준비 중",
+                    en: "Address info pending"
+                };
+                html += `<div class="flex items-start p-4 rounded-xl hover:bg-stone-50 transition-colors border border-stone-100"><div class="text-3xl mr-4">${item.icon}</div><div><h4 class="font-bold text-stone-800 text-lg">${item.name} <span class="text-xs font-normal text-stone-400 ml-2">${item.region}</span></h4><p class="text-sm text-orange-700 font-medium my-1">${item.menu}</p><p class="text-sm text-stone-600 line-clamp-2">${item.desc}</p><p class="text-xs text-stone-500 mt-2"><strong>중문:</strong> ${addr.cn}</p><p class="text-xs text-stone-500"><strong>English:</strong> ${addr.en}</p></div></div>`;
+            });
+            html += `</div>`;
+            container.innerHTML = html;
+        }
+
+        window.onload = () => {
+            renderFilters();
+            renderGrid();
+            initChart();
+            showRoute('nanjing');
+        };
+    </script>
+</body>
+</html>
