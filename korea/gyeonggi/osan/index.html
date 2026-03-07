@@ -256,7 +256,7 @@
         .rank-grid {
             margin-top: 14px;
             display: grid;
-            grid-template-columns: repeat(3, minmax(0, 1fr));
+            grid-template-columns: repeat(2, minmax(0, 1fr));
             gap: 10px;
         }
 
@@ -293,6 +293,8 @@
 
         .rank-item strong {
             font-size: 17px;
+            display: block;
+            margin-bottom: 6px;
         }
 
         .rank-item p {
@@ -325,26 +327,6 @@
             line-height: 1.5;
         }
 
-        .detail-list {
-            margin-top: 14px;
-            display: grid;
-            grid-template-columns: repeat(2, minmax(0, 1fr));
-            gap: 10px;
-        }
-
-        .detail-card {
-            border: 1px solid var(--line);
-            border-radius: 14px;
-            padding: 12px;
-            background: #fff;
-        }
-
-        .detail-title {
-            margin: 0 0 6px;
-            font-size: 18px;
-            font-weight: 900;
-        }
-
         .detail-chip {
             display: inline-block;
             margin-right: 6px;
@@ -356,12 +338,6 @@
             color: #1d4f7a;
             border-radius: 999px;
             padding: 4px 8px;
-        }
-
-        .detail-card p {
-            font-size: 13px;
-            line-height: 1.55;
-            margin-top: 4px;
         }
 
         .address-box {
@@ -467,9 +443,6 @@
             .route-plan {
                 grid-template-columns: 1fr;
             }
-            .detail-list {
-                grid-template-columns: 1fr;
-            }
         }
 
         @media (max-width: 640px) {
@@ -522,26 +495,9 @@
             </div>
 
             <div class="rank-grid">
-                <article class="rank-item"><div class="rank-head"><span class="rank-num">#1</span><span class="rank-vote">추천 약 30+</span></div><strong>운암면가</strong><p>27년 영업 부대찌개. 햄 양이 압도적이고 2인분 체감이 매우 큼. 영상 평가 상위권.</p></article>
-                <article class="rank-item"><div class="rank-head"><span class="rank-num">#2</span><span class="rank-vote">추천 다수</span></div><strong>궐동 24시 얼큰 뼈해장국</strong><p>짬뽕 계열 매운감이 섞인 개성형 뼈해장국. 중간맛도 매콤하다는 평가.</p></article>
-                <article class="rank-item"><div class="rank-head"><span class="rank-num">#3</span><span class="rank-vote">추천 20+</span></div><strong>대흥식당</strong><p>오색시장 50년 전통. 돼지국밥 단일 메뉴, 남자/여자 국밥 구성 차이가 특징.</p></article>
-                <article class="rank-item"><div class="rank-head"><span class="rank-num">#4</span><span class="rank-vote">추천 10+</span></div><strong>두꺼비스넥</strong><p>40년+ 분식 노포. 도톰한 쌀떡 떡볶이의 옛날 포장마차 스타일이 핵심.</p></article>
-                <article class="rank-item"><div class="rank-head"><span class="rank-num">#5</span><span class="rank-vote">추천 9+</span></div><strong>오산 깍두기집</strong><p>40년+ 감자탕. 경기 남부식 “사리(등뼈)” 전골, 자극 강하지 않은 깔끔한 국물.</p></article>
-                <article class="rank-item"><div class="rank-head"><span class="rank-num">#6</span><span class="rank-vote">추천 6+</span></div><strong>워카이</strong><p>10년+ 중식당. 훈연향이 도는 간짜장과 1인 탕수육 조합이 강점.</p></article>
-                <article class="rank-item"><div class="rank-head"><span class="rank-num">#7</span><span class="rank-vote">추천 6+</span></div><strong>형제초밥</strong><p>회전초밥, 접시 단가가 낮아 가성비 우수. 묵은지 광어/도미/지느러미 평가 좋음.</p></article>
-                <article class="rank-item"><div class="rank-head"><span class="rank-num">#8</span><span class="rank-vote">추천 5+</span></div><strong>7공주족발</strong><p>족발집이지만 순대국밥 추천 비중 높음. 오색시장권 웨이팅 체감 강한 편.</p></article>
-                <article class="rank-item"><div class="rank-head"><span class="rank-num">#9</span><span class="rank-vote">제작자 픽</span></div><strong>카츠식당</strong><p>추천댓글은 없었지만 품질 상위 평가. 모듬정식(등심/안심/치즈/새우) 안정적.</p></article>
-            </div>
-
-            <div class="route-plan">
-                <div class="route-box"><strong>코스 A | 오색시장 집중</strong><p>7공주족발 → 대흥식당 → 두꺼비스넥 순으로 이동. 국밥/분식 노포를 연속 방문하기 좋고 도보 동선이 짧음.</p></div>
-                <div class="route-box"><strong>코스 B | 궐동·오산대역</strong><p>운암면가 → 얼큰 뼈해장국 → 형제초밥 → 카츠식당. 식사 템포를 나눠 2회차 방문 코스로 추천.</p></div>
-                <div class="route-box"><strong>코스 C | 외곽/차량 이동</strong><p>워카이 → 오산 깍두기집. 외곽 접근성이 있어 자차/택시 이동 시 효율이 좋음.</p></div>
-            </div>
-
-            <div class="detail-list">
-                <article class="detail-card">
-                    <h3 class="detail-title">운암면가 (부대찌개)</h3>
+                <article class="rank-item">
+                    <div class="rank-head"><span class="rank-num">#1</span><span class="rank-vote">추천 약 30+</span></div>
+                    <strong>운암면가 (부대찌개)</strong>
                     <span class="detail-chip">검색 키워드: 오산 운암면가</span>
                     <span class="detail-chip">권역: 궐동/오산대권</span>
                     <p><b>핵심:</b> 햄·고기 다짐육 비율이 높고 국물은 사골 베이스 + 다진마늘 풍미. 2인분 양 체감이 커서 2인 방문 시 라면사리 과주문 주의.</p>
@@ -556,8 +512,9 @@
                     </div>
                     <iframe class="map-preview" loading="lazy" referrerpolicy="no-referrer-when-downgrade" src="https://www.google.com/maps?q=운암명가%20경기%20오산시%20대원로%2065&output=embed"></iframe>
                 </article>
-                <article class="detail-card">
-                    <h3 class="detail-title">궐동 24시 얼큰 뼈해장국</h3>
+                <article class="rank-item">
+                    <div class="rank-head"><span class="rank-num">#2</span><span class="rank-vote">추천 다수</span></div>
+                    <strong>궐동 24시 얼큰 뼈해장국</strong>
                     <span class="detail-chip">검색 키워드: 오산 궐동 24시 얼큰 뼈해장국</span>
                     <span class="detail-chip">권역: 궐동</span>
                     <p><b>핵심:</b> 일반 뼈해장국과 다른 매운 감칠맛. 깍두기/양파절임/겉절이 조합으로 밸런스가 좋고 해장형/식사형 모두 가능.</p>
@@ -572,24 +529,9 @@
                     </div>
                     <iframe class="map-preview" loading="lazy" referrerpolicy="no-referrer-when-downgrade" src="https://www.google.com/maps?q=24시얼큰한뼈해장국%20경기%20오산시%20궐리사로46번길%2060-14&output=embed"></iframe>
                 </article>
-                <article class="detail-card">
-                    <h3 class="detail-title">7공주족발 (순대국밥)</h3>
-                    <span class="detail-chip">검색 키워드: 오색시장 7공주족발</span>
-                    <span class="detail-chip">권역: 오색시장</span>
-                    <p><b>핵심:</b> 족발보다 국밥 추천 비율이 높았던 케이스. 순대 종류가 다양하고 소면/부추무침 활용 시 만족도가 크게 올라감.</p>
-                    <div class="address-box">
-                        <p class="address-row"><b>도로명:</b> 경기 오산시 오산로278번길 7</p>
-                        <p class="address-row"><b>지번:</b> 경기 오산시 오산동 844-11 오산오색시장 내 1층</p>
-                        <p class="address-row"><b>전화:</b> 031-375-7034</p>
-                    </div>
-                    <div class="map-actions">
-                        <a class="map-link naver" href="https://map.naver.com/p/search/오산%20칠공주족발" target="_blank" rel="noopener noreferrer">네이버지도</a>
-                        <a class="map-link google" href="https://www.google.com/maps/search/?api=1&query=칠공주족발%20경기%20오산시%20오산로278번길%207" target="_blank" rel="noopener noreferrer">구글맵</a>
-                    </div>
-                    <iframe class="map-preview" loading="lazy" referrerpolicy="no-referrer-when-downgrade" src="https://www.google.com/maps?q=칠공주족발%20경기%20오산시%20오산로278번길%207&output=embed"></iframe>
-                </article>
-                <article class="detail-card">
-                    <h3 class="detail-title">대흥식당 (돼지국밥)</h3>
+                <article class="rank-item">
+                    <div class="rank-head"><span class="rank-num">#3</span><span class="rank-vote">추천 20+</span></div>
+                    <strong>대흥식당 (돼지국밥)</strong>
                     <span class="detail-chip">검색 키워드: 오색시장 대흥식당</span>
                     <span class="detail-chip">권역: 오색시장</span>
                     <p><b>핵심:</b> 토렴밥과 큼직한 고기. 간이 연한 편이라 깍두기/김치와 합이 좋고, 남자·여자 국밥 구성 차이가 독특한 포인트.</p>
@@ -604,8 +546,9 @@
                     </div>
                     <iframe class="map-preview" loading="lazy" referrerpolicy="no-referrer-when-downgrade" src="https://www.google.com/maps?q=대흥식당%20경기%20오산시%20오산로278번길%209-12&output=embed"></iframe>
                 </article>
-                <article class="detail-card">
-                    <h3 class="detail-title">두꺼비스넥 (떡튀순)</h3>
+                <article class="rank-item">
+                    <div class="rank-head"><span class="rank-num">#4</span><span class="rank-vote">추천 10+</span></div>
+                    <strong>두꺼비스넥 (떡튀순)</strong>
                     <span class="detail-chip">검색 키워드: 오색시장 두꺼비스넥</span>
                     <span class="detail-chip">권역: 오색시장</span>
                     <p><b>핵심:</b> 도톰한 쌀떡, 달짝지근한 옛날 떡볶이 맛. 시장 투어 중 간식 겸 서브 식사로 넣기 좋음.</p>
@@ -620,40 +563,9 @@
                     </div>
                     <iframe class="map-preview" loading="lazy" referrerpolicy="no-referrer-when-downgrade" src="https://www.google.com/maps?q=두꺼비스넥%20경기%20오산시%20시장길%2014&output=embed"></iframe>
                 </article>
-                <article class="detail-card">
-                    <h3 class="detail-title">워카이 (중식)</h3>
-                    <span class="detail-chip">검색 키워드: 오산 워카이 간짜장</span>
-                    <span class="detail-chip">권역: 외곽</span>
-                    <p><b>핵심:</b> 간짜장 소스의 진도와 향이 강함. 1인 탕수육과 세트로 주문 시 만족도가 높다는 후기 흐름.</p>
-                    <div class="address-box">
-                        <p class="address-row"><b>도로명:</b> 경기 오산시 가장로530번길 3</p>
-                        <p class="address-row"><b>지번:</b> 경기 오산시 가장동 244 2동 1층</p>
-                        <p class="address-row"><b>전화:</b> 010-9950-9844</p>
-                    </div>
-                    <div class="map-actions">
-                        <a class="map-link naver" href="https://map.naver.com/p/search/오산%20웍하이" target="_blank" rel="noopener noreferrer">네이버지도</a>
-                        <a class="map-link google" href="https://www.google.com/maps/search/?api=1&query=웍하이%20경기%20오산시%20가장로530번길%203" target="_blank" rel="noopener noreferrer">구글맵</a>
-                    </div>
-                    <iframe class="map-preview" loading="lazy" referrerpolicy="no-referrer-when-downgrade" src="https://www.google.com/maps?q=웍하이%20경기%20오산시%20가장로530번길%203&output=embed"></iframe>
-                </article>
-                <article class="detail-card">
-                    <h3 class="detail-title">형제초밥 (회전초밥)</h3>
-                    <span class="detail-chip">검색 키워드: 오산 형제초밥</span>
-                    <span class="detail-chip">권역: 궐동/부대찌개 인근</span>
-                    <p><b>핵심:</b> 접시 단가 경쟁력이 있어 다접시 식사에 유리. 묵은지 광어/도미/지느러미/구운계열 순으로 평가 우수.</p>
-                    <div class="address-box">
-                        <p class="address-row"><b>도로명:</b> 경기 오산시 대원로 65</p>
-                        <p class="address-row"><b>지번:</b> 경기 오산시 원동 813-9 운암프라자 205호</p>
-                        <p class="address-row"><b>전화:</b> 031-372-0223</p>
-                    </div>
-                    <div class="map-actions">
-                        <a class="map-link naver" href="https://map.naver.com/p/search/오산%20형제초밥" target="_blank" rel="noopener noreferrer">네이버지도</a>
-                        <a class="map-link google" href="https://www.google.com/maps/search/?api=1&query=형제초밥%20경기%20오산시%20대원로%2065" target="_blank" rel="noopener noreferrer">구글맵</a>
-                    </div>
-                    <iframe class="map-preview" loading="lazy" referrerpolicy="no-referrer-when-downgrade" src="https://www.google.com/maps?q=형제초밥%20경기%20오산시%20대원로%2065&output=embed"></iframe>
-                </article>
-                <article class="detail-card">
-                    <h3 class="detail-title">오산 깍두기집 (사리전골/감자탕)</h3>
+                <article class="rank-item">
+                    <div class="rank-head"><span class="rank-num">#5</span><span class="rank-vote">추천 9+</span></div>
+                    <strong>오산 깍두기집 (사리전골/감자탕)</strong>
                     <span class="detail-chip">검색 키워드: 오산 깍두기집 감자탕</span>
                     <span class="detail-chip">권역: 오산 시내</span>
                     <p><b>핵심:</b> 들깨·우거지형 감자탕과 다른 결. 덜 자극적이고 국물 개운한 타입, 볶음밥 마무리 추천 비중 높음.</p>
@@ -668,8 +580,60 @@
                     </div>
                     <iframe class="map-preview" loading="lazy" referrerpolicy="no-referrer-when-downgrade" src="https://www.google.com/maps?q=오산깍두기집%20본점%20경기%20오산시%20오산로190번길%2016&output=embed"></iframe>
                 </article>
-                <article class="detail-card">
-                    <h3 class="detail-title">카츠식당 (돈카츠)</h3>
+                <article class="rank-item">
+                    <div class="rank-head"><span class="rank-num">#6</span><span class="rank-vote">추천 6+</span></div>
+                    <strong>워카이 (중식)</strong>
+                    <span class="detail-chip">검색 키워드: 오산 워카이 간짜장</span>
+                    <span class="detail-chip">권역: 외곽</span>
+                    <p><b>핵심:</b> 간짜장 소스의 진도와 향이 강함. 1인 탕수육과 세트로 주문 시 만족도가 높다는 후기 흐름.</p>
+                    <div class="address-box">
+                        <p class="address-row"><b>도로명:</b> 경기 오산시 가장로530번길 3</p>
+                        <p class="address-row"><b>지번:</b> 경기 오산시 가장동 244 2동 1층</p>
+                        <p class="address-row"><b>전화:</b> 010-9950-9844</p>
+                    </div>
+                    <div class="map-actions">
+                        <a class="map-link naver" href="https://map.naver.com/p/search/오산%20웍하이" target="_blank" rel="noopener noreferrer">네이버지도</a>
+                        <a class="map-link google" href="https://www.google.com/maps/search/?api=1&query=웍하이%20경기%20오산시%20가장로530번길%203" target="_blank" rel="noopener noreferrer">구글맵</a>
+                    </div>
+                    <iframe class="map-preview" loading="lazy" referrerpolicy="no-referrer-when-downgrade" src="https://www.google.com/maps?q=웍하이%20경기%20오산시%20가장로530번길%203&output=embed"></iframe>
+                </article>
+                <article class="rank-item">
+                    <div class="rank-head"><span class="rank-num">#7</span><span class="rank-vote">추천 6+</span></div>
+                    <strong>형제초밥 (회전초밥)</strong>
+                    <span class="detail-chip">검색 키워드: 오산 형제초밥</span>
+                    <span class="detail-chip">권역: 궐동/부대찌개 인근</span>
+                    <p><b>핵심:</b> 접시 단가 경쟁력이 있어 다접시 식사에 유리. 묵은지 광어/도미/지느러미/구운계열 순으로 평가 우수.</p>
+                    <div class="address-box">
+                        <p class="address-row"><b>도로명:</b> 경기 오산시 대원로 65</p>
+                        <p class="address-row"><b>지번:</b> 경기 오산시 원동 813-9 운암프라자 205호</p>
+                        <p class="address-row"><b>전화:</b> 031-372-0223</p>
+                    </div>
+                    <div class="map-actions">
+                        <a class="map-link naver" href="https://map.naver.com/p/search/오산%20형제초밥" target="_blank" rel="noopener noreferrer">네이버지도</a>
+                        <a class="map-link google" href="https://www.google.com/maps/search/?api=1&query=형제초밥%20경기%20오산시%20대원로%2065" target="_blank" rel="noopener noreferrer">구글맵</a>
+                    </div>
+                    <iframe class="map-preview" loading="lazy" referrerpolicy="no-referrer-when-downgrade" src="https://www.google.com/maps?q=형제초밥%20경기%20오산시%20대원로%2065&output=embed"></iframe>
+                </article>
+                <article class="rank-item">
+                    <div class="rank-head"><span class="rank-num">#8</span><span class="rank-vote">추천 5+</span></div>
+                    <strong>7공주족발 (순대국밥)</strong>
+                    <span class="detail-chip">검색 키워드: 오색시장 7공주족발</span>
+                    <span class="detail-chip">권역: 오색시장</span>
+                    <p><b>핵심:</b> 족발보다 국밥 추천 비율이 높았던 케이스. 순대 종류가 다양하고 소면/부추무침 활용 시 만족도가 크게 올라감.</p>
+                    <div class="address-box">
+                        <p class="address-row"><b>도로명:</b> 경기 오산시 오산로278번길 7</p>
+                        <p class="address-row"><b>지번:</b> 경기 오산시 오산동 844-11 오산오색시장 내 1층</p>
+                        <p class="address-row"><b>전화:</b> 031-375-7034</p>
+                    </div>
+                    <div class="map-actions">
+                        <a class="map-link naver" href="https://map.naver.com/p/search/오산%20칠공주족발" target="_blank" rel="noopener noreferrer">네이버지도</a>
+                        <a class="map-link google" href="https://www.google.com/maps/search/?api=1&query=칠공주족발%20경기%20오산시%20오산로278번길%207" target="_blank" rel="noopener noreferrer">구글맵</a>
+                    </div>
+                    <iframe class="map-preview" loading="lazy" referrerpolicy="no-referrer-when-downgrade" src="https://www.google.com/maps?q=칠공주족발%20경기%20오산시%20오산로278번길%207&output=embed"></iframe>
+                </article>
+                <article class="rank-item">
+                    <div class="rank-head"><span class="rank-num">#9</span><span class="rank-vote">제작자 픽</span></div>
+                    <strong>카츠식당 (돈카츠)</strong>
                     <span class="detail-chip">검색 키워드: 오산대역 카츠식당</span>
                     <span class="detail-chip">권역: 원동/오산대역</span>
                     <p><b>핵심:</b> 모듬정식 구성이 탄탄하고 수제 새우튀김 품질 평가가 좋음. 연겨자+깨소스 조합이 시그니처.</p>
@@ -685,6 +649,13 @@
                     <iframe class="map-preview" loading="lazy" referrerpolicy="no-referrer-when-downgrade" src="https://www.google.com/maps?q=카츠식당%20경기%20오산시%20궐동로7번길%203-5&output=embed"></iframe>
                 </article>
             </div>
+
+            <div class="route-plan">
+                <div class="route-box"><strong>코스 A | 오색시장 집중</strong><p>7공주족발 → 대흥식당 → 두꺼비스넥 순으로 이동. 국밥/분식 노포를 연속 방문하기 좋고 도보 동선이 짧음.</p></div>
+                <div class="route-box"><strong>코스 B | 궐동·오산대역</strong><p>운암면가 → 얼큰 뼈해장국 → 형제초밥 → 카츠식당. 식사 템포를 나눠 2회차 방문 코스로 추천.</p></div>
+                <div class="route-box"><strong>코스 C | 외곽/차량 이동</strong><p>워카이 → 오산 깍두기집. 외곽 접근성이 있어 자차/택시 이동 시 효율이 좋음.</p></div>
+            </div>
+
         </section>
 
         <div class="footer">gyeonggi osan food archive · ssungjun travel</div>
