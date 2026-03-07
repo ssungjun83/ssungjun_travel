@@ -284,6 +284,73 @@
             { id: 16, name: "길거리 지엔빙", chinese: "煎饼", menu: "지엔빙, 또우장", desc: "직장인들의 국민 아침. 파전 같은 고소함에 바삭한 과자 식감. 따뜻한 두유와 함께.", tags: ["가성비", "현지인", "아침식사"], region: "시내 전역 노점", route: "all", icon: "🌯" }
         ];
 
+        const restaurantAddresses = {
+            1: {
+                cn: "上海市黄浦区广东路475号（示例门店）",
+                en: "No. 475 Guangdong Road, Huangpu District, Shanghai (example branch)"
+            },
+            2: {
+                cn: "上海市黄浦区进贤路130号",
+                en: "No. 130 Jinxian Road, Huangpu District, Shanghai"
+            },
+            3: {
+                cn: "上海市浦东新区世纪大道8号 国金中心商场LG2（示例门店）",
+                en: "LG2, IFC Mall, No. 8 Century Avenue, Pudong New Area, Shanghai (example branch)"
+            },
+            4: {
+                cn: "上海市黄浦区天津路504号",
+                en: "No. 504 Tianjin Road, Huangpu District, Shanghai"
+            },
+            5: {
+                cn: "上海市多家门店（高德搜索：很久以前羊肉串）",
+                en: "Multiple branches in Shanghai (Search: Hen Jiu Yi Qian Yang Rou Chuan)"
+            },
+            6: {
+                cn: "上海市黄浦区南京东路558号 B1（示例门店）",
+                en: "B1, No. 558 East Nanjing Road, Huangpu District, Shanghai (example branch)"
+            },
+            7: {
+                cn: "上海市多家门店（高德搜索：朱光玉火锅馆）",
+                en: "Multiple branches in Shanghai (Search: Zhu Guang Yu Hotpot)"
+            },
+            8: {
+                cn: "上海市多家门店（高德搜索：喜茶）",
+                en: "Multiple branches in Shanghai (Search: HEYTEA)"
+            },
+            9: {
+                cn: "上海市黄浦区湖北路151号",
+                en: "No. 151 Hubei Road, Huangpu District, Shanghai"
+            },
+            10: {
+                cn: "上海市黄浦区南京东路636号",
+                en: "No. 636 East Nanjing Road, Huangpu District, Shanghai"
+            },
+            11: {
+                cn: "上海市黄浦区云南南路36号",
+                en: "No. 36 Yunnan South Road, Huangpu District, Shanghai"
+            },
+            12: {
+                cn: "上海市多家门店（高德搜索：陶陶居）",
+                en: "Multiple branches in Shanghai (Search: Tao Tao Ju)"
+            },
+            13: {
+                cn: "上海市黄浦区四川南路11号",
+                en: "No. 11 South Sichuan Road, Huangpu District, Shanghai"
+            },
+            14: {
+                cn: "上海市黄浦区雁荡路14号",
+                en: "No. 14 Yandang Road, Huangpu District, Shanghai"
+            },
+            15: {
+                cn: "上海市徐汇区常熟路115-2号",
+                en: "No. 115-2 Changshu Road, Xuhui District, Shanghai"
+            },
+            16: {
+                cn: "上海市地铁站/商圈周边流动摊点（高德搜索：煎饼）",
+                en: "Street stalls near metro/business districts across Shanghai (Search: Jianbing)"
+            }
+        };
+
         const allTags = [...new Set(restaurants.flatMap(r => r.tags))];
         let currentFilter = '전체';
 
@@ -312,6 +379,10 @@
                 return;
             }
             filtered.forEach(r => {
+                const addr = restaurantAddresses[r.id] || {
+                    cn: "주소 정보 준비 중",
+                    en: "Address info pending"
+                };
                 const card = document.createElement('div');
                 card.className = "bg-white rounded-2xl p-6 shadow-sm border border-stone-100 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 group";
                 card.innerHTML = `
@@ -326,6 +397,10 @@
                     <div class="mb-4">
                         <p class="text-sm font-bold text-orange-700 mb-1">추천 메뉴: ${r.menu}</p>
                         <p class="text-sm text-stone-600 line-clamp-3">${r.desc}</p>
+                    </div>
+                    <div class="pt-3 border-t border-stone-100 space-y-1">
+                        <p class="text-xs text-stone-500"><strong>중문:</strong> ${addr.cn}</p>
+                        <p class="text-xs text-stone-500"><strong>English:</strong> ${addr.en}</p>
                     </div>
                 `;
                 grid.appendChild(card);
