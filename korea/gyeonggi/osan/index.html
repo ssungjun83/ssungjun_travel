@@ -4,6 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>경기 오산 맛집 아카이브 | ssungjun travel</title>
+    <link
+        rel="stylesheet"
+        href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+        integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+        crossorigin=""
+    >
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Archivo:wght@600;700;800&family=Noto+Sans+KR:wght@400;500;700;900&display=swap');
 
@@ -413,6 +419,41 @@
             border-radius: 10px;
         }
 
+        .all-map-section {
+            margin-top: 16px;
+            background: #ffffff;
+            border: 1px solid var(--line);
+            border-radius: 22px;
+            padding: 20px;
+            box-shadow: 0 10px 20px rgba(26, 51, 72, 0.06);
+        }
+
+        .all-map-title {
+            margin: 0 0 8px;
+            font-size: 28px;
+            font-weight: 900;
+        }
+
+        .all-map-desc {
+            margin: 0 0 12px;
+            color: var(--muted);
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .all-map {
+            width: 100%;
+            height: 520px;
+            border: 1px solid #dce7f2;
+            border-radius: 14px;
+        }
+
+        .all-map-note {
+            margin-top: 10px;
+            color: #5d6f81;
+            font-size: 12px;
+        }
+
         @media (max-width: 980px) {
             .cities {
                 grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -456,6 +497,13 @@
                 <span class="chip sky">궐동·오산대권</span>
                 <span class="chip sand">지도 검색 최적화</span>
             </div>
+        </section>
+
+        <section class="all-map-section">
+            <h2 class="all-map-title">🗺️ 오산 9곳 종합 지도</h2>
+            <p class="all-map-desc">아래 지도는 추천 9개 장소를 한 번에 표시한 통합 지도입니다. 마커를 클릭하면 주소와 함께 네이버/구글 지도 바로가기 링크를 확인할 수 있습니다.</p>
+            <div id="allPlacesMap" class="all-map"></div>
+            <p class="all-map-note">* 지도 데이터는 현재 페이지의 9개 추천 장소 기준입니다.</p>
         </section>
 
         <section class="deep-dive">
@@ -641,5 +689,51 @@
 
         <div class="footer">gyeonggi osan food archive · ssungjun travel</div>
     </div>
+    <script
+        src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+        integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+        crossorigin=""
+    ></script>
+    <script>
+        const allPlaces = [
+            { name: "운암명가 (부대찌개)", lat: 37.14665435, lng: 127.07577631, road: "경기 오산시 대원로 65" },
+            { name: "24시얼큰한뼈해장국", lat: 37.15959007, lng: 127.05613266, road: "경기 오산시 궐리사로46번길 60-14" },
+            { name: "칠공주족발", lat: 37.15185565, lng: 127.0692705, road: "경기 오산시 오산로278번길 7" },
+            { name: "대흥식당", lat: 37.15222382, lng: 127.06987984, road: "경기 오산시 오산로278번길 9-12" },
+            { name: "두꺼비스넥", lat: 37.1501617, lng: 127.06919691, road: "경기 오산시 시장길 14" },
+            { name: "웍하이 (워카이)", lat: 37.15955047, lng: 127.03785406, road: "경기 오산시 가장로530번길 3" },
+            { name: "형제초밥", lat: 37.14656779, lng: 127.07587077, road: "경기 오산시 대원로 65" },
+            { name: "오산깍두기집 본점", lat: 37.14376713, lng: 127.07030315, road: "경기 오산시 오산로190번길 16" },
+            { name: "카츠식당", lat: 37.15854923, lng: 127.05447022, road: "경기 오산시 궐동로7번길 3-5" }
+        ];
+
+        const map = L.map("allPlacesMap", { scrollWheelZoom: true });
+        L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+            maxZoom: 19,
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
+
+        const bounds = L.latLngBounds();
+
+        allPlaces.forEach((place) => {
+            const naverUrl = `https://map.naver.com/p/search/${encodeURIComponent(place.name + " " + place.road)}`;
+            const googleUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(place.name + " " + place.road)}`;
+            const popupHtml = `
+                <div style="min-width:220px">
+                    <div style="font-weight:800;margin-bottom:6px">${place.name}</div>
+                    <div style="font-size:12px;color:#555;margin-bottom:8px">${place.road}</div>
+                    <div style="display:flex;gap:6px;flex-wrap:wrap">
+                        <a href="${naverUrl}" target="_blank" rel="noopener noreferrer" style="font-size:12px;font-weight:700;color:#046d34;background:#e7f7ee;border:1px solid #bce9ce;border-radius:999px;padding:4px 8px;text-decoration:none">네이버지도</a>
+                        <a href="${googleUrl}" target="_blank" rel="noopener noreferrer" style="font-size:12px;font-weight:700;color:#1a4f86;background:#eaf3ff;border:1px solid #c9ddff;border-radius:999px;padding:4px 8px;text-decoration:none">구글맵</a>
+                    </div>
+                </div>
+            `;
+            const marker = L.marker([place.lat, place.lng]).addTo(map);
+            marker.bindPopup(popupHtml);
+            bounds.extend([place.lat, place.lng]);
+        });
+
+        map.fitBounds(bounds, { padding: [28, 28] });
+    </script>
 </body>
 </html>
