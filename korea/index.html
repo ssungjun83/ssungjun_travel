@@ -358,6 +358,61 @@
             margin-top: 4px;
         }
 
+        .address-box {
+            margin-top: 8px;
+            border: 1px solid #dce7f2;
+            border-radius: 10px;
+            padding: 10px;
+            background: #f7fbff;
+        }
+
+        .address-row {
+            font-size: 12px;
+            line-height: 1.5;
+            margin: 0 0 4px;
+            color: #2e4156;
+        }
+
+        .address-row:last-child {
+            margin-bottom: 0;
+        }
+
+        .map-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-top: 8px;
+        }
+
+        .map-link {
+            text-decoration: none;
+            font-size: 12px;
+            font-weight: 800;
+            border-radius: 999px;
+            padding: 5px 10px;
+            border: 1px solid transparent;
+        }
+
+        .map-link.naver {
+            color: #046d34;
+            background: #e7f7ee;
+            border-color: #bce9ce;
+        }
+
+        .map-link.google {
+            color: #1a4f86;
+            background: #eaf3ff;
+            border-color: #c9ddff;
+        }
+
+        .map-preview {
+            margin-top: 8px;
+            width: 100%;
+            height: 170px;
+            border: 1px solid #dce7f2;
+            border-radius: 10px;
+        }
+
         @media (max-width: 980px) {
             .cities {
                 grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -480,54 +535,144 @@
                     <span class="detail-chip">검색 키워드: 오산 운암면가</span>
                     <span class="detail-chip">권역: 궐동/오산대권</span>
                     <p><b>핵심:</b> 햄·고기 다짐육 비율이 높고 국물은 사골 베이스 + 다진마늘 풍미. 2인분 양 체감이 커서 2인 방문 시 라면사리 과주문 주의.</p>
+                    <div class="address-box">
+                        <p class="address-row"><b>도로명:</b> 경기 오산시 대원로 65</p>
+                        <p class="address-row"><b>지번:</b> 경기 오산시 원동 813-9 운암프라자1차 2층 206호</p>
+                        <p class="address-row"><b>전화:</b> 031-373-0307</p>
+                    </div>
+                    <div class="map-actions">
+                        <a class="map-link naver" href="https://map.naver.com/p/search/운암명가%20오산" target="_blank" rel="noopener noreferrer">네이버지도</a>
+                        <a class="map-link google" href="https://www.google.com/maps/search/?api=1&query=운암명가%20경기%20오산시%20대원로%2065" target="_blank" rel="noopener noreferrer">구글맵</a>
+                    </div>
+                    <iframe class="map-preview" loading="lazy" referrerpolicy="no-referrer-when-downgrade" src="https://www.google.com/maps?q=운암명가%20경기%20오산시%20대원로%2065&output=embed"></iframe>
                 </article>
                 <article class="detail-card">
                     <h3 class="detail-title">궐동 24시 얼큰 뼈해장국</h3>
                     <span class="detail-chip">검색 키워드: 오산 궐동 24시 얼큰 뼈해장국</span>
                     <span class="detail-chip">권역: 궐동</span>
                     <p><b>핵심:</b> 일반 뼈해장국과 다른 매운 감칠맛. 깍두기/양파절임/겉절이 조합으로 밸런스가 좋고 해장형/식사형 모두 가능.</p>
+                    <div class="address-box">
+                        <p class="address-row"><b>도로명:</b> 경기 오산시 궐리사로46번길 60-14</p>
+                        <p class="address-row"><b>지번:</b> 경기 오산시 궐동 671-5 1층</p>
+                        <p class="address-row"><b>전화:</b> 031-374-6334</p>
+                    </div>
+                    <div class="map-actions">
+                        <a class="map-link naver" href="https://map.naver.com/p/search/오산%20궐동%2024시%20얼큰%20뼈해장국" target="_blank" rel="noopener noreferrer">네이버지도</a>
+                        <a class="map-link google" href="https://www.google.com/maps/search/?api=1&query=24시얼큰한뼈해장국%20경기%20오산시%20궐리사로46번길%2060-14" target="_blank" rel="noopener noreferrer">구글맵</a>
+                    </div>
+                    <iframe class="map-preview" loading="lazy" referrerpolicy="no-referrer-when-downgrade" src="https://www.google.com/maps?q=24시얼큰한뼈해장국%20경기%20오산시%20궐리사로46번길%2060-14&output=embed"></iframe>
                 </article>
                 <article class="detail-card">
                     <h3 class="detail-title">7공주족발 (순대국밥)</h3>
                     <span class="detail-chip">검색 키워드: 오색시장 7공주족발</span>
                     <span class="detail-chip">권역: 오색시장</span>
                     <p><b>핵심:</b> 족발보다 국밥 추천 비율이 높았던 케이스. 순대 종류가 다양하고 소면/부추무침 활용 시 만족도가 크게 올라감.</p>
+                    <div class="address-box">
+                        <p class="address-row"><b>도로명:</b> 경기 오산시 오산로278번길 7</p>
+                        <p class="address-row"><b>지번:</b> 경기 오산시 오산동 844-11 오산오색시장 내 1층</p>
+                        <p class="address-row"><b>전화:</b> 031-375-7034</p>
+                    </div>
+                    <div class="map-actions">
+                        <a class="map-link naver" href="https://map.naver.com/p/search/오산%20칠공주족발" target="_blank" rel="noopener noreferrer">네이버지도</a>
+                        <a class="map-link google" href="https://www.google.com/maps/search/?api=1&query=칠공주족발%20경기%20오산시%20오산로278번길%207" target="_blank" rel="noopener noreferrer">구글맵</a>
+                    </div>
+                    <iframe class="map-preview" loading="lazy" referrerpolicy="no-referrer-when-downgrade" src="https://www.google.com/maps?q=칠공주족발%20경기%20오산시%20오산로278번길%207&output=embed"></iframe>
                 </article>
                 <article class="detail-card">
                     <h3 class="detail-title">대흥식당 (돼지국밥)</h3>
                     <span class="detail-chip">검색 키워드: 오색시장 대흥식당</span>
                     <span class="detail-chip">권역: 오색시장</span>
                     <p><b>핵심:</b> 토렴밥과 큼직한 고기. 간이 연한 편이라 깍두기/김치와 합이 좋고, 남자·여자 국밥 구성 차이가 독특한 포인트.</p>
+                    <div class="address-box">
+                        <p class="address-row"><b>도로명:</b> 경기 오산시 오산로278번길 9-12</p>
+                        <p class="address-row"><b>지번:</b> 경기 오산시 오산동 845-14 1층</p>
+                        <p class="address-row"><b>전화:</b> 031-374-4723</p>
+                    </div>
+                    <div class="map-actions">
+                        <a class="map-link naver" href="https://map.naver.com/p/search/오산%20오색시장%20대흥식당" target="_blank" rel="noopener noreferrer">네이버지도</a>
+                        <a class="map-link google" href="https://www.google.com/maps/search/?api=1&query=대흥식당%20경기%20오산시%20오산로278번길%209-12" target="_blank" rel="noopener noreferrer">구글맵</a>
+                    </div>
+                    <iframe class="map-preview" loading="lazy" referrerpolicy="no-referrer-when-downgrade" src="https://www.google.com/maps?q=대흥식당%20경기%20오산시%20오산로278번길%209-12&output=embed"></iframe>
                 </article>
                 <article class="detail-card">
                     <h3 class="detail-title">두꺼비스넥 (떡튀순)</h3>
                     <span class="detail-chip">검색 키워드: 오색시장 두꺼비스넥</span>
                     <span class="detail-chip">권역: 오색시장</span>
                     <p><b>핵심:</b> 도톰한 쌀떡, 달짝지근한 옛날 떡볶이 맛. 시장 투어 중 간식 겸 서브 식사로 넣기 좋음.</p>
+                    <div class="address-box">
+                        <p class="address-row"><b>도로명:</b> 경기 오산시 시장길 14</p>
+                        <p class="address-row"><b>지번:</b> 경기 오산시 오산동 860-13</p>
+                        <p class="address-row"><b>전화:</b> 031-373-2130</p>
+                    </div>
+                    <div class="map-actions">
+                        <a class="map-link naver" href="https://map.naver.com/p/search/오색시장%20두꺼비스넥" target="_blank" rel="noopener noreferrer">네이버지도</a>
+                        <a class="map-link google" href="https://www.google.com/maps/search/?api=1&query=두꺼비스넥%20경기%20오산시%20시장길%2014" target="_blank" rel="noopener noreferrer">구글맵</a>
+                    </div>
+                    <iframe class="map-preview" loading="lazy" referrerpolicy="no-referrer-when-downgrade" src="https://www.google.com/maps?q=두꺼비스넥%20경기%20오산시%20시장길%2014&output=embed"></iframe>
                 </article>
                 <article class="detail-card">
                     <h3 class="detail-title">워카이 (중식)</h3>
                     <span class="detail-chip">검색 키워드: 오산 워카이 간짜장</span>
                     <span class="detail-chip">권역: 외곽</span>
                     <p><b>핵심:</b> 간짜장 소스의 진도와 향이 강함. 1인 탕수육과 세트로 주문 시 만족도가 높다는 후기 흐름.</p>
+                    <div class="address-box">
+                        <p class="address-row"><b>도로명:</b> 경기 오산시 가장로530번길 3</p>
+                        <p class="address-row"><b>지번:</b> 경기 오산시 가장동 244 2동 1층</p>
+                        <p class="address-row"><b>전화:</b> 010-9950-9844</p>
+                    </div>
+                    <div class="map-actions">
+                        <a class="map-link naver" href="https://map.naver.com/p/search/오산%20웍하이" target="_blank" rel="noopener noreferrer">네이버지도</a>
+                        <a class="map-link google" href="https://www.google.com/maps/search/?api=1&query=웍하이%20경기%20오산시%20가장로530번길%203" target="_blank" rel="noopener noreferrer">구글맵</a>
+                    </div>
+                    <iframe class="map-preview" loading="lazy" referrerpolicy="no-referrer-when-downgrade" src="https://www.google.com/maps?q=웍하이%20경기%20오산시%20가장로530번길%203&output=embed"></iframe>
                 </article>
                 <article class="detail-card">
                     <h3 class="detail-title">형제초밥 (회전초밥)</h3>
                     <span class="detail-chip">검색 키워드: 오산 형제초밥</span>
                     <span class="detail-chip">권역: 궐동/부대찌개 인근</span>
                     <p><b>핵심:</b> 접시 단가 경쟁력이 있어 다접시 식사에 유리. 묵은지 광어/도미/지느러미/구운계열 순으로 평가 우수.</p>
+                    <div class="address-box">
+                        <p class="address-row"><b>도로명:</b> 경기 오산시 대원로 65</p>
+                        <p class="address-row"><b>지번:</b> 경기 오산시 원동 813-9 운암프라자 205호</p>
+                        <p class="address-row"><b>전화:</b> 031-372-0223</p>
+                    </div>
+                    <div class="map-actions">
+                        <a class="map-link naver" href="https://map.naver.com/p/search/오산%20형제초밥" target="_blank" rel="noopener noreferrer">네이버지도</a>
+                        <a class="map-link google" href="https://www.google.com/maps/search/?api=1&query=형제초밥%20경기%20오산시%20대원로%2065" target="_blank" rel="noopener noreferrer">구글맵</a>
+                    </div>
+                    <iframe class="map-preview" loading="lazy" referrerpolicy="no-referrer-when-downgrade" src="https://www.google.com/maps?q=형제초밥%20경기%20오산시%20대원로%2065&output=embed"></iframe>
                 </article>
                 <article class="detail-card">
                     <h3 class="detail-title">오산 깍두기집 (사리전골/감자탕)</h3>
                     <span class="detail-chip">검색 키워드: 오산 깍두기집 감자탕</span>
                     <span class="detail-chip">권역: 오산 시내</span>
                     <p><b>핵심:</b> 들깨·우거지형 감자탕과 다른 결. 덜 자극적이고 국물 개운한 타입, 볶음밥 마무리 추천 비중 높음.</p>
+                    <div class="address-box">
+                        <p class="address-row"><b>도로명:</b> 경기 오산시 오산로190번길 16</p>
+                        <p class="address-row"><b>지번:</b> 경기 오산시 원동 783-9</p>
+                        <p class="address-row"><b>전화:</b> 031-372-1767</p>
+                    </div>
+                    <div class="map-actions">
+                        <a class="map-link naver" href="https://map.naver.com/p/search/오산%20깍두기집%20본점" target="_blank" rel="noopener noreferrer">네이버지도</a>
+                        <a class="map-link google" href="https://www.google.com/maps/search/?api=1&query=오산깍두기집%20본점%20경기%20오산시%20오산로190번길%2016" target="_blank" rel="noopener noreferrer">구글맵</a>
+                    </div>
+                    <iframe class="map-preview" loading="lazy" referrerpolicy="no-referrer-when-downgrade" src="https://www.google.com/maps?q=오산깍두기집%20본점%20경기%20오산시%20오산로190번길%2016&output=embed"></iframe>
                 </article>
                 <article class="detail-card">
                     <h3 class="detail-title">카츠식당 (돈카츠)</h3>
                     <span class="detail-chip">검색 키워드: 오산대역 카츠식당</span>
                     <span class="detail-chip">권역: 원동/오산대역</span>
                     <p><b>핵심:</b> 모듬정식 구성이 탄탄하고 수제 새우튀김 품질 평가가 좋음. 연겨자+깨소스 조합이 시그니처.</p>
+                    <div class="address-box">
+                        <p class="address-row"><b>도로명:</b> 경기 오산시 궐동로7번길 3-5</p>
+                        <p class="address-row"><b>지번:</b> 경기 오산시 궐동 679-10 2층</p>
+                        <p class="address-row"><b>전화:</b> 031-373-2665</p>
+                    </div>
+                    <div class="map-actions">
+                        <a class="map-link naver" href="https://map.naver.com/p/search/오산%20카츠식당" target="_blank" rel="noopener noreferrer">네이버지도</a>
+                        <a class="map-link google" href="https://www.google.com/maps/search/?api=1&query=카츠식당%20경기%20오산시%20궐동로7번길%203-5" target="_blank" rel="noopener noreferrer">구글맵</a>
+                    </div>
+                    <iframe class="map-preview" loading="lazy" referrerpolicy="no-referrer-when-downgrade" src="https://www.google.com/maps?q=카츠식당%20경기%20오산시%20궐동로7번길%203-5&output=embed"></iframe>
                 </article>
             </div>
         </section>
