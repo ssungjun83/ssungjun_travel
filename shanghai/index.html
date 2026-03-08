@@ -6,6 +6,12 @@
     <title>상하이 여행·미식 통합 실전 가이드</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link
+        rel="stylesheet"
+        href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+        integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+        crossorigin=""
+    >
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap');
         body {
@@ -28,6 +34,16 @@
         .hide-scroll {
             -ms-overflow-style: none;
             scrollbar-width: none;
+        }
+        .all-map-wrap {
+            margin-top: 2rem;
+        }
+        .all-map-box {
+            width: 100%;
+            height: 560px;
+            border: 1px solid #e7e5e4;
+            border-radius: 1rem;
+            overflow: hidden;
         }
     </style>
     <!-- Chosen Palette: Warm Neutrals with Subtle Terracotta Accents (Background: #fcfaf8, Text: #292524, Accent: #c2410c) -->
@@ -57,6 +73,7 @@
                     <a href="#explorer" class="text-stone-600 hover:text-orange-600 transition-colors font-medium">미식 DB</a>
                     <a href="#history" class="text-stone-600 hover:text-orange-600 transition-colors font-medium">노포 아카이브</a>
                     <a href="#routes" class="text-stone-600 hover:text-orange-600 transition-colors font-medium">동선 플래너</a>
+                    <a href="#all-places-map" class="text-stone-600 hover:text-orange-600 transition-colors font-medium">종합 지도</a>
                     </div>
                     <a href="../" class="inline-flex items-center bg-white border border-stone-300 hover:border-orange-500 text-stone-700 hover:text-orange-700 font-bold text-sm px-4 py-2 rounded-full transition-colors shadow-sm">상위 페이지</a>
                 </div>
@@ -372,12 +389,30 @@
             </div>
         </section>
 
+        <section id="all-places-map" class="scroll-mt-20 all-map-wrap">
+            <div class="text-center mb-10">
+                <h2 class="text-3xl font-bold text-stone-800 mb-4">🧭 상하이 등록 장소 종합 지도</h2>
+                <p class="text-stone-600 max-w-3xl mx-auto">이 지도는 상하이 페이지에 등록된 맛집 16곳을 한 번에 표시합니다. 중국 현지에서도 구글 의존 없이 보도록 OpenStreetMap 기반으로 구성했으며, 각 마커에서 고덕지도/구글맵 링크를 모두 제공합니다.</p>
+            </div>
+            <div class="bg-white p-6 md:p-8 rounded-2xl shadow-sm border border-stone-200">
+                <div id="shanghaiAllMap" class="all-map-box"></div>
+                <p class="mt-4 text-sm text-stone-500">* 체인점/노점은 검색이 쉬운 대표 지점(또는 대표 권역) 기준으로 표기했습니다.</p>
+                <div id="allPlaceQuickLinks" class="mt-4 flex flex-wrap gap-2"></div>
+            </div>
+        </section>
+
     </main>
 
     <footer class="bg-stone-900 text-stone-400 py-12 text-center mt-20">
         <p class="mb-2">🇨🇳 상하이 여행·미식 통합 실전 가이드</p>
         <p class="text-sm">Based on Higaengs + Daily Joy YouTube Travel/Food Guide</p>
     </footer>
+
+    <script
+        src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+        integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+        crossorigin=""
+    ></script>
 
     <script>
         const restaurants = [
@@ -468,6 +503,25 @@
 
         const allTags = [...new Set(restaurants.flatMap(r => r.tags))];
         let currentFilter = '전체';
+
+        const restaurantCoords = {
+            1: { lat: 31.2350025, lng: 121.4824706, note: '대표 지점' },
+            2: { lat: 31.2232644, lng: 121.4542898, note: '본점권역' },
+            3: { lat: 31.2382015, lng: 121.4979511, note: 'IFC 대표 지점' },
+            4: { lat: 31.2397689, lng: 121.4776571, note: '난징동루권역' },
+            5: { lat: 31.2400427, lng: 121.4818290, note: '제1백화점 대표 지점' },
+            6: { lat: 31.2400427, lng: 121.4818290, note: '난징동루 대표 지점' },
+            7: { lat: 31.2219311, lng: 121.4704371, note: '신천지 대표 지점' },
+            8: { lat: 31.2399726, lng: 121.4812196, note: '난징동루 대표 지점' },
+            9: { lat: 31.2357364, lng: 121.4761115, note: '인민광장권역' },
+            10: { lat: 31.2407165, lng: 121.4842575, note: '난징동루권역' },
+            11: { lat: 31.2287041, lng: 121.4768902, note: '황푸구' },
+            12: { lat: 31.2360000, lng: 121.4805000, note: '백화점권역 대표 지점' },
+            13: { lat: 31.2331188, lng: 121.4862085, note: '와이탄 본점권역' },
+            14: { lat: 31.2222737, lng: 121.4654103, note: '황푸구' },
+            15: { lat: 31.2157820, lng: 121.4443521, note: '정안사/상하이도서관권역' },
+            16: { lat: 31.2351977, lng: 121.4689766, note: '인민광장 대표 권역' }
+        };
 
         function renderFilters() {
             const container = document.getElementById('filter-container');
@@ -610,11 +664,68 @@
             container.innerHTML = html;
         }
 
+        function initShanghaiAllMap() {
+            if (typeof L === 'undefined') return;
+            const mapEl = document.getElementById('shanghaiAllMap');
+            const quickEl = document.getElementById('allPlaceQuickLinks');
+            if (!mapEl || !quickEl) return;
+
+            const map = L.map('shanghaiAllMap', { scrollWheelZoom: true });
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                maxZoom: 19,
+                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            }).addTo(map);
+
+            const bounds = L.latLngBounds();
+
+            restaurants.forEach((r) => {
+                const coord = restaurantCoords[r.id];
+                const addr = restaurantAddresses[r.id] || { cn: '', en: '' };
+                if (!coord) return;
+
+                const searchKeyword = `${r.name} ${addr.cn || addr.en || 'Shanghai'}`;
+                const amapUrl = `https://uri.amap.com/search?keyword=${encodeURIComponent(searchKeyword)}&city=上海`;
+                const googleUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(searchKeyword)}`;
+
+                const popupHtml = `
+                    <div style="min-width:240px">
+                        <div style="font-weight:800;margin-bottom:4px">${r.icon} ${r.name}</div>
+                        <div style="font-size:12px;color:#555;margin-bottom:4px">${coord.note}</div>
+                        <div style="font-size:12px;color:#555;margin-bottom:6px"><strong>中:</strong> ${addr.cn || '-'}</div>
+                        <div style="font-size:12px;color:#555;margin-bottom:8px"><strong>EN:</strong> ${addr.en || '-'}</div>
+                        <div style="display:flex;gap:6px;flex-wrap:wrap">
+                            <a href="${amapUrl}" target="_blank" rel="noopener noreferrer" style="font-size:12px;font-weight:700;color:#0f5132;background:#e9f8ef;border:1px solid #bfe8cb;border-radius:999px;padding:4px 8px;text-decoration:none">고덕지도</a>
+                            <a href="${googleUrl}" target="_blank" rel="noopener noreferrer" style="font-size:12px;font-weight:700;color:#1a4f86;background:#eaf3ff;border:1px solid #c9ddff;border-radius:999px;padding:4px 8px;text-decoration:none">구글맵</a>
+                        </div>
+                    </div>
+                `;
+
+                const marker = L.marker([coord.lat, coord.lng]).addTo(map);
+                marker.bindPopup(popupHtml);
+                bounds.extend([coord.lat, coord.lng]);
+
+                const quick = document.createElement('a');
+                quick.href = amapUrl;
+                quick.target = '_blank';
+                quick.rel = 'noopener noreferrer';
+                quick.className = 'text-xs px-3 py-1.5 rounded-full border border-emerald-200 bg-emerald-50 text-emerald-800 font-semibold hover:bg-emerald-100 transition-colors';
+                quick.textContent = `${r.icon} ${r.name}`;
+                quickEl.appendChild(quick);
+            });
+
+            if (bounds.isValid()) {
+                map.fitBounds(bounds, { padding: [24, 24] });
+            } else {
+                map.setView([31.2304, 121.4737], 11);
+            }
+        }
+
         window.onload = () => {
             renderFilters();
             renderGrid();
             initChart();
             showRoute('nanjing');
+            initShanghaiAllMap();
         };
     </script>
 </body>
