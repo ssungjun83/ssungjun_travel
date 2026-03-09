@@ -357,6 +357,70 @@
             font-size: 12px;
         }
 
+        .all-map-legend {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 14px;
+            margin: 10px 0 6px;
+        }
+
+        .legend-item {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+            font-weight: 700;
+            color: #334155;
+        }
+
+        .legend-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 999px;
+            display: inline-block;
+        }
+
+        .all-map-quick {
+            display: grid;
+            gap: 10px;
+            margin: 12px 0;
+        }
+
+        .quick-zone {
+            border: 1px solid var(--line);
+            background: #f8fbff;
+            border-radius: 12px;
+            padding: 10px;
+        }
+
+        .quick-zone-title {
+            margin: 0 0 8px;
+            font-size: 14px;
+            font-weight: 800;
+            color: #243142;
+        }
+
+        .quick-chip-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .quick-chip {
+            border: 1px solid transparent;
+            background: #fff;
+            border-radius: 999px;
+            padding: 6px 10px;
+            font-size: 12px;
+            font-weight: 800;
+            cursor: pointer;
+            transition: opacity 0.2s ease;
+        }
+
+        .quick-chip:hover {
+            opacity: 0.88;
+        }
+
         .copy-toast {
             position: fixed;
             left: 50%;
@@ -441,9 +505,12 @@
 
         <section class="all-map-section">
             <h2 class="all-map-title">🗺️ 평택 10곳 종합 지도</h2>
-            <p class="all-map-desc">아래 지도는 핵심 10개 장소를 한 번에 표시한 통합 지도입니다. 마커 팝업의 주소를 눌러 복사할 수 있습니다.</p>
+            <p class="all-map-desc">아래 지도는 핵심 맛집 + 권역 앵커를 동시에 표시합니다. 상하이 페이지와 동일하게 카테고리 범례/구역별 아이콘 칩을 지원합니다.</p>
+            <div id="allMapLegend" class="all-map-legend"></div>
+            <p class="all-map-note">* 아래 아이콘을 누르면 해당 위치로 지도 화면이 이동하고 같은 팝업이 바로 열립니다.</p>
+            <div id="allPlaceQuickLinks" class="all-map-quick"></div>
             <div id="allPlacesMap" class="all-map"></div>
-            <p class="all-map-note">* 좌표는 도로명 주소 기반 OSM 지오코딩 좌표를 사용했습니다.</p>
+            <p class="all-map-note">* 좌표는 도로명 주소 기반 OSM 지오코딩 좌표 + 권역 앵커 좌표를 함께 사용했습니다.</p>
         </section>
 
         <div class="footer">gyeonggi pyeongtaek food archive · ssungjun travel</div>
@@ -722,6 +789,63 @@
             showCopyToast(ok ? "주소가 클립보드에 복사되었습니다." : "복사에 실패했습니다.");
         });
 
+        const mapCategoryStyle = {
+            food: { label: "맛집", fill: "#ea580c", color: "#c2410c" },
+            hotel: { label: "호텔", fill: "#7c3aed", color: "#6d28d9" },
+            airport: { label: "공항", fill: "#2563eb", color: "#1d4ed8" },
+            themepark: { label: "테마/놀이", fill: "#dc2626", color: "#b91c1c" },
+            viewpoint: { label: "관광 포인트", fill: "#0d9488", color: "#0f766e" },
+            district: { label: "핵심 구역", fill: "#475569", color: "#334155" }
+        };
+
+        const mapPinCache = {};
+        function getCategoryPinIcon(type) {
+            const style = mapCategoryStyle[type] || mapCategoryStyle.food;
+            if (!mapPinCache[style.fill]) {
+                mapPinCache[style.fill] = L.divIcon({
+                    className: "",
+                    html: `
+                        <div style="position:relative;width:22px;height:34px;">
+                            <svg width="22" height="34" viewBox="0 0 22 34" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                <path d="M11 1C5.2 1 1 5.3 1 10.8c0 7.1 8.1 17.3 9.4 18.9a0.8 0.8 0 0 0 1.2 0C12.9 28.1 21 17.9 21 10.8 21 5.3 16.8 1 11 1z" fill="${style.fill}" stroke="#fff" stroke-width="1.2"/>
+                                <circle cx="11" cy="10.5" r="4.2" fill="#fff"/>
+                            </svg>
+                        </div>
+                    `,
+                    iconSize: [22, 34],
+                    iconAnchor: [11, 33],
+                    popupAnchor: [0, -26]
+                });
+            }
+            return mapPinCache[style.fill];
+        }
+
+        function iconForCategory(category) {
+            if (category.includes("폐계닭")) return "🍗";
+            if (category.includes("냉면")) return "🍜";
+            if (category.includes("중식")) return "🥢";
+            if (category.includes("해장국")) return "🍲";
+            if (category.includes("부대찌개")) return "🍲";
+            if (category.includes("햄버거")) return "🍔";
+            if (category.includes("분식")) return "🍢";
+            return "🍽️";
+        }
+
+        function toZoneGroup(zone) {
+            if (zone === "평택동" || zone === "통복시장") return "평택역·통복시장권";
+            if (zone === "합정동" || zone === "죽백동") return "합정·죽백권";
+            if (zone === "신장동") return "송탄·신장동권";
+            if (zone === "서정동") return "서정동권";
+            return "기타권역";
+        }
+
+        const zoneAnchors = [
+            { id: "district-1", type: "district", icon: "📍", name: "평택역·통복시장 핵심권", lat: 36.9942, lng: 127.0878, road: "경기 평택시 평택동·통복시장 일대", zone: "평택역·통복시장권", note: "핵심 구역" },
+            { id: "district-2", type: "district", icon: "📍", name: "합정·죽백 핵심권", lat: 36.9961, lng: 127.0999, road: "경기 평택시 합정동·죽백동 일대", zone: "합정·죽백권", note: "핵심 구역" },
+            { id: "district-3", type: "district", icon: "📍", name: "송탄·신장동 핵심권", lat: 37.0808, lng: 127.0525, road: "경기 평택시 신장동 중앙시장로 권역", zone: "송탄·신장동권", note: "핵심 구역" },
+            { id: "district-4", type: "district", icon: "📍", name: "서정동 핵심권", lat: 37.0732, lng: 127.0660, road: "경기 평택시 서정동 경기대로 권역", zone: "서정동권", note: "핵심 구역" }
+        ];
+
         function initAllMap() {
             const map = L.map("allPlacesMap", { scrollWheelZoom: true });
             L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
@@ -729,24 +853,87 @@
                 attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
             }).addTo(map);
 
+            const legendEl = document.getElementById("allMapLegend");
+            const quickEl = document.getElementById("allPlaceQuickLinks");
             const bounds = L.latLngBounds();
+            const markersById = {};
+            const mapPoints = places.map((place, idx) => ({
+                id: `food-${idx + 1}`,
+                type: "food",
+                icon: iconForCategory(place.category),
+                name: place.name,
+                road: place.road,
+                lat: place.lat,
+                lng: place.lng,
+                note: place.category,
+                zone: toZoneGroup(place.zone)
+            })).concat(zoneAnchors);
+            const zoneOrder = ["평택역·통복시장권", "합정·죽백권", "송탄·신장동권", "서정동권"];
 
-            places.forEach((place) => {
-                const naverUrl = `https://map.naver.com/p/search/${encodeURIComponent(place.name + " " + place.road)}`;
-                const googleUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(place.name + " " + place.road)}`;
+            const usedTypes = [...new Set(mapPoints.map((p) => p.type))];
+            legendEl.innerHTML = usedTypes.map((t) => {
+                const style = mapCategoryStyle[t];
+                return `<span class="legend-item"><span class="legend-dot" style="background:${style.fill}"></span>${style.label}</span>`;
+            }).join("");
+
+            mapPoints.forEach((place) => {
+                const style = mapCategoryStyle[place.type] || mapCategoryStyle.food;
+                const searchKeyword = `${place.name} ${place.road || ""}`.trim();
+                const naverUrl = `https://map.naver.com/p/search/${encodeURIComponent(searchKeyword)}`;
+                const googleUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(searchKeyword)}`;
                 const popupHtml = `
                     <div style="min-width:220px">
-                        <div style="font-weight:800;margin-bottom:6px">${esc(place.name)}</div>
-                        <button type="button" class="copy-address" data-copy="${esc(place.road)}" title="클릭하면 주소가 복사됩니다" style="display:block;width:100%;text-align:left;border:0;background:transparent;padding:0;margin:0 0 8px;font-size:12px;color:#555;cursor:pointer">${esc(place.road)}</button>
+                        <div style="font-weight:800;margin-bottom:4px">${esc(place.icon)} ${esc(place.name)}</div>
+                        <div style="font-size:12px;color:${style.color};font-weight:700;margin-bottom:4px">${style.label}</div>
+                        <div style="font-size:12px;color:#555;margin-bottom:4px">${esc(place.note || "-")}</div>
+                        <button type="button" class="copy-address" data-copy="${esc(place.road)}" title="클릭하면 주소가 복사됩니다" style="display:block;width:100%;text-align:left;border:0;background:transparent;padding:0;margin:0 0 8px;font-size:12px;color:#555;cursor:pointer"><strong>주소:</strong> ${esc(place.road)}</button>
                         <div style="display:flex;gap:6px;flex-wrap:wrap">
                             <a href="${naverUrl}" target="_blank" rel="noopener noreferrer" style="font-size:12px;font-weight:700;color:#046d34;background:#e7f7ee;border:1px solid #bce9ce;border-radius:999px;padding:4px 8px;text-decoration:none">네이버지도</a>
                             <a href="${googleUrl}" target="_blank" rel="noopener noreferrer" style="font-size:12px;font-weight:700;color:#1a4f86;background:#eaf3ff;border:1px solid #c9ddff;border-radius:999px;padding:4px 8px;text-decoration:none">구글맵</a>
                         </div>
                     </div>
                 `;
-                const marker = L.marker([place.lat, place.lng]).addTo(map);
+                const marker = L.marker([place.lat, place.lng], { icon: getCategoryPinIcon(place.type) }).addTo(map);
                 marker.bindPopup(popupHtml);
                 bounds.extend([place.lat, place.lng]);
+                markersById[place.id] = marker;
+            });
+
+            const grouped = {};
+            zoneOrder.forEach((z) => { grouped[z] = []; });
+            mapPoints.forEach((p) => {
+                if (!grouped[p.zone]) grouped[p.zone] = [];
+                grouped[p.zone].push(p);
+            });
+
+            quickEl.innerHTML = "";
+            zoneOrder.forEach((zone) => {
+                const items = grouped[zone] || [];
+                if (!items.length) return;
+                const block = document.createElement("div");
+                block.className = "quick-zone";
+                block.innerHTML = `<p class="quick-zone-title">${zone}</p><div class="quick-chip-row"></div>`;
+                const row = block.querySelector(".quick-chip-row");
+
+                items.forEach((p) => {
+                    const style = mapCategoryStyle[p.type] || mapCategoryStyle.food;
+                    const btn = document.createElement("button");
+                    btn.type = "button";
+                    btn.className = "quick-chip";
+                    btn.style.borderColor = style.fill;
+                    btn.style.color = style.color;
+                    btn.textContent = `${p.icon} ${p.name}`;
+                    btn.addEventListener("click", () => {
+                        const marker = markersById[p.id];
+                        if (!marker) return;
+                        const zoomLevel = Math.max(map.getZoom(), 13);
+                        map.flyTo([p.lat, p.lng], zoomLevel, { duration: 0.6 });
+                        marker.openPopup();
+                    });
+                    row.appendChild(btn);
+                });
+
+                quickEl.appendChild(block);
             });
 
             map.fitBounds(bounds, { padding: [28, 28] });

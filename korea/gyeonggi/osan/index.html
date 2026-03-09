@@ -449,6 +449,70 @@
             font-size: 12px;
         }
 
+        .all-map-legend {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 14px;
+            margin: 10px 0 6px;
+        }
+
+        .legend-item {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+            font-weight: 700;
+            color: #334155;
+        }
+
+        .legend-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 999px;
+            display: inline-block;
+        }
+
+        .all-map-quick {
+            display: grid;
+            gap: 10px;
+            margin: 12px 0;
+        }
+
+        .quick-zone {
+            border: 1px solid var(--line);
+            background: #f8fbff;
+            border-radius: 12px;
+            padding: 10px;
+        }
+
+        .quick-zone-title {
+            margin: 0 0 8px;
+            font-size: 14px;
+            font-weight: 800;
+            color: #243142;
+        }
+
+        .quick-chip-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .quick-chip {
+            border: 1px solid transparent;
+            background: #fff;
+            border-radius: 999px;
+            padding: 6px 10px;
+            font-size: 12px;
+            font-weight: 800;
+            cursor: pointer;
+            transition: opacity 0.2s ease;
+        }
+
+        .quick-chip:hover {
+            opacity: 0.88;
+        }
+
         .copy-toast {
             position: fixed;
             left: 50%;
@@ -689,9 +753,12 @@
 
         <section class="all-map-section">
             <h2 class="all-map-title">🗺️ 오산 9곳 종합 지도</h2>
-            <p class="all-map-desc">아래 지도는 추천 9개 장소를 한 번에 표시한 통합 지도입니다. 마커를 클릭하면 주소와 함께 네이버/구글 지도 바로가기 링크를 확인할 수 있습니다.</p>
+            <p class="all-map-desc">아래 지도는 추천 맛집 + 핵심 구역 앵커를 한 번에 표시한 통합 지도입니다. 카테고리별 색상 핀과 구역별 아이콘 칩으로 빠르게 이동할 수 있습니다.</p>
+            <div id="allMapLegend" class="all-map-legend"></div>
+            <p class="all-map-note">* 아래 아이콘을 누르면 해당 위치로 지도 화면이 이동하고, 같은 팝업이 바로 열립니다.</p>
+            <div id="allPlaceQuickLinks" class="all-map-quick"></div>
             <div id="allPlacesMap" class="all-map"></div>
-            <p class="all-map-note">* 지도 데이터는 현재 페이지의 9개 추천 장소 기준입니다.</p>
+            <p class="all-map-note">* 지도 데이터는 현재 페이지의 9개 추천 장소 + 권역 앵커 기준입니다.</p>
         </section>
 
         <div class="footer">gyeonggi osan food archive · ssungjun travel</div>
@@ -750,45 +817,149 @@
             showCopyToast(ok ? '주소가 클립보드에 복사되었습니다.' : '복사에 실패했습니다.');
         });
 
+        function esc(value) {
+            return String(value ?? "")
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/\"/g, "&quot;")
+                .replace(/'/g, "&#39;");
+        }
+
+        const mapCategoryStyle = {
+            food: { label: "맛집", fill: "#ea580c", color: "#c2410c" },
+            hotel: { label: "호텔", fill: "#7c3aed", color: "#6d28d9" },
+            airport: { label: "공항", fill: "#2563eb", color: "#1d4ed8" },
+            themepark: { label: "테마/놀이", fill: "#dc2626", color: "#b91c1c" },
+            viewpoint: { label: "관광 포인트", fill: "#0d9488", color: "#0f766e" },
+            district: { label: "핵심 구역", fill: "#475569", color: "#334155" }
+        };
+
+        const mapPinCache = {};
+        function getCategoryPinIcon(type) {
+            const style = mapCategoryStyle[type] || mapCategoryStyle.food;
+            if (!mapPinCache[style.fill]) {
+                mapPinCache[style.fill] = L.divIcon({
+                    className: "",
+                    html: `
+                        <div style="position:relative;width:22px;height:34px;">
+                            <svg width="22" height="34" viewBox="0 0 22 34" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                <path d="M11 1C5.2 1 1 5.3 1 10.8c0 7.1 8.1 17.3 9.4 18.9a0.8 0.8 0 0 0 1.2 0C12.9 28.1 21 17.9 21 10.8 21 5.3 16.8 1 11 1z" fill="${style.fill}" stroke="#fff" stroke-width="1.2"/>
+                                <circle cx="11" cy="10.5" r="4.2" fill="#fff"/>
+                            </svg>
+                        </div>
+                    `,
+                    iconSize: [22, 34],
+                    iconAnchor: [11, 33],
+                    popupAnchor: [0, -26]
+                });
+            }
+            return mapPinCache[style.fill];
+        }
+
         const allPlaces = [
-            { name: "운암명가 (부대찌개)", lat: 37.14665435, lng: 127.07577631, road: "경기 오산시 대원로 65" },
-            { name: "24시얼큰한뼈해장국", lat: 37.15959007, lng: 127.05613266, road: "경기 오산시 궐리사로46번길 60-14" },
-            { name: "칠공주족발", lat: 37.15185565, lng: 127.0692705, road: "경기 오산시 오산로278번길 7" },
-            { name: "대흥식당", lat: 37.15222382, lng: 127.06987984, road: "경기 오산시 오산로278번길 9-12" },
-            { name: "두꺼비스넥", lat: 37.1501617, lng: 127.06919691, road: "경기 오산시 시장길 14" },
-            { name: "웍하이 (워카이)", lat: 37.15955047, lng: 127.03785406, road: "경기 오산시 가장로530번길 3" },
-            { name: "형제초밥", lat: 37.14656779, lng: 127.07587077, road: "경기 오산시 대원로 65" },
-            { name: "오산깍두기집 본점", lat: 37.14376713, lng: 127.07030315, road: "경기 오산시 오산로190번길 16" },
-            { name: "카츠식당", lat: 37.15854923, lng: 127.05447022, road: "경기 오산시 궐동로7번길 3-5" }
+            { id: "food-1", type: "food", icon: "🍲", name: "운암면가 (부대찌개)", lat: 37.14665435, lng: 127.07577631, road: "경기 오산시 대원로 65", zone: "궐동·오산대권", note: "추천 상위" },
+            { id: "food-2", type: "food", icon: "🍲", name: "24시얼큰한뼈해장국", lat: 37.15959007, lng: 127.05613266, road: "경기 오산시 궐리사로46번길 60-14", zone: "궐동·오산대권", note: "추천 다수" },
+            { id: "food-3", type: "food", icon: "🍖", name: "칠공주족발", lat: 37.15185565, lng: 127.0692705, road: "경기 오산시 오산로278번길 7", zone: "오색시장권", note: "시장권" },
+            { id: "food-4", type: "food", icon: "🍚", name: "대흥식당", lat: 37.15222382, lng: 127.06987984, road: "경기 오산시 오산로278번길 9-12", zone: "오색시장권", note: "시장권" },
+            { id: "food-5", type: "food", icon: "🍢", name: "두꺼비스넥", lat: 37.1501617, lng: 127.06919691, road: "경기 오산시 시장길 14", zone: "오색시장권", note: "분식" },
+            { id: "food-6", type: "food", icon: "🥘", name: "오산깍두기집 본점", lat: 37.14376713, lng: 127.07030315, road: "경기 오산시 오산로190번길 16", zone: "원동·시내권", note: "시내권" },
+            { id: "food-7", type: "food", icon: "🥢", name: "웍하이 (워카이)", lat: 37.15955047, lng: 127.03785406, road: "경기 오산시 가장로530번길 3", zone: "외곽권", note: "외곽권" },
+            { id: "food-8", type: "food", icon: "🍣", name: "형제초밥", lat: 37.14656779, lng: 127.07587077, road: "경기 오산시 대원로 65", zone: "궐동·오산대권", note: "회전초밥" },
+            { id: "food-9", type: "food", icon: "🍤", name: "카츠식당", lat: 37.15854923, lng: 127.05447022, road: "경기 오산시 궐동로7번길 3-5", zone: "궐동·오산대권", note: "돈카츠" }
         ];
 
-        const map = L.map("allPlacesMap", { scrollWheelZoom: true });
-        L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-            maxZoom: 19,
-            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-        }).addTo(map);
+        const zoneAnchors = [
+            { id: "district-1", type: "district", icon: "📍", name: "오색시장 핵심권", lat: 37.1516, lng: 127.0693, road: "경기 오산시 오산로278번길 일대", zone: "오색시장권", note: "핵심 구역" },
+            { id: "district-2", type: "district", icon: "📍", name: "궐동·오산대 핵심권", lat: 37.1528, lng: 127.0658, road: "경기 오산시 대원로·궐리사로 권역", zone: "궐동·오산대권", note: "핵심 구역" },
+            { id: "district-3", type: "district", icon: "📍", name: "원동·시내 핵심권", lat: 37.1449, lng: 127.0735, road: "경기 오산시 원동·오산시청 인근", zone: "원동·시내권", note: "핵심 구역" },
+            { id: "district-4", type: "district", icon: "📍", name: "외곽권 앵커", lat: 37.1595, lng: 127.0379, road: "경기 오산시 가장로530번길 일대", zone: "외곽권", note: "핵심 구역" }
+        ];
 
-        const bounds = L.latLngBounds();
+        function initAllMap() {
+            const map = L.map("allPlacesMap", { scrollWheelZoom: true });
+            L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+                maxZoom: 19,
+                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            }).addTo(map);
 
-        allPlaces.forEach((place) => {
-            const naverUrl = `https://map.naver.com/p/search/${encodeURIComponent(place.name + " " + place.road)}`;
-            const googleUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(place.name + " " + place.road)}`;
-            const popupHtml = `
-                <div style="min-width:220px">
-                    <div style="font-weight:800;margin-bottom:6px">${place.name}</div>
-                    <button type="button" class="copy-address" data-copy="${place.road}" title="클릭하면 주소가 복사됩니다" style="display:block;width:100%;text-align:left;border:0;background:transparent;padding:0;margin:0 0 8px;font-size:12px;color:#555;cursor:pointer">${place.road}</button>
-                    <div style="display:flex;gap:6px;flex-wrap:wrap">
-                        <a href="${naverUrl}" target="_blank" rel="noopener noreferrer" style="font-size:12px;font-weight:700;color:#046d34;background:#e7f7ee;border:1px solid #bce9ce;border-radius:999px;padding:4px 8px;text-decoration:none">네이버지도</a>
-                        <a href="${googleUrl}" target="_blank" rel="noopener noreferrer" style="font-size:12px;font-weight:700;color:#1a4f86;background:#eaf3ff;border:1px solid #c9ddff;border-radius:999px;padding:4px 8px;text-decoration:none">구글맵</a>
+            const legendEl = document.getElementById("allMapLegend");
+            const quickEl = document.getElementById("allPlaceQuickLinks");
+            const bounds = L.latLngBounds();
+            const markersById = {};
+            const mapPoints = [...allPlaces, ...zoneAnchors];
+            const zoneOrder = ["오색시장권", "궐동·오산대권", "원동·시내권", "외곽권"];
+
+            const usedTypes = [...new Set(mapPoints.map((p) => p.type))];
+            legendEl.innerHTML = usedTypes.map((t) => {
+                const style = mapCategoryStyle[t];
+                return `<span class="legend-item"><span class="legend-dot" style="background:${style.fill}"></span>${style.label}</span>`;
+            }).join("");
+
+            mapPoints.forEach((p) => {
+                const style = mapCategoryStyle[p.type] || mapCategoryStyle.food;
+                const searchKeyword = `${p.name} ${p.road || ""}`.trim();
+                const naverUrl = `https://map.naver.com/p/search/${encodeURIComponent(searchKeyword)}`;
+                const googleUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(searchKeyword)}`;
+                const popupHtml = `
+                    <div style="min-width:230px">
+                        <div style="font-weight:800;margin-bottom:4px">${esc(p.icon)} ${esc(p.name)}</div>
+                        <div style="font-size:12px;color:${style.color};font-weight:700;margin-bottom:4px">${style.label}</div>
+                        <div style="font-size:12px;color:#555;margin-bottom:4px">${esc(p.note || "-")}</div>
+                        <button type="button" class="copy-address" data-copy="${esc(p.road || "")}" title="클릭하면 주소가 복사됩니다" style="display:block;width:100%;text-align:left;border:0;background:transparent;padding:0;margin:0 0 8px;font-size:12px;color:#555;cursor:pointer"><strong>주소:</strong> ${esc(p.road || "-")}</button>
+                        <div style="display:flex;gap:6px;flex-wrap:wrap">
+                            <a href="${naverUrl}" target="_blank" rel="noopener noreferrer" style="font-size:12px;font-weight:700;color:#046d34;background:#e7f7ee;border:1px solid #bce9ce;border-radius:999px;padding:4px 8px;text-decoration:none">네이버지도</a>
+                            <a href="${googleUrl}" target="_blank" rel="noopener noreferrer" style="font-size:12px;font-weight:700;color:#1a4f86;background:#eaf3ff;border:1px solid #c9ddff;border-radius:999px;padding:4px 8px;text-decoration:none">구글맵</a>
+                        </div>
                     </div>
-                </div>
-            `;
-            const marker = L.marker([place.lat, place.lng]).addTo(map);
-            marker.bindPopup(popupHtml);
-            bounds.extend([place.lat, place.lng]);
-        });
+                `;
+                const marker = L.marker([p.lat, p.lng], { icon: getCategoryPinIcon(p.type) }).addTo(map);
+                marker.bindPopup(popupHtml);
+                bounds.extend([p.lat, p.lng]);
+                markersById[p.id] = marker;
+            });
 
-        map.fitBounds(bounds, { padding: [28, 28] });
+            const grouped = {};
+            zoneOrder.forEach((z) => { grouped[z] = []; });
+            mapPoints.forEach((p) => {
+                if (!grouped[p.zone]) grouped[p.zone] = [];
+                grouped[p.zone].push(p);
+            });
+
+            quickEl.innerHTML = "";
+            zoneOrder.forEach((zone) => {
+                const items = grouped[zone] || [];
+                if (!items.length) return;
+                const block = document.createElement("div");
+                block.className = "quick-zone";
+                block.innerHTML = `<p class="quick-zone-title">${zone}</p><div class="quick-chip-row"></div>`;
+                const row = block.querySelector(".quick-chip-row");
+
+                items.forEach((p) => {
+                    const style = mapCategoryStyle[p.type] || mapCategoryStyle.food;
+                    const btn = document.createElement("button");
+                    btn.type = "button";
+                    btn.className = "quick-chip";
+                    btn.style.borderColor = style.fill;
+                    btn.style.color = style.color;
+                    btn.textContent = `${p.icon} ${p.name}`;
+                    btn.addEventListener("click", () => {
+                        const marker = markersById[p.id];
+                        if (!marker) return;
+                        const zoomLevel = Math.max(map.getZoom(), 13);
+                        map.flyTo([p.lat, p.lng], zoomLevel, { duration: 0.6 });
+                        marker.openPopup();
+                    });
+                    row.appendChild(btn);
+                });
+
+                quickEl.appendChild(block);
+            });
+
+            map.fitBounds(bounds, { padding: [28, 28] });
+        }
+
+        initAllMap();
     </script>
 </body>
 </html>
