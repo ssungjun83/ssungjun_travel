@@ -293,6 +293,38 @@
             color: #6a4b1d;
         }
 
+        .copy-address {
+            border: 0;
+            background: transparent;
+            padding: 0;
+            margin: 0;
+            cursor: pointer;
+            color: inherit;
+            font: inherit;
+        }
+
+        .copy-address:hover {
+            color: var(--accent-dark);
+            text-decoration: underline;
+        }
+
+        .copy-toast {
+            position: fixed;
+            left: 50%;
+            bottom: 24px;
+            transform: translateX(-50%);
+            background: rgba(24, 21, 18, 0.92);
+            color: #fff;
+            border-radius: 999px;
+            padding: 8px 14px;
+            font-size: 12px;
+            font-weight: 700;
+            z-index: 9999;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.2s ease;
+        }
+
         .footer-note {
             margin-top: 24px;
             font-size: 13px;
@@ -365,12 +397,61 @@
                     <li>새 도시 추가 방식: `도시명/index.html` 생성 후 허브 카드만 추가</li>
                     <li>주소 표기 규칙: `중문 + English` 동시 표기</li>
                     <li>체인점 표기 규칙: 대표 지점 + 검색 키워드 병기</li>
-                    <li>배포 주소 유지: `https://ssungjun83.github.io/ssungjun_travel/`</li>
+                    <li>배포 주소 유지: <button type="button" class="copy-address" data-copy="https://ssungjun83.github.io/ssungjun_travel/" title="클릭하면 주소가 복사됩니다">https://ssungjun83.github.io/ssungjun_travel/</button></li>
                 </ul>
             </section>
         </div>
 
         <div class="footer-note">ssungjun travel hub · GitHub Pages</div>
     </div>
+    <script>
+        async function copyAddressText(text) {
+            if (!text) return false;
+            try {
+                await navigator.clipboard.writeText(text);
+                return true;
+            } catch (e) {
+                try {
+                    const ta = document.createElement('textarea');
+                    ta.value = text;
+                    ta.setAttribute('readonly', 'true');
+                    ta.style.position = 'fixed';
+                    ta.style.left = '-9999px';
+                    document.body.appendChild(ta);
+                    ta.select();
+                    const ok = document.execCommand('copy');
+                    document.body.removeChild(ta);
+                    return ok;
+                } catch (err) {
+                    return false;
+                }
+            }
+        }
+
+        function showCopyToast(message) {
+            let toast = document.getElementById('copyToast');
+            if (!toast) {
+                toast = document.createElement('div');
+                toast.id = 'copyToast';
+                toast.className = 'copy-toast';
+                document.body.appendChild(toast);
+            }
+            toast.textContent = message;
+            toast.style.opacity = '1';
+            clearTimeout(showCopyToast._timer);
+            showCopyToast._timer = setTimeout(() => {
+                toast.style.opacity = '0';
+            }, 1200);
+        }
+
+        document.addEventListener('click', async (event) => {
+            const target = event.target.closest('.copy-address');
+            if (!target) return;
+            const text = target.getAttribute('data-copy');
+            if (!text) return;
+            const ok = await copyAddressText(text);
+            showCopyToast(ok ? '주소가 클립보드에 복사되었습니다.' : '복사에 실패했습니다.');
+        });
+    </script>
 </body>
 </html>
