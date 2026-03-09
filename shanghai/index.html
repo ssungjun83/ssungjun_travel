@@ -45,6 +45,29 @@
             border-radius: 1rem;
             overflow: hidden;
         }
+        .copy-address {
+            border: 0;
+            background: transparent;
+            padding: 0;
+            margin: 0;
+            cursor: pointer;
+        }
+        .copy-toast {
+            position: fixed;
+            left: 50%;
+            bottom: 24px;
+            transform: translateX(-50%);
+            background: rgba(41, 37, 36, 0.94);
+            color: #fff;
+            border-radius: 999px;
+            padding: 8px 14px;
+            font-size: 12px;
+            font-weight: 700;
+            z-index: 9999;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.2s ease;
+        }
     </style>
     <!-- Chosen Palette: Warm Neutrals with Subtle Terracotta Accents (Background: #fcfaf8, Text: #292524, Accent: #c2410c) -->
     <!-- Application Structure Plan: The SPA uses a dashboard-style, thematic layout to break away from the linear markdown format. It starts with an engaging header, followed by a 'Travel Essentials' quick-reference card section. The core is an interactive 'Restaurant Explorer' with category filters (Noodles, Meat, Dimsum, etc.) to allow users to find what they crave, rather than forcing them to read chronologically. A dedicated 'History' section uses Chart.js to visually emphasize the age of the traditional restaurants. Finally, a 'Route Planner' section organizes places geographically. This structure prioritizes user goals (finding specific food, planning routes) over the source report's chronological 'Part 1/Part 2' split. -->
@@ -193,10 +216,10 @@
                         <h3 class="text-2xl font-bold text-stone-800 mb-4">✈️ 항공권/공항 전략</h3>
                         <p class="text-sm text-stone-700 mb-3"><strong>추천 노선:</strong> 인천 → 푸동 입국 / 홍차오 → 김포 출국 (다구간 조합)</p>
                         <ul class="space-y-3 text-sm text-stone-700">
-                            <li><strong>인천국제공항:</strong> 인천 중구 공항로 272</li>
-                            <li><strong>김포국제공항:</strong> 서울 강서구 하늘길 38</li>
-                            <li><strong>푸동 국제공항 (Pudong):</strong> 시내에서 멀지만 국제선 규모가 큼.<br><span class="text-stone-500">中: 中国上海市浦东新区S1迎宾高速 / EN: S1 Yingbin Expy, Pudong, Shanghai, China</span></li>
-                            <li><strong>홍차오 국제공항 (Hongqiao):</strong> 시내 접근성이 좋고 국제선 동선이 비교적 짧아 귀국일 피로도 감소.<br><span class="text-stone-500">中: 中国上海市长宁区虹桥路2550号 / EN: 2550 Hongqiao Rd, Changning District, Shanghai, China</span></li>
+                            <li><strong>인천국제공항:</strong> <button type="button" class="copy-address text-left hover:text-orange-700 transition-colors" data-copy="인천 중구 공항로 272" title="클릭하면 주소가 복사됩니다">인천 중구 공항로 272</button></li>
+                            <li><strong>김포국제공항:</strong> <button type="button" class="copy-address text-left hover:text-orange-700 transition-colors" data-copy="서울 강서구 하늘길 38" title="클릭하면 주소가 복사됩니다">서울 강서구 하늘길 38</button></li>
+                            <li><strong>푸동 국제공항 (Pudong):</strong> 시내에서 멀지만 국제선 규모가 큼.<div class="text-stone-500 mt-1 space-y-1"><button type="button" class="copy-address block w-full text-left hover:text-orange-700 transition-colors" data-copy="中国上海市浦东新区S1迎宾高速" title="클릭하면 주소가 복사됩니다">中: 中国上海市浦东新区S1迎宾高速</button><button type="button" class="copy-address block w-full text-left hover:text-orange-700 transition-colors" data-copy="S1 Yingbin Expy, Pudong, Shanghai, China" title="클릭하면 주소가 복사됩니다">EN: S1 Yingbin Expy, Pudong, Shanghai, China</button></div></li>
+                            <li><strong>홍차오 국제공항 (Hongqiao):</strong> 시내 접근성이 좋고 국제선 동선이 비교적 짧아 귀국일 피로도 감소.<div class="text-stone-500 mt-1 space-y-1"><button type="button" class="copy-address block w-full text-left hover:text-orange-700 transition-colors" data-copy="中国上海市长宁区虹桥路2550号" title="클릭하면 주소가 복사됩니다">中: 中国上海市长宁区虹桥路2550号</button><button type="button" class="copy-address block w-full text-left hover:text-orange-700 transition-colors" data-copy="2550 Hongqiao Rd, Changning District, Shanghai, China" title="클릭하면 주소가 복사됩니다">EN: 2550 Hongqiao Rd, Changning District, Shanghai, China</button></div></li>
                         </ul>
                     </div>
                     <div class="bg-white rounded-2xl border border-stone-200 p-6 shadow-sm">
@@ -215,7 +238,10 @@
                     <div class="bg-white rounded-2xl border border-stone-200 p-6 shadow-sm">
                         <h3 class="text-2xl font-bold text-stone-800 mb-4">🏨 숙소 체크 (검증형 선택)</h3>
                         <p class="text-sm text-stone-700 mb-3"><strong>Grand Central Hotel Shanghai</strong> · 3박 약 62만원</p>
-                        <p class="text-sm text-stone-700 mb-3">中: 中国上海市黄浦区九江路505号<br>EN: 505 Jiujiang Rd, Huangpu, Shanghai, China</p>
+                        <div class="text-sm text-stone-700 mb-3 space-y-1">
+                            <button type="button" class="copy-address block w-full text-left hover:text-orange-700 transition-colors" data-copy="中国上海市黄浦区九江路505号" title="클릭하면 주소가 복사됩니다">中: 中国上海市黄浦区九江路505号</button>
+                            <button type="button" class="copy-address block w-full text-left hover:text-orange-700 transition-colors" data-copy="505 Jiujiang Rd, Huangpu, Shanghai, China" title="클릭하면 주소가 복사됩니다">EN: 505 Jiujiang Rd, Huangpu, Shanghai, China</button>
+                        </div>
                         <ul class="space-y-2 text-sm text-stone-700">
                             <li>와이탄 도보권 + 난징동루역 인접으로 동선 효율이 매우 좋음.</li>
                             <li>연식은 있지만 관리 상태가 안정적이고 청결.</li>
@@ -269,7 +295,10 @@
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
                     <div class="bg-white rounded-2xl border border-stone-200 p-6 shadow-sm">
                         <h3 class="text-2xl font-bold text-stone-800 mb-4">🎢 상하이 디즈니랜드 공략</h3>
-                        <p class="text-sm text-stone-700 mb-3">中: 中国上海市浦东新区川沙新镇黄赵路310号<br>EN: 310 Huangzhao Rd, Chuansha New Town, Pudong, Shanghai, China</p>
+                        <div class="text-sm text-stone-700 mb-3 space-y-1">
+                            <button type="button" class="copy-address block w-full text-left hover:text-orange-700 transition-colors" data-copy="中国上海市浦东新区川沙新镇黄赵路310号" title="클릭하면 주소가 복사됩니다">中: 中国上海市浦东新区川沙新镇黄赵路310号</button>
+                            <button type="button" class="copy-address block w-full text-left hover:text-orange-700 transition-colors" data-copy="310 Huangzhao Rd, Chuansha New Town, Pudong, Shanghai, China" title="클릭하면 주소가 복사됩니다">EN: 310 Huangzhao Rd, Chuansha New Town, Pudong, Shanghai, China</button>
+                        </div>
                         <ul class="space-y-2 text-sm text-stone-700">
                             <li>얼리버드 가격 구조라 임박 예매보다 사전 예매가 유리.</li>
                             <li>오후 늦입장보다 오전 입장이 전체 체험량에 유리.</li>
@@ -295,7 +324,10 @@
                     <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 text-sm text-stone-700">
                         <div class="border border-stone-200 rounded-xl p-4">
                             <p class="font-bold text-stone-800 mb-2">Red Lips / 红唇串串香 (마라반)</p>
-                            <p>中: 中国上海市黄浦区南京东路299号 宏伊广场<br>EN: 299 Nanjing East Road, Huangpu District, Shanghai, China (Hongyi Plaza)</p>
+                            <div class="space-y-1">
+                                <button type="button" class="copy-address block w-full text-left hover:text-orange-700 transition-colors" data-copy="中国上海市黄浦区南京东路299号 宏伊广场" title="클릭하면 주소가 복사됩니다">中: 中国上海市黄浦区南京东路299号 宏伊广场</button>
+                                <button type="button" class="copy-address block w-full text-left hover:text-orange-700 transition-colors" data-copy="299 Nanjing East Road, Huangpu District, Shanghai, China (Hongyi Plaza)" title="클릭하면 주소가 복사됩니다">EN: 299 Nanjing East Road, Huangpu District, Shanghai, China (Hongyi Plaza)</button>
+                            </div>
                             <p class="mt-2">참깨 베이스 소스가 마라의 강도를 부드럽게 눌러줘 초보자도 접근하기 쉬운 타입.</p>
                         </div>
                         <div class="border border-stone-200 rounded-xl p-4">
@@ -315,16 +347,16 @@
                     <div class="bg-white rounded-2xl border border-stone-200 p-6 shadow-sm">
                         <h3 class="text-2xl font-bold text-stone-800 mb-4">🌃 뷰포인트</h3>
                         <ul class="space-y-3 text-sm text-stone-700">
-                            <li><strong>와이탄:</strong><br>中: 中国上海市黄浦区中山东一路<br>EN: Zhongshan East 1st Rd, Huangpu, Shanghai, China</li>
-                            <li><strong>동방명주:</strong><br>中: 中国上海市浦东新区世纪大道1号<br>EN: 1 Century Ave, Pudong, Shanghai, China</li>
-                            <li><strong>우캉루/우캉맨션:</strong><br>中: 中国上海市徐汇区淮海中路1850号<br>EN: 1850 Huaihai Middle Rd, Xuhui District, Shanghai, China</li>
+                            <li><strong>와이탄:</strong><div class="space-y-1 mt-1"><button type="button" class="copy-address block w-full text-left hover:text-orange-700 transition-colors" data-copy="中国上海市黄浦区中山东一路" title="클릭하면 주소가 복사됩니다">中: 中国上海市黄浦区中山东一路</button><button type="button" class="copy-address block w-full text-left hover:text-orange-700 transition-colors" data-copy="Zhongshan East 1st Rd, Huangpu, Shanghai, China" title="클릭하면 주소가 복사됩니다">EN: Zhongshan East 1st Rd, Huangpu, Shanghai, China</button></div></li>
+                            <li><strong>동방명주:</strong><div class="space-y-1 mt-1"><button type="button" class="copy-address block w-full text-left hover:text-orange-700 transition-colors" data-copy="中国上海市浦东新区世纪大道1号" title="클릭하면 주소가 복사됩니다">中: 中国上海市浦东新区世纪大道1号</button><button type="button" class="copy-address block w-full text-left hover:text-orange-700 transition-colors" data-copy="1 Century Ave, Pudong, Shanghai, China" title="클릭하면 주소가 복사됩니다">EN: 1 Century Ave, Pudong, Shanghai, China</button></div></li>
+                            <li><strong>우캉루/우캉맨션:</strong><div class="space-y-1 mt-1"><button type="button" class="copy-address block w-full text-left hover:text-orange-700 transition-colors" data-copy="中国上海市徐汇区淮海中路1850号" title="클릭하면 주소가 복사됩니다">中: 中国上海市徐汇区淮海中路1850号</button><button type="button" class="copy-address block w-full text-left hover:text-orange-700 transition-colors" data-copy="1850 Huaihai Middle Rd, Xuhui District, Shanghai, China" title="클릭하면 주소가 복사됩니다">EN: 1850 Huaihai Middle Rd, Xuhui District, Shanghai, China</button></div></li>
                         </ul>
                     </div>
                     <div class="bg-white rounded-2xl border border-stone-200 p-6 shadow-sm">
                         <h3 class="text-2xl font-bold text-stone-800 mb-4">🛍️ 쇼핑/기념품</h3>
                         <ul class="space-y-2 text-sm text-stone-700">
                             <li>차/티 패키지 숍(TN&Blenden 계열)과 소품샵은 난징동루 보행가 권역에 집중.</li>
-                            <li>난징동루(中: 中国上海市黄浦区南京东路 / EN: Nanjing East Road, Huangpu, Shanghai, China) 동선에 묶어 방문하면 효율적.</li>
+                            <li>난징동루 동선에 묶어 방문하면 효율적.<div class="space-y-1 mt-1"><button type="button" class="copy-address block w-full text-left hover:text-orange-700 transition-colors" data-copy="中国上海市黄浦区南京东路" title="클릭하면 주소가 복사됩니다">中: 中国上海市黄浦区南京东路</button><button type="button" class="copy-address block w-full text-left hover:text-orange-700 transition-colors" data-copy="Nanjing East Road, Huangpu, Shanghai, China" title="클릭하면 주소가 복사됩니다">EN: Nanjing East Road, Huangpu, Shanghai, China</button></div></li>
                             <li>기념품 집중 구매자는 마지막 날 홍차오 출국 동선 전에 수납 여유를 고려해 쇼핑 권장.</li>
                         </ul>
                     </div>
@@ -678,6 +710,76 @@
 
         const mapPinCache = {};
 
+        function escapeHtml(value) {
+            return String(value ?? '')
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#39;');
+        }
+
+        function escapeAttr(value) {
+            return escapeHtml(value).replace(/`/g, '&#96;');
+        }
+
+        function buildCopyAddressLine(label, text, extraClass = 'text-xs text-stone-500') {
+            const raw = (text || '').trim();
+            const safeText = escapeHtml(raw || '-');
+            const safeCopy = escapeAttr(raw);
+            const safeLabel = escapeHtml(label);
+            const hasValue = raw.length > 0;
+            return `<button type="button" class="copy-address ${extraClass} w-full text-left hover:text-orange-700 transition-colors ${hasValue ? '' : 'cursor-default'}" ${hasValue ? `data-copy="${safeCopy}" title="클릭하면 주소가 복사됩니다"` : 'disabled'}><strong>${safeLabel}:</strong> ${safeText}</button>`;
+        }
+
+        async function copyAddressText(text) {
+            if (!text) return false;
+            try {
+                await navigator.clipboard.writeText(text);
+                return true;
+            } catch (e) {
+                try {
+                    const ta = document.createElement('textarea');
+                    ta.value = text;
+                    ta.setAttribute('readonly', 'true');
+                    ta.style.position = 'fixed';
+                    ta.style.left = '-9999px';
+                    document.body.appendChild(ta);
+                    ta.select();
+                    const ok = document.execCommand('copy');
+                    document.body.removeChild(ta);
+                    return ok;
+                } catch (err) {
+                    return false;
+                }
+            }
+        }
+
+        function showCopyToast(message) {
+            let toast = document.getElementById('copyToast');
+            if (!toast) {
+                toast = document.createElement('div');
+                toast.id = 'copyToast';
+                toast.className = 'copy-toast';
+                document.body.appendChild(toast);
+            }
+            toast.textContent = message;
+            toast.style.opacity = '1';
+            window.clearTimeout(showCopyToast._timer);
+            showCopyToast._timer = window.setTimeout(() => {
+                toast.style.opacity = '0';
+            }, 1200);
+        }
+
+        document.addEventListener('click', async (event) => {
+            const trigger = event.target.closest('.copy-address');
+            if (!trigger) return;
+            const text = trigger.getAttribute('data-copy');
+            if (!text) return;
+            const ok = await copyAddressText(text);
+            showCopyToast(ok ? '주소가 클립보드에 복사되었습니다.' : '복사에 실패했습니다.');
+        });
+
         function getCategoryPinIcon(type) {
             const style = mapCategoryStyle[type] || mapCategoryStyle.food;
             const key = style.fill;
@@ -749,8 +851,8 @@
                         <p class="text-sm text-stone-600 line-clamp-3">${r.desc}</p>
                     </div>
                     <div class="pt-3 border-t border-stone-100 space-y-1">
-                        <p class="text-xs text-stone-500"><strong>중문:</strong> ${addr.cn}</p>
-                        <p class="text-xs text-stone-500"><strong>English:</strong> ${addr.en}</p>
+                        ${buildCopyAddressLine('중문', addr.cn)}
+                        ${buildCopyAddressLine('English', addr.en)}
                     </div>
                 `;
                 grid.appendChild(card);
@@ -839,7 +941,7 @@
                     cn: "주소 정보 준비 중",
                     en: "Address info pending"
                 };
-                html += `<div class="flex items-start p-4 rounded-xl hover:bg-stone-50 transition-colors border border-stone-100"><div class="text-3xl mr-4">${item.icon}</div><div><h4 class="font-bold text-stone-800 text-lg">${item.name} <span class="text-xs font-normal text-stone-400 ml-2">${item.region}</span></h4><p class="text-sm text-orange-700 font-medium my-1">${item.menu}</p><p class="text-sm text-stone-600 line-clamp-2">${item.desc}</p><p class="text-xs text-stone-500 mt-2"><strong>중문:</strong> ${addr.cn}</p><p class="text-xs text-stone-500"><strong>English:</strong> ${addr.en}</p></div></div>`;
+                html += `<div class="flex items-start p-4 rounded-xl hover:bg-stone-50 transition-colors border border-stone-100"><div class="text-3xl mr-4">${item.icon}</div><div><h4 class="font-bold text-stone-800 text-lg">${item.name} <span class="text-xs font-normal text-stone-400 ml-2">${item.region}</span></h4><p class="text-sm text-orange-700 font-medium my-1">${item.menu}</p><p class="text-sm text-stone-600 line-clamp-2">${item.desc}</p><div class="mt-2">${buildCopyAddressLine('중문', addr.cn)}${buildCopyAddressLine('English', addr.en)}</div></div></div>`;
             });
             html += `</div>`;
             container.innerHTML = html;
@@ -907,8 +1009,8 @@
                         <div style="font-weight:800;margin-bottom:4px">${p.icon} ${p.name}</div>
                         <div style="font-size:12px;color:${style.color};font-weight:700;margin-bottom:4px">${style.badge}</div>
                         <div style="font-size:12px;color:#555;margin-bottom:4px">${p.note || '-'}</div>
-                        <div style="font-size:12px;color:#555;margin-bottom:6px"><strong>中:</strong> ${p.cn || '-'}</div>
-                        <div style="font-size:12px;color:#555;margin-bottom:8px"><strong>EN:</strong> ${p.en || '-'}</div>
+                        <button type="button" class="copy-address" ${p.cn ? `data-copy="${escapeAttr(p.cn)}" title="클릭하면 주소가 복사됩니다"` : 'disabled'} style="display:block;width:100%;text-align:left;border:0;background:transparent;padding:0;margin:0 0 6px;font-size:12px;color:#555;cursor:${p.cn ? 'pointer' : 'default'}"><strong>中:</strong> ${escapeHtml(p.cn || '-')}</button>
+                        <button type="button" class="copy-address" ${p.en ? `data-copy="${escapeAttr(p.en)}" title="클릭하면 주소가 복사됩니다"` : 'disabled'} style="display:block;width:100%;text-align:left;border:0;background:transparent;padding:0;margin:0 0 8px;font-size:12px;color:#555;cursor:${p.en ? 'pointer' : 'default'}"><strong>EN:</strong> ${escapeHtml(p.en || '-')}</button>
                         <div style="display:flex;gap:6px;flex-wrap:wrap">
                             <a href="${amapUrl}" target="_blank" rel="noopener noreferrer" style="font-size:12px;font-weight:700;color:#0f5132;background:#e9f8ef;border:1px solid #bfe8cb;border-radius:999px;padding:4px 8px;text-decoration:none">고덕지도</a>
                             <a href="${googleUrl}" target="_blank" rel="noopener noreferrer" style="font-size:12px;font-weight:700;color:#1a4f86;background:#eaf3ff;border:1px solid #c9ddff;border-radius:999px;padding:4px 8px;text-decoration:none">구글맵</a>
