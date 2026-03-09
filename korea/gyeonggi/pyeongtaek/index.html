@@ -1,0 +1,759 @@
+﻿<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>경기 평택 맛집 아카이브 | ssungjun travel</title>
+    <link
+        rel="stylesheet"
+        href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+        integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+        crossorigin=""
+    >
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Archivo:wght@600;700;800&family=Noto+Sans+KR:wght@400;500;700;900&display=swap');
+
+        :root {
+            --bg: #f4f7f9;
+            --panel: #ffffff;
+            --ink: #1b2431;
+            --muted: #5f6979;
+            --line: #d6dee8;
+            --primary: #0f5fa8;
+            --primary-dark: #0b467d;
+            --mint: #d9f0ea;
+            --sky: #dcebf8;
+            --sand: #f4e8d3;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            font-family: "Noto Sans KR", sans-serif;
+            color: var(--ink);
+            background:
+                radial-gradient(circle at 10% 0%, #dcebf8 0%, transparent 28%),
+                radial-gradient(circle at 100% 12%, #ddeee8 0%, transparent 22%),
+                linear-gradient(180deg, #f7fafc 0%, #f2f5f7 100%);
+        }
+
+        .container {
+            max-width: 1160px;
+            margin: 0 auto;
+            padding: 24px 18px 80px;
+        }
+
+        .top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 18px;
+        }
+
+        .brand {
+            font-family: "Archivo", sans-serif;
+            font-weight: 800;
+            letter-spacing: 0.3px;
+            font-size: 24px;
+        }
+
+        .back {
+            text-decoration: none;
+            border: 1px solid var(--line);
+            background: #fff;
+            color: var(--ink);
+            border-radius: 999px;
+            padding: 10px 14px;
+            font-weight: 700;
+            font-size: 14px;
+        }
+
+        .hero {
+            border: 1px solid var(--line);
+            background: linear-gradient(160deg, #ffffff 0%, #f8fbff 100%);
+            border-radius: 28px;
+            padding: 32px 24px;
+            box-shadow: 0 16px 32px rgba(28, 55, 83, 0.08);
+            margin-bottom: 20px;
+        }
+
+        .hero h1 {
+            margin: 0 0 10px;
+            line-height: 1.08;
+            font-size: clamp(34px, 5.8vw, 62px);
+            font-weight: 900;
+            letter-spacing: -0.5px;
+        }
+
+        .hero p {
+            margin: 0 0 16px;
+            color: var(--muted);
+            font-size: 16px;
+            line-height: 1.55;
+        }
+
+        .chip-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .chip {
+            border-radius: 999px;
+            padding: 7px 10px;
+            font-size: 12px;
+            font-weight: 700;
+            border: 1px solid transparent;
+        }
+
+        .chip.mint { background: var(--mint); color: #145b49; border-color: #bedfd3; }
+        .chip.sky { background: var(--sky); color: #1d4f7a; border-color: #c6dff4; }
+        .chip.sand { background: var(--sand); color: #6a4d1f; border-color: #e6d6b8; }
+
+        .deep-dive {
+            margin-top: 16px;
+            background: #ffffff;
+            border: 1px solid var(--line);
+            border-radius: 22px;
+            padding: 20px;
+            box-shadow: 0 10px 20px rgba(26, 51, 72, 0.06);
+        }
+
+        .deep-dive h2 {
+            margin: 0 0 8px;
+            font-size: 30px;
+        }
+
+        .deep-dive p {
+            margin: 0;
+            color: var(--muted);
+            line-height: 1.5;
+        }
+
+        .source-row {
+            display: grid;
+            grid-template-columns: 1.2fr 1fr;
+            gap: 12px;
+            margin-top: 14px;
+        }
+
+        .source-box {
+            border: 1px solid var(--line);
+            border-radius: 14px;
+            padding: 12px;
+            background: #fbfdff;
+        }
+
+        .source-box strong {
+            display: block;
+            margin-bottom: 6px;
+            font-size: 14px;
+        }
+
+        .source-box p {
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        .category-grid {
+            margin-top: 14px;
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 10px;
+        }
+
+        .category-item {
+            border: 1px solid var(--line);
+            border-radius: 12px;
+            padding: 10px;
+            background: #fff;
+            font-size: 13px;
+            line-height: 1.45;
+        }
+
+        .category-item strong {
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        .rank-grid {
+            margin-top: 14px;
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 10px;
+        }
+
+        .rank-item {
+            border: 1px solid var(--line);
+            border-radius: 14px;
+            padding: 12px;
+            background: #fff;
+        }
+
+        .rank-head {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+            margin-bottom: 4px;
+        }
+
+        .rank-num { font-size: 14px; font-weight: 900; color: #0e4c87; }
+
+        .rank-vote {
+            font-size: 11px;
+            font-weight: 800;
+            color: #935615;
+            background: #f8ecd8;
+            border: 1px solid #ead3aa;
+            border-radius: 999px;
+            padding: 4px 8px;
+        }
+
+        .rank-item strong {
+            font-size: 18px;
+            display: block;
+            margin-bottom: 6px;
+        }
+
+        .detail-chip {
+            display: inline-block;
+            margin-right: 6px;
+            margin-bottom: 6px;
+            font-size: 11px;
+            font-weight: 800;
+            border: 1px solid #d8e3ef;
+            background: #eff6ff;
+            color: #1d4f7a;
+            border-radius: 999px;
+            padding: 4px 8px;
+        }
+
+        .point-list {
+            margin: 6px 0 0;
+            padding-left: 18px;
+            font-size: 13px;
+            line-height: 1.55;
+            color: #31455d;
+        }
+
+        .point-list li { margin-bottom: 3px; }
+
+        .address-box {
+            margin-top: 8px;
+            border: 1px solid #dce7f2;
+            border-radius: 10px;
+            padding: 10px;
+            background: #f7fbff;
+        }
+
+        .address-row {
+            font-size: 12px;
+            line-height: 1.5;
+            margin: 0 0 4px;
+            color: #2e4156;
+        }
+
+        .address-row:last-child { margin-bottom: 0; }
+
+        .copy-address {
+            border: 0;
+            background: transparent;
+            padding: 0;
+            margin: 0;
+            font: inherit;
+            color: inherit;
+            cursor: pointer;
+        }
+
+        .address-row.copy-address:hover {
+            color: #0b467d;
+            text-decoration: underline;
+        }
+
+        .map-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-top: 8px;
+        }
+
+        .map-link {
+            text-decoration: none;
+            font-size: 12px;
+            font-weight: 800;
+            border-radius: 999px;
+            padding: 5px 10px;
+            border: 1px solid transparent;
+        }
+
+        .map-link.naver { color: #046d34; background: #e7f7ee; border-color: #bce9ce; }
+        .map-link.google { color: #1a4f86; background: #eaf3ff; border-color: #c9ddff; }
+
+        .map-preview {
+            margin-top: 8px;
+            width: 100%;
+            height: 170px;
+            border: 1px solid #dce7f2;
+            border-radius: 10px;
+        }
+
+        .route-plan {
+            margin-top: 14px;
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 10px;
+        }
+
+        .route-box {
+            border: 1px solid var(--line);
+            border-radius: 14px;
+            padding: 12px;
+            background: #f8fbff;
+        }
+
+        .route-box strong { display: block; margin-bottom: 6px; }
+
+        .route-box p {
+            font-size: 13px;
+            line-height: 1.5;
+            margin: 0;
+        }
+
+        .all-map-section {
+            margin-top: 16px;
+            background: #ffffff;
+            border: 1px solid var(--line);
+            border-radius: 22px;
+            padding: 20px;
+            box-shadow: 0 10px 20px rgba(26, 51, 72, 0.06);
+        }
+
+        .all-map-title {
+            margin: 0 0 8px;
+            font-size: 28px;
+            font-weight: 900;
+        }
+
+        .all-map-desc {
+            margin: 0 0 12px;
+            color: var(--muted);
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .all-map {
+            width: 100%;
+            height: 520px;
+            border: 1px solid #dce7f2;
+            border-radius: 14px;
+        }
+
+        .all-map-note {
+            margin-top: 10px;
+            color: #5d6f81;
+            font-size: 12px;
+        }
+
+        .copy-toast {
+            position: fixed;
+            left: 50%;
+            bottom: 24px;
+            transform: translateX(-50%);
+            background: rgba(27, 36, 49, 0.92);
+            color: #fff;
+            border-radius: 999px;
+            padding: 8px 14px;
+            font-size: 12px;
+            font-weight: 700;
+            z-index: 9999;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.2s ease;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 18px;
+            color: #657183;
+            font-size: 13px;
+        }
+
+        @media (max-width: 980px) {
+            .source-row,
+            .route-plan,
+            .category-grid,
+            .rank-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="top">
+            <div class="brand">GYEONGGI · PYEONGTAEK FOOD ARCHIVE</div>
+            <a class="back" href="../../">대한민국 아카이브로 돌아가기</a>
+        </div>
+
+        <section class="hero">
+            <h1>🥘 경기 평택<br>지역 특화 맛집 아카이브</h1>
+            <p>평택 향토식(폐계닭)부터 80년·100년 노포, 송탄 부대찌개 양대산맥, 미군 감성 햄버거 3대장, 시장 분식까지 한 번에 정리한 상세 페이지입니다.</p>
+            <div class="chip-row">
+                <span class="chip mint">평택역·통복시장</span>
+                <span class="chip sky">송탄·신장동</span>
+                <span class="chip sand">주소/지도 검색 최적화</span>
+            </div>
+        </section>
+
+        <section class="deep-dive">
+            <h2>🍲 평택 실전 맛집 가이드 (핵심 10곳)</h2>
+            <p>사용자 제공 원문 스크립트를 기반으로 정리한 실전형 맛집 DB입니다. 카드별 주소를 눌러 바로 복사해 지도 앱에서 검색할 수 있습니다.</p>
+
+            <div class="source-row">
+                <div class="source-box">
+                    <strong>자료 기준</strong>
+                    <p>입력 데이터: 평택 특화 맛집 7개 카테고리 원문 설명<br>구성 방식: 노포/향토/송탄권 테마 + 방문 동선 중심 재정리<br>출력 범위: 핵심 10개 매장 + 통합 지도 + 실전 코스</p>
+                </div>
+                <div class="source-box">
+                    <strong>빠른 사용법</strong>
+                    <p>1) 주소 행 클릭 -> 클립보드 복사<br>2) 네이버지도/구글맵 버튼으로 바로 길찾기<br>3) 송탄권(부대찌개+버거)과 평택역권(노포+향토식)을 나눠 방문</p>
+                </div>
+            </div>
+
+            <div class="category-grid">
+                <div class="category-item"><strong>카테고리 1</strong>평택 향토식: 폐계닭</div>
+                <div class="category-item"><strong>카테고리 2</strong>80년 전통 평양냉면 노포</div>
+                <div class="category-item"><strong>카테고리 3</strong>100년 화교 중식 노포</div>
+                <div class="category-item"><strong>카테고리 4</strong>현지 최상위 해장국</div>
+                <div class="category-item"><strong>카테고리 5</strong>송탄 부대찌개 양대산맥</div>
+                <div class="category-item"><strong>카테고리 6-7</strong>송탄 햄버거 3대장 + 시장 분식</div>
+            </div>
+
+            <div id="rankGrid" class="rank-grid"></div>
+
+            <div class="route-plan">
+                <div class="route-box"><strong>코스 A | 평택역·통복시장</strong><p>군계폐계닭 -> 고복수평양냉면 -> 개화식당 순으로 이동. 평택 향토/노포/화교 중식 포인트를 한 번에 커버.</p></div>
+                <div class="route-box"><strong>코스 B | 해장 + 송탄 부대찌개</strong><p>만세해장국밥 -> 김네집 -> 최네집부대찌개. 진한 국물/햄 향 중심 코스로 저녁까지 연결 가능.</p></div>
+                <div class="route-box"><strong>코스 C | 송탄 버거 + 분식</strong><p>미스리햄버거 -> 미스진햄버거 -> 송쓰버거 -> 세모분식. 미군 감성 버거와 시장 분식 가성비 코스.</p></div>
+            </div>
+        </section>
+
+        <section class="all-map-section">
+            <h2 class="all-map-title">🗺️ 평택 10곳 종합 지도</h2>
+            <p class="all-map-desc">아래 지도는 핵심 10개 장소를 한 번에 표시한 통합 지도입니다. 마커 팝업의 주소를 눌러 복사할 수 있습니다.</p>
+            <div id="allPlacesMap" class="all-map"></div>
+            <p class="all-map-note">* 좌표는 도로명 주소 기반 OSM 지오코딩 좌표를 사용했습니다.</p>
+        </section>
+
+        <div class="footer">gyeonggi pyeongtaek food archive · ssungjun travel</div>
+    </div>
+
+    <script
+        src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+        integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+        crossorigin=""
+    ></script>
+    <script>
+        const places = [
+            {
+                rank: "#1",
+                vote: "향토 대표",
+                name: "군계폐계닭",
+                category: "평택 향토 음식 · 폐계닭",
+                searchKeyword: "평택 군계폐계닭",
+                zone: "평택동",
+                summary: [
+                    "38년 전통, 2대째 운영. 폐계(산란 종료 노계)를 평택식 양념으로 볶아낸 지역 특화 메뉴.",
+                    "달짝지근 + 알싸한 매콤 양념에 닭기름 고소함이 강함.",
+                    "노계 특유의 단단하고 쫄깃한 식감이 핵심. 닭알/내장 별미와 볶음밥 조합 추천."
+                ],
+                road: "경기 평택시 자유로 22",
+                lot: "평택동 285-9",
+                lat: 36.9928788,
+                lng: 127.0908804
+            },
+            {
+                rank: "#2",
+                vote: "80년 전통",
+                name: "고복수평양냉면",
+                category: "평양냉면 노포",
+                searchKeyword: "평택 고복수평양냉면",
+                zone: "합정동",
+                summary: [
+                    "1920년대 후반 시작해 3대째 이어지는 평택 대표 평양냉면 노포.",
+                    "온육수부터 갈비탕급 진한 고기 베이스, 양배추김치와 궁합이 좋음.",
+                    "깔끔한 육향 + 끝에 동치미 풍미가 치는 독보적인 국물 계열."
+                ],
+                road: "경기 평택시 조개터로1번길 71",
+                lot: "합정동 920-17",
+                lat: 36.9896855,
+                lng: 127.0997226
+            },
+            {
+                rank: "#3",
+                vote: "100년 화상",
+                name: "개화식당",
+                category: "화교 노포 중식",
+                searchKeyword: "평택 통복시장 개화식당",
+                zone: "통복시장",
+                summary: [
+                    "통복시장 내 화교 계열 노포 중식당으로 알려진 버킷리스트 급 식당.",
+                    "뼈 있는 깐풍기가 시그니처. 새콤달콤 + 불맛 + 건고추 향이 선명.",
+                    "담백한 볶음밥에 깐풍기 소스를 얹어 먹는 조합이 핵심 꿀팁."
+                ],
+                road: "경기 평택시 통복시장로6번길 2",
+                lot: "통복동 85-17",
+                lat: 36.9956004,
+                lng: 127.0860291
+            },
+            {
+                rank: "#4",
+                vote: "평택 강추",
+                name: "만세해장국밥",
+                category: "얼큰 내장탕/선지",
+                searchKeyword: "평택 만세해장국밥",
+                zone: "죽백동",
+                summary: [
+                    "대기실이 따로 있을 정도로 회전이 빠른 평택 인기 해장국집.",
+                    "얼큰 내장탕 국물은 묵직하고 구수, 내장 잡내가 거의 없는 편.",
+                    "요청 시 받는 서비스 선지가 매우 부드럽고 만족도가 높다는 평."
+                ],
+                road: "경기 평택시 만세로 1754-8",
+                lot: "죽백동 522-23",
+                lat: 37.0025274,
+                lng: 127.1000155
+            },
+            {
+                rank: "#5",
+                vote: "송탄 양대",
+                name: "김네집",
+                category: "송탄 부대찌개",
+                searchKeyword: "송탄 김네집 부대찌개",
+                zone: "신장동",
+                summary: [
+                    "약 40년 전통. 웨이팅/포장 수요가 매우 높은 송탄 대표 부대찌개.",
+                    "미국 햄 특유의 스모키 향이 매우 진하고, 간고기/치즈가 국물 밀도를 올림.",
+                    "2인 포장도 양이 매우 많은 편이라 사리/밥 주문량 조절 권장."
+                ],
+                road: "경기 평택시 중앙시장로25번길 15",
+                lot: "신장동 322-37",
+                lat: 37.0806730,
+                lng: 127.0530113
+            },
+            {
+                rank: "#6",
+                vote: "송탄 양대",
+                name: "최네집부대찌개 본점",
+                category: "송탄 부대찌개",
+                searchKeyword: "송탄 최네집부대찌개 본점",
+                zone: "서정동",
+                summary: [
+                    "52년 전통 대형 매장. 1인분 주문 가능해 단독 방문 접근성이 좋음.",
+                    "햄/소시지/간고기/다진마늘/파가 푸짐하게 들어가 진한 농축형 국물.",
+                    "라면 사리 주문 시 신라면 봉지를 통째로 제공하는 포인트가 유명."
+                ],
+                road: "경기 평택시 경기대로 1401",
+                lot: "서정동 779-3",
+                lat: 37.0732081,
+                lng: 127.0659915
+            },
+            {
+                rank: "#7",
+                vote: "버거 3대장",
+                name: "미스리햄버거 (미스리버거)",
+                category: "송탄 햄버거",
+                searchKeyword: "송탄 미스리햄버거",
+                zone: "신장동",
+                summary: [
+                    "송탄 버거 3대장 중 하나. 추억의 케첩 베이스 한국식 버거 감성.",
+                    "스페셜 버거는 패티/계란/야채 볼륨이 커서 한 끼 밀도가 높음.",
+                    "시장 버거 계열의 정겨운 맛을 찾는 방문자에게 적합."
+                ],
+                road: "경기 평택시 쇼핑로 33",
+                lot: "신장동 324-9",
+                lat: 37.0813535,
+                lng: 127.0514921
+            },
+            {
+                rank: "#8",
+                vote: "버거 3대장",
+                name: "미스진햄버거 송탄본점",
+                category: "송탄 햄버거",
+                searchKeyword: "송탄 미스진햄버거",
+                zone: "신장동",
+                summary: [
+                    "36년 전통, 2대째 운영. 소고기/돼지고기 패티 선택 가능한 구조.",
+                    "칠리버거는 미트소스형 칠리 풍미가 강해 이색적.",
+                    "불고기치즈버거는 마요/계란/양배추 조합의 한국식 정석 계열."
+                ],
+                road: "경기 평택시 쇼핑로 3-1",
+                lot: "신장동 302-91",
+                lat: 37.0813535,
+                lng: 127.0514921
+            },
+            {
+                rank: "#9",
+                vote: "버거 3대장",
+                name: "송쓰버거 본점",
+                category: "송탄 햄버거",
+                searchKeyword: "송탄 송쓰버거 본점",
+                zone: "신장동",
+                summary: [
+                    "주문 공간과 취식 공간이 분리된 독특한 구조의 송탄 버거 매장.",
+                    "3대장 중 패티 두께감이 강한 편, 데리야끼+칠리 계열 밸런스형 소스.",
+                    "시장 버거 감성보다 프랜차이즈에 가까운 세련된 맛 선호 시 추천."
+                ],
+                road: "경기 평택시 중앙시장로25번길 12-1",
+                lot: "신장동 322-27",
+                lat: 37.0806730,
+                lng: 127.0530113
+            },
+            {
+                rank: "#10",
+                vote: "가성비 대표",
+                name: "세모분식",
+                category: "시장 분식",
+                searchKeyword: "평택 세모분식 중앙시장",
+                zone: "신장동",
+                summary: [
+                    "송탄 코스 필수 분식. 당면 떡볶이의 양과 가성비가 매우 높은 편.",
+                    "매콤달콤 국물에 당면/순대를 함께 먹는 구조가 시그니처.",
+                    "오이 무절임을 곁들이면 매운맛이 중화되어 후반부 식사가 편함."
+                ],
+                road: "경기 평택시 중앙시장로9번길 22-4",
+                lot: "신장동 317-60",
+                lat: 37.0802333,
+                lng: 127.0523312
+            }
+        ];
+
+        function esc(value) {
+            return String(value ?? "")
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/\"/g, "&quot;")
+                .replace(/'/g, "&#39;");
+        }
+
+        function row(label, text) {
+            if (!text) return "";
+            return `<p class="address-row copy-address" data-copy="${esc(text)}" title="클릭하면 주소가 복사됩니다"><b>${label}:</b> ${esc(text)}</p>`;
+        }
+
+        function renderCards() {
+            const grid = document.getElementById("rankGrid");
+            const html = places.map((place) => {
+                const naverUrl = `https://map.naver.com/p/search/${encodeURIComponent(place.name + " " + place.road)}`;
+                const googleUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(place.name + " " + place.road)}`;
+                const embedUrl = `https://www.google.com/maps?q=${encodeURIComponent(place.name + " " + place.road)}&output=embed`;
+                const points = place.summary.map((s) => `<li>${esc(s)}</li>`).join("");
+
+                return `
+                    <article class="rank-item">
+                        <div class="rank-head"><span class="rank-num">${esc(place.rank)}</span><span class="rank-vote">${esc(place.vote)}</span></div>
+                        <strong>${esc(place.name)}</strong>
+                        <span class="detail-chip">카테고리: ${esc(place.category)}</span>
+                        <span class="detail-chip">검색 키워드: ${esc(place.searchKeyword)}</span>
+                        <span class="detail-chip">권역: ${esc(place.zone)}</span>
+                        <ul class="point-list">${points}</ul>
+                        <div class="address-box">
+                            ${row("도로명", place.road)}
+                            ${row("지번", place.lot)}
+                        </div>
+                        <div class="map-actions">
+                            <a class="map-link naver" href="${naverUrl}" target="_blank" rel="noopener noreferrer">네이버지도</a>
+                            <a class="map-link google" href="${googleUrl}" target="_blank" rel="noopener noreferrer">구글맵</a>
+                        </div>
+                        <iframe class="map-preview" loading="lazy" referrerpolicy="no-referrer-when-downgrade" src="${embedUrl}"></iframe>
+                    </article>
+                `;
+            }).join("");
+
+            grid.innerHTML = html;
+        }
+
+        async function copyAddressText(text) {
+            if (!text) return false;
+            try {
+                await navigator.clipboard.writeText(text);
+                return true;
+            } catch (e) {
+                try {
+                    const ta = document.createElement("textarea");
+                    ta.value = text;
+                    ta.setAttribute("readonly", "true");
+                    ta.style.position = "fixed";
+                    ta.style.left = "-9999px";
+                    document.body.appendChild(ta);
+                    ta.select();
+                    const ok = document.execCommand("copy");
+                    document.body.removeChild(ta);
+                    return ok;
+                } catch (err) {
+                    return false;
+                }
+            }
+        }
+
+        function showCopyToast(message) {
+            let toast = document.getElementById("copyToast");
+            if (!toast) {
+                toast = document.createElement("div");
+                toast.id = "copyToast";
+                toast.className = "copy-toast";
+                document.body.appendChild(toast);
+            }
+            toast.textContent = message;
+            toast.style.opacity = "1";
+            clearTimeout(showCopyToast._timer);
+            showCopyToast._timer = setTimeout(() => {
+                toast.style.opacity = "0";
+            }, 1200);
+        }
+
+        document.addEventListener("click", async (event) => {
+            const target = event.target.closest(".copy-address");
+            if (!target) return;
+            const text = target.getAttribute("data-copy");
+            if (!text) return;
+            const ok = await copyAddressText(text);
+            showCopyToast(ok ? "주소가 클립보드에 복사되었습니다." : "복사에 실패했습니다.");
+        });
+
+        function initAllMap() {
+            const map = L.map("allPlacesMap", { scrollWheelZoom: true });
+            L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+                maxZoom: 19,
+                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            }).addTo(map);
+
+            const bounds = L.latLngBounds();
+
+            places.forEach((place) => {
+                const naverUrl = `https://map.naver.com/p/search/${encodeURIComponent(place.name + " " + place.road)}`;
+                const googleUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(place.name + " " + place.road)}`;
+                const popupHtml = `
+                    <div style="min-width:220px">
+                        <div style="font-weight:800;margin-bottom:6px">${esc(place.name)}</div>
+                        <button type="button" class="copy-address" data-copy="${esc(place.road)}" title="클릭하면 주소가 복사됩니다" style="display:block;width:100%;text-align:left;border:0;background:transparent;padding:0;margin:0 0 8px;font-size:12px;color:#555;cursor:pointer">${esc(place.road)}</button>
+                        <div style="display:flex;gap:6px;flex-wrap:wrap">
+                            <a href="${naverUrl}" target="_blank" rel="noopener noreferrer" style="font-size:12px;font-weight:700;color:#046d34;background:#e7f7ee;border:1px solid #bce9ce;border-radius:999px;padding:4px 8px;text-decoration:none">네이버지도</a>
+                            <a href="${googleUrl}" target="_blank" rel="noopener noreferrer" style="font-size:12px;font-weight:700;color:#1a4f86;background:#eaf3ff;border:1px solid #c9ddff;border-radius:999px;padding:4px 8px;text-decoration:none">구글맵</a>
+                        </div>
+                    </div>
+                `;
+                const marker = L.marker([place.lat, place.lng]).addTo(map);
+                marker.bindPopup(popupHtml);
+                bounds.extend([place.lat, place.lng]);
+            });
+
+            map.fitBounds(bounds, { padding: [28, 28] });
+        }
+
+        renderCards();
+        initAllMap();
+    </script>
+</body>
+</html>
