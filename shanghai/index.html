@@ -544,6 +544,28 @@
                 note: '숙소'
             },
             {
+                id: 'hotel-ritz-carlton-pudong',
+                type: 'hotel',
+                icon: '🏨',
+                name: '상하이 리츠칼튼 푸동',
+                cn: '中国上海市浦东新区世纪大道8号（上海国金中心）',
+                en: 'Shanghai IFC, 8 Century Avenue, Pudong, Shanghai, China',
+                lat: 31.2385571,
+                lng: 121.4968072,
+                note: '호텔'
+            },
+            {
+                id: 'hotel-conrad-shanghai',
+                type: 'hotel',
+                icon: '🏨',
+                name: '콘래드 상하이',
+                cn: '中国上海市黄浦区南京东路789号',
+                en: '789 East Nanjing Road, Huangpu District, Shanghai, China',
+                lat: 31.2367348,
+                lng: 121.4717101,
+                note: '호텔'
+            },
+            {
                 id: 'airport-pudong',
                 type: 'airport',
                 icon: '🛫',
@@ -641,6 +663,34 @@
             viewpoint: { color: '#0f766e', fill: '#14b8a6', badge: '관광 포인트' },
             district: { color: '#a16207', fill: '#f59e0b', badge: '핵심 구역' }
         };
+
+        const mapPinCache = {};
+
+        function getCategoryPinIcon(type) {
+            const style = mapCategoryStyle[type] || mapCategoryStyle.food;
+            const key = style.fill;
+            if (mapPinCache[key]) return mapPinCache[key];
+
+            const svg = `
+                <svg xmlns="http://www.w3.org/2000/svg" width="30" height="42" viewBox="0 0 30 42">
+                    <path d="M15 1C7.268 1 1 7.268 1 15c0 10.5 14 25 14 25s14-14.5 14-25C29 7.268 22.732 1 15 1z" fill="${style.fill}" stroke="${style.color}" stroke-width="1.5"/>
+                    <circle cx="15" cy="15" r="5.5" fill="#ffffff"/>
+                </svg>
+            `;
+
+            const icon = L.icon({
+                iconUrl: `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(svg)}`,
+                iconSize: [30, 42],
+                iconAnchor: [15, 41],
+                popupAnchor: [0, -34],
+                shadowUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png',
+                shadowSize: [41, 41],
+                shadowAnchor: [13, 41]
+            });
+
+            mapPinCache[key] = icon;
+            return icon;
+        }
 
         function renderFilters() {
             const container = document.getElementById('filter-container');
@@ -836,12 +886,8 @@
                     </div>
                 `;
 
-                const marker = L.circleMarker([p.lat, p.lng], {
-                    radius: p.type === 'food' ? 6 : 8,
-                    color: style.color,
-                    weight: 2,
-                    fillColor: style.fill,
-                    fillOpacity: 0.9
+                const marker = L.marker([p.lat, p.lng], {
+                    icon: getCategoryPinIcon(p.type)
                 }).addTo(map);
                 marker.bindPopup(popupHtml);
                 bounds.extend([p.lat, p.lng]);
