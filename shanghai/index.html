@@ -68,6 +68,14 @@
             pointer-events: none;
             transition: opacity 0.2s ease;
         }
+        /* Keep map layers below sticky top navigation */
+        .leaflet-pane {
+            z-index: 400;
+        }
+        .leaflet-top,
+        .leaflet-bottom {
+            z-index: 450;
+        }
     </style>
     <!-- Chosen Palette: Warm Neutrals with Subtle Terracotta Accents (Background: #fcfaf8, Text: #292524, Accent: #c2410c) -->
     <!-- Application Structure Plan: The SPA uses a dashboard-style, thematic layout to break away from the linear markdown format. It starts with an engaging header, followed by a 'Travel Essentials' quick-reference card section. The core is an interactive 'Restaurant Explorer' with category filters (Noodles, Meat, Dimsum, etc.) to allow users to find what they crave, rather than forcing them to read chronologically. A dedicated 'History' section uses Chart.js to visually emphasize the age of the traditional restaurants. Finally, a 'Route Planner' section organizes places geographically. This structure prioritizes user goals (finding specific food, planning routes) over the source report's chronological 'Part 1/Part 2' split. -->
@@ -82,7 +90,7 @@
 </head>
 <body class="antialiased">
 
-    <nav class="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-stone-200 shadow-sm">
+    <nav class="sticky top-0 z-[2000] bg-white/90 backdrop-blur-md border-b border-stone-200 shadow-sm">
         <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between h-16 items-center">
                 <div class="flex-shrink-0 flex items-center cursor-pointer" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
