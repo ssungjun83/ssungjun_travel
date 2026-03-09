@@ -405,7 +405,8 @@
                     <span class="inline-flex items-center gap-1.5"><span class="h-2.5 w-2.5 rounded-full bg-slate-600 inline-block"></span>핵심 구역</span>
                 </div>
                 <p class="mt-3 text-sm text-stone-500">* 체인점/노점은 검색이 쉬운 대표 지점(또는 대표 권역) 기준으로 표기했습니다.</p>
-                <div id="allPlaceQuickLinks" class="mt-4 flex flex-wrap gap-2"></div>
+                <p class="mt-4 text-sm text-stone-600">아래 아이콘을 누르면 해당 위치로 지도 화면이 이동하고, 같은 팝업이 바로 열립니다.</p>
+                <div id="allPlaceQuickLinks" class="mt-3 space-y-4"></div>
             </div>
         </section>
 
@@ -541,7 +542,8 @@
                 en: '505 Jiujiang Rd, Huangpu, Shanghai, China',
                 lat: 31.23853,
                 lng: 121.48464,
-                note: '숙소'
+                note: '숙소',
+                zone: '난징동루·와이탄'
             },
             {
                 id: 'hotel-ritz-carlton-pudong',
@@ -552,7 +554,8 @@
                 en: 'Shanghai IFC, 8 Century Avenue, Pudong, Shanghai, China',
                 lat: 31.2385571,
                 lng: 121.4968072,
-                note: '호텔'
+                note: '호텔',
+                zone: '푸동·루자주이'
             },
             {
                 id: 'hotel-conrad-shanghai',
@@ -563,7 +566,8 @@
                 en: '789 East Nanjing Road, Huangpu District, Shanghai, China',
                 lat: 31.2367348,
                 lng: 121.4717101,
-                note: '호텔'
+                note: '호텔',
+                zone: '인민광장·황푸'
             },
             {
                 id: 'airport-pudong',
@@ -574,7 +578,8 @@
                 en: 'S1 Yingbin Expy, Pudong, Shanghai, China',
                 lat: 31.14434,
                 lng: 121.80831,
-                note: '공항'
+                note: '공항',
+                zone: '공항·디즈니'
             },
             {
                 id: 'airport-hongqiao',
@@ -585,7 +590,8 @@
                 en: '2550 Hongqiao Rd, Changning District, Shanghai, China',
                 lat: 31.19787,
                 lng: 121.33632,
-                note: '공항'
+                note: '공항',
+                zone: '공항·디즈니'
             },
             {
                 id: 'disney',
@@ -596,7 +602,8 @@
                 en: '310 Huangzhao Rd, Chuansha New Town, Pudong, Shanghai, China',
                 lat: 31.14473,
                 lng: 121.65789,
-                note: '테마파크'
+                note: '테마파크',
+                zone: '공항·디즈니'
             },
             {
                 id: 'bund',
@@ -607,7 +614,8 @@
                 en: 'Zhongshan East 1st Rd, Huangpu, Shanghai, China',
                 lat: 31.24009,
                 lng: 121.49078,
-                note: '관광 포인트'
+                note: '관광 포인트',
+                zone: '난징동루·와이탄'
             },
             {
                 id: 'oriental-pearl',
@@ -618,7 +626,8 @@
                 en: '1 Century Ave, Pudong, Shanghai, China',
                 lat: 31.23968,
                 lng: 121.49975,
-                note: '관광 포인트'
+                note: '관광 포인트',
+                zone: '푸동·루자주이'
             },
             {
                 id: 'wukang',
@@ -629,7 +638,8 @@
                 en: '1850 Huaihai Middle Rd, Xuhui District, Shanghai, China',
                 lat: 31.21424,
                 lng: 121.43257,
-                note: '관광 포인트'
+                note: '관광 포인트',
+                zone: '정안사·신천지·우캉'
             },
             {
                 id: 'nanjing-road',
@@ -640,7 +650,8 @@
                 en: 'Nanjing East Road, Huangpu, Shanghai, China',
                 lat: 31.23997,
                 lng: 121.48122,
-                note: '핵심 구역'
+                note: '핵심 구역',
+                zone: '난징동루·와이탄'
             },
             {
                 id: 'xintiandi',
@@ -651,7 +662,8 @@
                 en: 'Xintiandi, Huangpu District, Shanghai, China',
                 lat: 31.22193,
                 lng: 121.47044,
-                note: '핵심 구역'
+                note: '핵심 구역',
+                zone: '정안사·신천지·우캉'
             }
         ];
 
@@ -847,6 +859,22 @@
 
             const bounds = L.latLngBounds();
             quickEl.innerHTML = '';
+            const markersById = {};
+            const zoneOrder = [
+                '난징동루·와이탄',
+                '인민광장·황푸',
+                '정안사·신천지·우캉',
+                '푸동·루자주이',
+                '대형 쇼핑몰권',
+                '공항·디즈니'
+            ];
+            const routeZoneMap = {
+                nanjing: '난징동루·와이탄',
+                peoples: '인민광장·황푸',
+                jingan: '정안사·신천지·우캉',
+                malls: '대형 쇼핑몰권',
+                all: '인민광장·황푸'
+            };
 
             const mapPoints = [];
             restaurants.forEach((r) => {
@@ -854,6 +882,7 @@
                 const addr = restaurantAddresses[r.id] || { cn: '', en: '' };
                 if (!coord) return;
                 mapPoints.push({
+                    id: `food-${r.id}`,
                     type: 'food',
                     icon: r.icon,
                     name: r.name,
@@ -861,7 +890,8 @@
                     en: addr.en || '',
                     note: coord.note || '대표 지점',
                     lat: coord.lat,
-                    lng: coord.lng
+                    lng: coord.lng,
+                    zone: routeZoneMap[r.route] || '대형 쇼핑몰권'
                 });
             });
             specialPlaces.forEach((p) => mapPoints.push(p));
@@ -891,17 +921,53 @@
                 }).addTo(map);
                 marker.bindPopup(popupHtml);
                 bounds.extend([p.lat, p.lng]);
+                markersById[p.id] = marker;
+            });
 
-                const quick = document.createElement('a');
-                quick.href = amapUrl;
-                quick.target = '_blank';
-                quick.rel = 'noopener noreferrer';
-                quick.className = 'text-xs px-3 py-1.5 rounded-full border font-semibold transition-colors';
-                quick.style.borderColor = style.fill;
-                quick.style.backgroundColor = '#fff';
-                quick.style.color = style.color;
-                quick.textContent = `${p.icon} ${p.name}`;
-                quickEl.appendChild(quick);
+            const grouped = {};
+            zoneOrder.forEach((z) => { grouped[z] = []; });
+            mapPoints.forEach((p) => {
+                const zone = p.zone || '대형 쇼핑몰권';
+                if (!grouped[zone]) grouped[zone] = [];
+                grouped[zone].push(p);
+            });
+
+            zoneOrder.forEach((zone) => {
+                const items = grouped[zone] || [];
+                if (!items.length) return;
+
+                const block = document.createElement('div');
+                block.className = 'rounded-xl border border-stone-200 p-3 bg-stone-50';
+
+                const title = document.createElement('p');
+                title.className = 'text-sm font-bold text-stone-700 mb-2';
+                title.textContent = zone;
+                block.appendChild(title);
+
+                const row = document.createElement('div');
+                row.className = 'flex flex-wrap gap-2';
+
+                items.forEach((p) => {
+                    const style = mapCategoryStyle[p.type] || mapCategoryStyle.food;
+                    const btn = document.createElement('button');
+                    btn.type = 'button';
+                    btn.className = 'text-xs px-3 py-1.5 rounded-full border font-semibold transition-colors hover:opacity-90';
+                    btn.style.borderColor = style.fill;
+                    btn.style.backgroundColor = '#fff';
+                    btn.style.color = style.color;
+                    btn.textContent = `${p.icon} ${p.name}`;
+                    btn.addEventListener('click', () => {
+                        const marker = markersById[p.id];
+                        if (!marker) return;
+                        const zoomLevel = Math.max(map.getZoom(), 13);
+                        map.flyTo([p.lat, p.lng], zoomLevel, { duration: 0.6 });
+                        marker.openPopup();
+                    });
+                    row.appendChild(btn);
+                });
+
+                block.appendChild(row);
+                quickEl.appendChild(block);
             });
 
             if (bounds.isValid()) {
