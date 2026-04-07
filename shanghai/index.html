@@ -90,25 +90,29 @@
 </head>
 <body class="antialiased">
 
-    <nav class="sticky top-0 z-[2000] bg-white/90 backdrop-blur-md border-b border-stone-200 shadow-sm">
-        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between h-16 items-center">
-                <div class="flex-shrink-0 flex items-center cursor-pointer" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
-                    <span class="text-2xl mr-2">🇨🇳</span>
-                    <span class="font-bold text-xl tracking-tight text-orange-700">상하이 여행 통합 가이드</span>
-                </div>
-                <div class="flex items-center gap-3">
-                    <div class="hidden md:flex space-x-8">
-                    <a href="#tips" class="text-stone-600 hover:text-orange-600 transition-colors font-medium">출국 전 세팅</a>
-                    <a href="#master" class="text-stone-600 hover:text-orange-600 transition-colors font-medium">여행 총정리</a>
-                    <a href="#briefing" class="text-stone-600 hover:text-orange-600 transition-colors font-medium">2026 검증 가이드</a>
-                    <a href="#checklist" class="text-stone-600 hover:text-orange-600 transition-colors font-medium">여행 체크리스트</a>
-                    <a href="#explorer" class="text-stone-600 hover:text-orange-600 transition-colors font-medium">미식 DB</a>
-                    <a href="#history" class="text-stone-600 hover:text-orange-600 transition-colors font-medium">노포 아카이브</a>
-                    <a href="#routes" class="text-stone-600 hover:text-orange-600 transition-colors font-medium">동선 플래너</a>
-                    <a href="#all-places-map" class="text-stone-600 hover:text-orange-600 transition-colors font-medium">종합 지도</a>
+    <nav class="sticky top-0 z-[2000] bg-white/92 backdrop-blur-md border-b border-stone-200 shadow-sm">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-3">
+            <div class="flex items-center justify-between gap-4">
+                <div class="min-w-0 flex items-center gap-3 cursor-pointer" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
+                    <span class="inline-flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-2xl bg-orange-50 text-xl ring-1 ring-orange-200">🇨🇳</span>
+                    <div class="min-w-0">
+                        <p class="text-[11px] font-bold uppercase tracking-[0.22em] text-stone-400">Shanghai Guide</p>
+                        <p class="truncate text-lg font-black tracking-tight text-orange-700">상하이 여행 통합 가이드</p>
                     </div>
-                    <a href="../" class="inline-flex items-center bg-white border border-stone-300 hover:border-orange-500 text-stone-700 hover:text-orange-700 font-bold text-sm px-4 py-2 rounded-full transition-colors shadow-sm">상위 페이지</a>
+                </div>
+                <a href="../" class="inline-flex flex-shrink-0 items-center rounded-full border border-stone-300 bg-white px-4 py-2 text-sm font-bold text-stone-700 shadow-sm transition-colors hover:border-orange-500 hover:text-orange-700">상위 페이지</a>
+            </div>
+
+            <div class="hide-scroll -mx-1 mt-3 overflow-x-auto">
+                <div class="flex min-w-max items-center gap-2 px-1">
+                    <a href="#tips" class="inline-flex whitespace-nowrap rounded-full border border-stone-200 bg-stone-50 px-3 py-2 text-sm font-semibold text-stone-600 transition-colors hover:border-orange-300 hover:bg-orange-50 hover:text-orange-700">출국 세팅</a>
+                    <a href="#master" class="inline-flex whitespace-nowrap rounded-full border border-stone-200 bg-stone-50 px-3 py-2 text-sm font-semibold text-stone-600 transition-colors hover:border-orange-300 hover:bg-orange-50 hover:text-orange-700">총정리</a>
+                    <a href="#briefing" class="inline-flex whitespace-nowrap rounded-full border border-orange-200 bg-orange-50 px-3 py-2 text-sm font-semibold text-orange-700 transition-colors hover:border-orange-300 hover:bg-orange-100">2026 브리핑</a>
+                    <a href="#checklist" class="inline-flex whitespace-nowrap rounded-full border border-stone-200 bg-stone-50 px-3 py-2 text-sm font-semibold text-stone-600 transition-colors hover:border-orange-300 hover:bg-orange-50 hover:text-orange-700">체크리스트</a>
+                    <a href="#explorer" class="inline-flex whitespace-nowrap rounded-full border border-stone-200 bg-stone-50 px-3 py-2 text-sm font-semibold text-stone-600 transition-colors hover:border-orange-300 hover:bg-orange-50 hover:text-orange-700">미식 DB</a>
+                    <a href="#history" class="inline-flex whitespace-nowrap rounded-full border border-stone-200 bg-stone-50 px-3 py-2 text-sm font-semibold text-stone-600 transition-colors hover:border-orange-300 hover:bg-orange-50 hover:text-orange-700">노포 아카이브</a>
+                    <a href="#routes" class="inline-flex whitespace-nowrap rounded-full border border-stone-200 bg-stone-50 px-3 py-2 text-sm font-semibold text-stone-600 transition-colors hover:border-orange-300 hover:bg-orange-50 hover:text-orange-700">동선 플래너</a>
+                    <a href="#all-places-map" class="inline-flex whitespace-nowrap rounded-full border border-stone-200 bg-stone-50 px-3 py-2 text-sm font-semibold text-stone-600 transition-colors hover:border-orange-300 hover:bg-orange-50 hover:text-orange-700">종합 지도</a>
                 </div>
             </div>
         </div>
