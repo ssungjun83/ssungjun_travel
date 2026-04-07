@@ -1060,10 +1060,10 @@
                 <div class="mb-5 flex flex-col gap-3 rounded-2xl border border-stone-200 bg-stone-50 p-4 md:flex-row md:items-center md:justify-between">
                     <div>
                         <p class="text-sm font-bold text-stone-800">맛집 포함 주소 파일 다운로드</p>
-                        <p class="mt-1 text-sm text-stone-600">이 페이지에 등록된 맛집/호텔/공항/디즈니/관광 포인트 주소를 UTF-8 CSV로 저장합니다. 엑셀에서 바로 열 수 있게 구성했습니다.</p>
+                        <p class="mt-1 text-sm text-stone-600">이 페이지에 등록된 맛집/호텔/공항/디즈니/관광 포인트 주소를 엑셀 파일(.xlsx)로 저장합니다. 열 이름과 링크까지 함께 내려갑니다.</p>
                     </div>
-                    <button id="downloadShanghaiPlacesCsv" type="button" class="inline-flex items-center justify-center rounded-full bg-stone-900 px-5 py-3 text-sm font-bold text-white shadow-sm transition-colors hover:bg-stone-800">
-                        주소 CSV 다운로드
+                    <button id="downloadShanghaiPlacesXlsx" type="button" class="inline-flex items-center justify-center rounded-full bg-stone-900 px-5 py-3 text-sm font-bold text-white shadow-sm transition-colors hover:bg-stone-800">
+                        주소 엑셀 다운로드
                     </button>
                 </div>
                 <div id="shanghaiAllMap" class="all-map-box"></div>
@@ -1093,6 +1093,7 @@
         integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
         crossorigin=""
     ></script>
+    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 
     <script>
         const restaurants = [
@@ -1460,11 +1461,6 @@
             return icon;
         }
 
-        function csvEscape(value) {
-            const text = String(value ?? '');
-            return `"${text.replace(/"/g, '""')}"`;
-        }
-
         function buildShanghaiPlacesExportRows() {
             const rows = restaurants.map((r) => {
                 const addr = restaurantAddresses[r.id] || { cn: '', en: '' };
@@ -1507,7 +1503,11 @@
             return [...rows, ...specialRows];
         }
 
-        function downloadShanghaiPlacesCsv() {
+        function downloadShanghaiPlacesXlsx() {
+            if (typeof XLSX === 'undefined') {
+                showCopyToast('엑셀 다운로드 라이브러리를 불러오지 못했습니다.');
+                return;
+            }
             const rows = buildShanghaiPlacesExportRows();
             const header = [
                 '유형',
@@ -1523,8 +1523,8 @@
                 '고덕지도 링크',
                 '구글맵 링크'
             ];
-            const lines = [
-                header.map(csvEscape).join(','),
+            const data = [
+                header,
                 ...rows.map((row) => [
                     row.type,
                     row.name,
@@ -1538,29 +1538,28 @@
                     row.lng,
                     row.amapUrl,
                     row.googleUrl
-                ].map(csvEscape).join(','))
+                ])
             ];
-            const csv = `\uFEFF${lines.join('\r\n')}`;
-            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+            const worksheet = XLSX.utils.aoa_to_sheet(data);
+            worksheet['!cols'] = [
+                { wch: 10 }, { wch: 30 }, { wch: 22 }, { wch: 24 },
+                { wch: 20 }, { wch: 24 }, { wch: 34 }, { wch: 42 },
+                { wch: 10 }, { wch: 10 }, { wch: 58 }, { wch: 58 }
+            ];
+            const workbook = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(workbook, worksheet, '상하이_등록장소');
             const today = new Date();
             const yyyy = today.getFullYear();
             const mm = String(today.getMonth() + 1).padStart(2, '0');
             const dd = String(today.getDate()).padStart(2, '0');
-            const url = URL.createObjectURL(blob);
-            const link = document.createElement('a');
-            link.href = url;
-            link.download = `shanghai_places_${yyyy}${mm}${dd}.csv`;
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-            URL.revokeObjectURL(url);
-            showCopyToast('주소 CSV 파일 다운로드를 시작했습니다.');
+            XLSX.writeFile(workbook, `shanghai_places_${yyyy}${mm}${dd}.xlsx`);
+            showCopyToast('주소 엑셀 파일 다운로드를 시작했습니다.');
         }
 
         function initPlaceExportButtons() {
-            const csvBtn = document.getElementById('downloadShanghaiPlacesCsv');
-            if (!csvBtn) return;
-            csvBtn.addEventListener('click', downloadShanghaiPlacesCsv);
+            const xlsxBtn = document.getElementById('downloadShanghaiPlacesXlsx');
+            if (!xlsxBtn) return;
+            xlsxBtn.addEventListener('click', downloadShanghaiPlacesXlsx);
         }
 
         function renderFilters() {
