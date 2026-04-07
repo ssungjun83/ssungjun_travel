@@ -1081,6 +1081,27 @@
             </div>
         </section>
 
+        <section id="travel-phrases" class="scroll-mt-20 bg-gradient-to-b from-orange-50/50 to-white -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 py-16 rounded-3xl border border-orange-100">
+            <div class="max-w-6xl mx-auto space-y-10">
+                <div class="text-center">
+                    <h2 class="text-3xl md:text-4xl font-black text-stone-800 mb-4">🗣️ 상하이 실전 여행 회화</h2>
+                    <p class="text-stone-600 max-w-3xl mx-auto">공항, 택시, 식당, 결제처럼 여행 중 바로 쓰게 되는 표현만 모았습니다. <strong>발음 듣기</strong>를 누르면 브라우저에서 중국어 음성을 재생하고, <strong>문장 복사</strong>를 누르면 바로 클립보드로 복사할 수 있습니다.</p>
+                </div>
+
+                <div class="bg-white rounded-2xl border border-stone-200 p-5 shadow-sm">
+                    <div class="flex flex-wrap items-center justify-between gap-3">
+                        <div>
+                            <p class="text-sm font-bold text-stone-800">상황별로 바로 찾기</p>
+                            <p class="mt-1 text-sm text-stone-500">중국어 음성은 브라우저/기기 설치 음성에 따라 다르게 들릴 수 있습니다.</p>
+                        </div>
+                        <div id="phraseFilterContainer" class="flex flex-wrap gap-2"></div>
+                    </div>
+                </div>
+
+                <div id="phraseGrid" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5"></div>
+            </div>
+        </section>
+
     </main>
 
     <footer class="bg-stone-900 text-stone-400 py-12 text-center mt-20">
@@ -1364,6 +1385,31 @@
             malls: '대형 쇼핑몰권',
             all: '시내 전역'
         };
+        const travelPhraseCategories = ['전체', '공항/입국', '택시/길찾기', '식당/주문', '결제/쇼핑', '도움요청'];
+        const travelPhrases = [
+            { category: '공항/입국', icon: '🛂', title: '입국 심사', zh: '我来旅游。', pinyin: 'Wǒ lái lǚyóu.', korean: '워 라이 뤼여우', meaning: '관광하러 왔어요.', tip: '입국 심사에서 방문 목적을 말할 때 가장 짧고 무난합니다.' },
+            { category: '공항/입국', icon: '🏨', title: '숙소 보여주기', zh: '这是我酒店的地址。', pinyin: 'Zhè shì wǒ jiǔdiàn de dìzhǐ.', korean: '쩌 스 워 지우디앤 더 디즈', meaning: '이게 제 호텔 주소예요.', tip: '입국 심사나 택시 기사에게 주소를 보여줄 때 같이 쓰면 편합니다.' },
+            { category: '공항/입국', icon: '🧳', title: '수하물 문의', zh: '请问行李转盘在哪里？', pinyin: 'Qǐngwèn xíngli zhuǎnpán zài nǎli?', korean: '칭원 싱리 좐판 짜이 날리', meaning: '수하물 찾는 곳이 어디예요?', tip: '공항 직원에게 길을 물을 때 유용합니다.' },
+            { category: '택시/길찾기', icon: '🚕', title: '택시 목적지', zh: '请带我去这里。', pinyin: 'Qǐng dài wǒ qù zhèlǐ.', korean: '칭 따이 워 취 쩔리', meaning: '여기로 데려다 주세요.', tip: '지도 화면이나 주소를 같이 보여주면 가장 정확합니다.' },
+            { category: '택시/길찾기', icon: '📍', title: '여기서 내려주세요', zh: '请在这里停车。', pinyin: 'Qǐng zài zhèlǐ tíngchē.', korean: '칭 짜이 쩔리 팅처', meaning: '여기서 세워 주세요.', tip: '택시나 차량 호출 서비스에서 하차 지점을 조정할 때 좋습니다.' },
+            { category: '택시/길찾기', icon: '🚇', title: '지하철역 찾기', zh: '地铁站怎么走？', pinyin: 'Dìtiě zhàn zěnme zǒu?', korean: '띠티에 잔 전머 조우', meaning: '지하철역은 어떻게 가요?', tip: '길 묻는 기본 문장입니다.' },
+            { category: '택시/길찾기', icon: '🧭', title: '가까운지 묻기', zh: '这里离外滩远吗？', pinyin: 'Zhèlǐ lí Wàitān yuǎn ma?', korean: '쩔리 리 와이탄 위앤 마', meaning: '여기서 와이탄까지 멀어요?', tip: '목적지만 바꿔 넣으면 여러 곳에 응용됩니다.' },
+            { category: '식당/주문', icon: '🥢', title: '주문 시작', zh: '我要这个。', pinyin: 'Wǒ yào zhège.', korean: '워 야오 쪄거', meaning: '이거 주세요.', tip: '사진이나 메뉴를 가리키면서 쓰면 거의 다 통합니다.' },
+            { category: '식당/주문', icon: '🌿', title: '고수 빼기', zh: '不要香菜。', pinyin: 'Bú yào xiāngcài.', korean: '부야오 샹차이', meaning: '고수 빼주세요.', tip: '상하이 식당에서 가장 실전적인 문장 중 하나입니다.' },
+            { category: '식당/주문', icon: '🌶️', title: '맵기 조절', zh: '不要太辣。', pinyin: 'Bú yào tài là.', korean: '부야오 타이 라', meaning: '너무 맵지 않게 해주세요.', tip: '훠궈, 면, 볶음류 주문 때 유용합니다.' },
+            { category: '식당/주문', icon: '🥣', title: '추천 메뉴 묻기', zh: '你们推荐什么？', pinyin: 'Nǐmen tuījiàn shénme?', korean: '니먼 퉤이지앤 션머', meaning: '뭐가 제일 추천이에요?', tip: '로컬 식당에서 실패 확률을 줄이기 좋습니다.' },
+            { category: '식당/주문', icon: '🧾', title: '계산 요청', zh: '买单。', pinyin: 'Mǎidān.', korean: '마이단', meaning: '계산할게요.', tip: '중국 식당에서 가장 많이 쓰는 계산 표현입니다.' },
+            { category: '결제/쇼핑', icon: '💳', title: '카드 결제 가능?', zh: '可以刷卡吗？', pinyin: 'Kěyǐ shuākǎ ma?', korean: '커이 솨카 마', meaning: '카드 결제 되나요?', tip: '실물 카드 결제 가능 여부를 확인할 때 씁니다.' },
+            { category: '결제/쇼핑', icon: '📱', title: 'QR 결제 가능?', zh: '可以扫码支付吗？', pinyin: 'Kěyǐ sǎomǎ zhīfù ma?', korean: '커이 사오마 즈푸 마', meaning: 'QR 결제 되나요?', tip: '알리페이/위챗페이 결제 여부 확인용입니다.' },
+            { category: '결제/쇼핑', icon: '💸', title: '너무 비싸요', zh: '有点贵。', pinyin: 'Yǒudiǎn guì.', korean: '요우디앤 꾸이', meaning: '조금 비싸네요.', tip: '시장이나 흥정 가능한 상황에서만 쓰는 편이 좋습니다.' },
+            { category: '결제/쇼핑', icon: '🛍️', title: '이거 다른 색 있나요?', zh: '这个有别的颜色吗？', pinyin: 'Zhège yǒu bié de yánsè ma?', korean: '쩌거 요우 비에 더 옌써 마', meaning: '이거 다른 색 있나요?', tip: '기념품, 의류, 잡화 쇼핑에서 바로 써먹기 좋습니다.' },
+            { category: '도움요청', icon: '🙋', title: '도와주세요', zh: '请帮我一下。', pinyin: 'Qǐng bāng wǒ yíxià.', korean: '칭 빵 워 이샤', meaning: '잠깐 도와주세요.', tip: '직원이나 지나가는 사람에게 정중하게 도움을 요청할 때 씁니다.' },
+            { category: '도움요청', icon: '🗣️', title: '천천히 말해 주세요', zh: '请说慢一点。', pinyin: 'Qǐng shuō màn yìdiǎn.', korean: '칭 슈어 만 이디앤', meaning: '조금 천천히 말해 주세요.', tip: '중국어가 빠르게 들릴 때 가장 유용합니다.' },
+            { category: '도움요청', icon: '❓', title: '못 알아들었어요', zh: '我听不懂。', pinyin: 'Wǒ tīng bù dǒng.', korean: '워 팅 부 동', meaning: '잘 못 알아들었어요.', tip: '이 문장 하나면 대화 속도를 늦추기 좋습니다.' },
+            { category: '도움요청', icon: '🚻', title: '화장실 어디예요?', zh: '洗手间在哪里？', pinyin: 'Xǐshǒujiān zài nǎli?', korean: '시쇼우지앤 짜이 날리', meaning: '화장실이 어디예요?', tip: '쇼핑몰, 식당, 지하철역 어디서든 바로 필요해집니다.' }
+        ];
+        let currentPhraseCategory = '전체';
+        let preferredChineseVoice = null;
 
         function escapeHtml(value) {
             return String(value ?? '')
@@ -1560,6 +1606,98 @@
             const xlsxBtn = document.getElementById('downloadShanghaiPlacesXlsx');
             if (!xlsxBtn) return;
             xlsxBtn.addEventListener('click', downloadShanghaiPlacesXlsx);
+        }
+
+        function pickChineseVoice() {
+            if (!('speechSynthesis' in window)) return null;
+            const voices = window.speechSynthesis.getVoices();
+            preferredChineseVoice = voices.find((voice) => /zh(-|_)?CN/i.test(voice.lang))
+                || voices.find((voice) => /^zh/i.test(voice.lang))
+                || null;
+            return preferredChineseVoice;
+        }
+
+        function speakChinesePhrase(text) {
+            if (!('speechSynthesis' in window)) {
+                showCopyToast('이 브라우저는 음성 재생을 지원하지 않습니다.');
+                return;
+            }
+            const utterance = new SpeechSynthesisUtterance(text);
+            utterance.lang = preferredChineseVoice?.lang || 'zh-CN';
+            if (preferredChineseVoice) utterance.voice = preferredChineseVoice;
+            utterance.rate = 0.9;
+            utterance.pitch = 1;
+            window.speechSynthesis.cancel();
+            window.speechSynthesis.speak(utterance);
+        }
+
+        function renderPhraseFilters() {
+            const container = document.getElementById('phraseFilterContainer');
+            if (!container) return;
+            container.innerHTML = '';
+            travelPhraseCategories.forEach((category) => {
+                const active = category === currentPhraseCategory;
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.className = `rounded-full px-3 py-2 text-sm font-semibold transition-colors ${active ? 'bg-stone-900 text-white' : 'bg-stone-100 text-stone-600 hover:bg-orange-50 hover:text-orange-700'}`;
+                btn.textContent = category;
+                btn.addEventListener('click', () => {
+                    currentPhraseCategory = category;
+                    renderPhraseFilters();
+                    renderPhraseGrid();
+                });
+                container.appendChild(btn);
+            });
+        }
+
+        function renderPhraseGrid() {
+            const grid = document.getElementById('phraseGrid');
+            if (!grid) return;
+            const filtered = currentPhraseCategory === '전체'
+                ? travelPhrases
+                : travelPhrases.filter((item) => item.category === currentPhraseCategory);
+
+            grid.innerHTML = filtered.map((item) => `
+                <article class="bg-white rounded-2xl border border-stone-200 p-5 shadow-sm hover:shadow-md transition-shadow">
+                    <div class="flex items-start justify-between gap-3 mb-4">
+                        <div class="flex items-center gap-3">
+                            <div class="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-orange-50 text-2xl">${item.icon}</div>
+                            <div>
+                                <p class="text-xs font-bold uppercase tracking-[0.18em] text-stone-400">${item.category}</p>
+                                <h3 class="text-lg font-black text-stone-800">${item.title}</h3>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="rounded-2xl bg-stone-50 border border-stone-200 p-4">
+                        <p class="text-2xl font-black text-stone-900">${escapeHtml(item.zh)}</p>
+                        <p class="mt-2 text-sm font-semibold text-orange-700">${escapeHtml(item.pinyin)}</p>
+                        <p class="mt-1 text-sm text-stone-600">한국식 발음: <strong>${escapeHtml(item.korean)}</strong></p>
+                    </div>
+                    <p class="mt-4 text-sm text-stone-700"><strong>뜻:</strong> ${escapeHtml(item.meaning)}</p>
+                    <p class="mt-2 text-sm text-stone-500">${escapeHtml(item.tip)}</p>
+                    <div class="mt-4 flex flex-wrap gap-2">
+                        <button type="button" class="phrase-play inline-flex items-center rounded-full bg-stone-900 px-4 py-2 text-sm font-bold text-white hover:bg-stone-800 transition-colors" data-text="${escapeAttr(item.zh)}">발음 듣기</button>
+                        <button type="button" class="copy-address inline-flex items-center rounded-full border border-stone-300 bg-white px-4 py-2 text-sm font-bold text-stone-700 hover:border-orange-400 hover:text-orange-700 transition-colors" data-copy="${escapeAttr(item.zh)}" title="문장이 복사됩니다">문장 복사</button>
+                    </div>
+                </article>
+            `).join('');
+        }
+
+        function initTravelPhrases() {
+            pickChineseVoice();
+            if ('speechSynthesis' in window) {
+                window.speechSynthesis.onvoiceschanged = pickChineseVoice;
+            }
+            renderPhraseFilters();
+            renderPhraseGrid();
+
+            document.addEventListener('click', (event) => {
+                const playBtn = event.target.closest('.phrase-play');
+                if (!playBtn) return;
+                const text = playBtn.getAttribute('data-text');
+                if (!text) return;
+                speakChinesePhrase(text);
+            });
         }
 
         function renderFilters() {
@@ -1870,6 +2008,7 @@
             initShanghaiAllMap();
             initBriefingTabs();
             initPlaceExportButtons();
+            initTravelPhrases();
         };
     </script>
 </body>
