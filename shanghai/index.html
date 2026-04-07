@@ -101,6 +101,7 @@
                     <div class="hidden md:flex space-x-8">
                     <a href="#tips" class="text-stone-600 hover:text-orange-600 transition-colors font-medium">출국 전 세팅</a>
                     <a href="#master" class="text-stone-600 hover:text-orange-600 transition-colors font-medium">여행 총정리</a>
+                    <a href="#briefing" class="text-stone-600 hover:text-orange-600 transition-colors font-medium">2026 검증 가이드</a>
                     <a href="#checklist" class="text-stone-600 hover:text-orange-600 transition-colors font-medium">여행 체크리스트</a>
                     <a href="#explorer" class="text-stone-600 hover:text-orange-600 transition-colors font-medium">미식 DB</a>
                     <a href="#history" class="text-stone-600 hover:text-orange-600 transition-colors font-medium">노포 아카이브</a>
@@ -122,6 +123,7 @@
                 항공·공항·결제·앱·디즈니·치안·동선 전략부터 노포와 로컬 맛집까지, 상하이 여행에 필요한 실전 정보를 한 페이지에 정리했습니다.
             </p>
             <div class="flex flex-wrap justify-center gap-3">
+                <a href="#briefing" class="bg-stone-800 hover:bg-stone-900 text-white font-bold py-3 px-6 rounded-full transition-colors shadow-lg">2026 최신 검증 가이드</a>
                 <a href="#master" class="bg-white border border-stone-300 hover:border-orange-500 text-stone-700 hover:text-orange-700 font-bold py-3 px-6 rounded-full transition-colors shadow-lg">여행 총정리 보기</a>
                 <a href="#checklist" class="bg-sky-600 hover:bg-sky-700 text-white font-bold py-3 px-6 rounded-full transition-colors shadow-lg">✅ 여행 체크리스트</a>
                 <a href="#explorer" class="bg-orange-600 hover:bg-orange-700 text-white font-bold py-3 px-6 rounded-full transition-colors shadow-lg">미식 데이터 보기</a>
@@ -288,7 +290,7 @@
                             <li>eSIM 예시: 도깨비 로밍 올데이 무제한(17,720원)처럼 데이터 중심 상품이 안정적.</li>
                             <li>중국 현지 와이파이만 쓰면 한국 앱 접근이 막힐 수 있어 로밍/eSIM/VPN유심 필수.</li>
                             <li>알리페이 + 위챗페이 모두 한국에서 카드/여권 인증까지 완료 권장.</li>
-                            <li>알리페이/위챗페이는 200위안 이상 결제 시 3% 수수료가 붙을 수 있음.</li>
+                            <li>알리페이/위챗페이는 국제카드 연동 시 단건 200위안 초과 결제에 3% 수수료가 붙을 수 있음.</li>
                             <li>트래블로그 유니온페이 카드 연동 시 수수료 회피 사례가 있어 사전 세팅 가치가 큼.</li>
                             <li>알리페이 하나로 결제 + 디디 호출 + 대중교통 기능까지 통합 운영 가능.</li>
                             <li>메이투안은 배달비가 저렴하지만 한국 번호 인증이 막히는 케이스가 있어 사전 테스트 권장.</li>
@@ -398,6 +400,299 @@
             </div>
         </section>
 
+        <section id="briefing" class="scroll-mt-20 bg-stone-900 text-stone-50 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 py-16 rounded-3xl border border-stone-800">
+            <div class="max-w-6xl mx-auto space-y-10">
+                <div class="text-center">
+                    <div class="flex flex-wrap items-center justify-center gap-2 mb-4">
+                        <span class="inline-flex items-center rounded-full border border-amber-300/40 bg-amber-500/10 px-3 py-1 text-xs font-bold text-amber-200">공식·1차 출처 검증</span>
+                        <span class="inline-flex items-center rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs font-bold text-stone-200">업데이트 2026.04.07</span>
+                    </div>
+                    <h2 class="text-3xl md:text-4xl font-black mb-4">🧭 2026 최신 상하이 검증 브리핑</h2>
+                    <p class="text-stone-300 max-w-3xl mx-auto">입국, 결제, 교통, 숙소처럼 틀리면 실제 일정이 꼬이는 항목은 공식/1차 출처로 다시 검증했습니다. 화장실, 주문, 준비물처럼 여행자 체감이 중요한 부분은 <span class="font-bold text-white">현장 팁</span>으로 따로 표시했습니다.</p>
+                </div>
+
+                <div class="flex flex-wrap gap-2 justify-center">
+                    <button type="button" data-briefing-tab="entry" class="briefing-tab rounded-full border border-white/15 bg-white text-stone-900 px-4 py-2 text-sm font-bold shadow-sm transition-colors">입국·서류</button>
+                    <button type="button" data-briefing-tab="apps" class="briefing-tab rounded-full border border-white/15 bg-white/5 px-4 py-2 text-sm font-bold text-stone-200 transition-colors hover:bg-white/10">데이터·앱</button>
+                    <button type="button" data-briefing-tab="transport" class="briefing-tab rounded-full border border-white/15 bg-white/5 px-4 py-2 text-sm font-bold text-stone-200 transition-colors hover:bg-white/10">교통·이동</button>
+                    <button type="button" data-briefing-tab="payment" class="briefing-tab rounded-full border border-white/15 bg-white/5 px-4 py-2 text-sm font-bold text-stone-200 transition-colors hover:bg-white/10">결제·물가</button>
+                    <button type="button" data-briefing-tab="stay" class="briefing-tab rounded-full border border-white/15 bg-white/5 px-4 py-2 text-sm font-bold text-stone-200 transition-colors hover:bg-white/10">숙소·생활</button>
+                    <button type="button" data-briefing-tab="disney" class="briefing-tab rounded-full border border-white/15 bg-white/5 px-4 py-2 text-sm font-bold text-stone-200 transition-colors hover:bg-white/10">디즈니</button>
+                </div>
+
+                <div class="rounded-[2rem] border border-white/10 bg-white/5 p-5 md:p-8 shadow-2xl shadow-black/20">
+                    <div data-briefing-panel="entry" class="briefing-panel space-y-6">
+                        <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
+                            <div class="rounded-2xl border border-emerald-400/20 bg-emerald-500/10 p-5">
+                                <p class="text-xs font-bold uppercase tracking-[0.2em] text-emerald-200 mb-2">Official</p>
+                                <h3 class="text-xl font-black text-white mb-3">한국 여권 30일 무비자</h3>
+                                <p class="text-sm text-stone-200">주한중국대사관 공지 기준으로 대한민국 일반여권 소지자는 관광·비즈니스·친지 방문·교류·경유 목적에 한해 <strong>30일 이하</strong> 무비자 입국이 가능합니다.</p>
+                                <p class="mt-3 text-xs text-stone-300">현재 공지 유효기간: <strong>2026년 12월 31일 24:00</strong>까지</p>
+                            </div>
+                            <div class="rounded-2xl border border-sky-400/20 bg-sky-500/10 p-5">
+                                <p class="text-xs font-bold uppercase tracking-[0.2em] text-sky-200 mb-2">Official</p>
+                                <h3 class="text-xl font-black text-white mb-3">전자 입국신고는 2025-11-20 도입</h3>
+                                <p class="text-sm text-stone-200">국가이민관리국은 <strong>2025년 11월 20일</strong>부터 온라인 입국신고를 시작했습니다. 공식 웹사이트, 정부 서비스 플랫폼, <strong>NIA 12367</strong>, 위챗/알리페이 미니프로그램에서 제출할 수 있습니다.</p>
+                                <p class="mt-3 text-xs text-stone-300">중요: 공식 공지에는 <strong>"출국 72시간 전까지"</strong>라는 제한 문구가 없습니다. 못 했더라도 도착 후 스마트기기나 종이 카드로 진행할 수 있습니다.</p>
+                            </div>
+                            <div class="rounded-2xl border border-orange-400/20 bg-orange-500/10 p-5">
+                                <p class="text-xs font-bold uppercase tracking-[0.2em] text-orange-200 mb-2">Official</p>
+                                <h3 class="text-xl font-black text-white mb-3">지문은 14~70세가 기본 대상</h3>
+                                <p class="text-sm text-stone-200">국가이민관리국 안내서 기준으로 입국 외국인 중 <strong>만 14세 이상 70세 이하</strong>는 지문 채취 대상입니다. 외교여권, 일부 상호면제, 특정 예외 케이스는 제외됩니다.</p>
+                                <p class="mt-3 text-xs text-stone-300">처음 가는 여행자라면 여권, 숙소 주소, 귀국 항공편 정보를 바로 보여줄 수 있게 저장해두는 편이 안전합니다.</p>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                            <div class="rounded-2xl border border-white/10 bg-stone-950/50 p-5">
+                                <h4 class="text-lg font-bold text-white mb-3">무비자와 환승 무비자는 다릅니다</h4>
+                                <ul class="space-y-2 text-sm text-stone-300">
+                                    <li><strong>30일 무비자:</strong> 한국-상하이-한국처럼 왕복 관광 여정에 주로 해당합니다.</li>
+                                    <li><strong>240시간 환승 무비자:</strong> 상하이를 거쳐 <strong>제3국</strong>으로 이동하는 환승객용 규정입니다.</li>
+                                    <li>즉, 왕복 여행이면 보통 환승 무비자가 아니라 일반 무비자 공지를 보는 편이 맞습니다.</li>
+                                </ul>
+                            </div>
+                            <div class="rounded-2xl border border-white/10 bg-stone-950/50 p-5">
+                                <h4 class="text-lg font-bold text-white mb-3">연휴 피하기</h4>
+                                <ul class="space-y-2 text-sm text-stone-300">
+                                    <li><strong>춘절</strong>, <strong>노동절</strong>, <strong>국경절 골든위크</strong>는 숙박비와 인기 관광지 대기시간이 크게 뛰는 대표 피크입니다.</li>
+                                    <li>디즈니까지 넣는 일정이면 연휴 전후 주말까지 포함해 혼잡도를 같이 봐야 합니다.</li>
+                                    <li>도심 미식 여행 중심이라면 <strong>4~5월</strong>, <strong>10~11월</strong>이 체감 만족도가 높습니다.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div data-briefing-panel="apps" class="briefing-panel hidden space-y-6">
+                        <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
+                            <div class="rounded-2xl border border-sky-400/20 bg-sky-500/10 p-5">
+                                <p class="text-xs font-bold uppercase tracking-[0.2em] text-sky-200 mb-2">Official</p>
+                                <h3 class="text-xl font-black text-white mb-3">출국 전 로밍 상태부터 확인</h3>
+                                <p class="text-sm text-stone-200">상하이 공식 가이드는 중국 입국 전 <strong>국제 로밍 활성화 여부와 비용</strong>을 통신사에 먼저 확인하라고 안내합니다. 해외 번호 그대로 SMS 수신이 가능해야 알리페이/위챗 인증도 편합니다.</p>
+                                <p class="mt-3 text-xs text-stone-300">홍차오 T1, 푸동 T1/T2 공항 서비스센터와 시내 차이나텔레콤 매장에서 단기 SIM 구입 가능</p>
+                            </div>
+                            <div class="rounded-2xl border border-emerald-400/20 bg-emerald-500/10 p-5">
+                                <p class="text-xs font-bold uppercase tracking-[0.2em] text-emerald-200 mb-2">Official</p>
+                                <h3 class="text-xl font-black text-white mb-3">단기 SIM 가격</h3>
+                                <p class="text-sm text-stone-200">상하이 공식 여행 가이드북 기준 단기 SIM은 <strong>7일 85위안</strong>, <strong>15일 125위안</strong>, <strong>30일 195위안</strong> 상품이 안내돼 있습니다.</p>
+                                <p class="mt-3 text-xs text-stone-300">관광객용 단기 플랜은 국내 데이터와 음성 통화 포함. 장시간 지도 사용이 많으면 더 큰 데이터 플랜 문의 권장.</p>
+                            </div>
+                            <div class="rounded-2xl border border-orange-400/20 bg-orange-500/10 p-5">
+                                <p class="text-xs font-bold uppercase tracking-[0.2em] text-orange-200 mb-2">Official</p>
+                                <h3 class="text-xl font-black text-white mb-3">공식 가이드가 꼽는 필수 앱</h3>
+                                <p class="text-sm text-stone-200">상하이 공식 자료는 <strong>Alipay</strong>, <strong>WeChat</strong>, <strong>Didi</strong>, <strong>Dianping</strong>, <strong>Meituan</strong>, <strong>Ele.me</strong>를 실사용 앱으로 소개합니다.</p>
+                                <p class="mt-3 text-xs text-stone-300">메시징, 택시, 맛집 리뷰, 배달까지 대부분 이 조합으로 해결됩니다.</p>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                            <div class="rounded-2xl border border-white/10 bg-stone-950/50 p-5">
+                                <h4 class="text-lg font-bold text-white mb-3">지도 앱은 Amap 기준으로 준비</h4>
+                                <ul class="space-y-2 text-sm text-stone-300">
+                                    <li>상하이시 가오더 지도 사용 안내에 따르면 앱 전체가 영어 UI는 아니지만 <strong>영문 주소 검색</strong>은 가능합니다.</li>
+                                    <li>공항, 호텔, 맛집은 <strong>영문 + 중문 주소</strong>를 함께 저장해두는 편이 가장 안정적입니다.</li>
+                                    <li>가오더 지도 안에서 택시 호출도 가능해, 별도 앱이 꼬일 때 백업 동선으로 유용합니다.</li>
+                                </ul>
+                            </div>
+                            <div class="rounded-2xl border border-white/10 bg-stone-950/50 p-5">
+                                <h4 class="text-lg font-bold text-white mb-3">현장 팁</h4>
+                                <ul class="space-y-2 text-sm text-stone-300">
+                                    <li><span class="inline-flex rounded-full bg-white/10 px-2 py-0.5 text-[11px] font-bold text-stone-200 mr-1">Field Tip</span>해외 메신저, 동영상, SNS까지 평소처럼 써야 한다면 출발 전에 <strong>실제 접속 방식</strong>을 한 번 테스트해두는 편이 안전합니다.</li>
+                                    <li><span class="inline-flex rounded-full bg-white/10 px-2 py-0.5 text-[11px] font-bold text-stone-200 mr-1">Field Tip</span>카메라 번역은 <strong>파파고</strong>, <strong>Apple Translate</strong>, <strong>DeepL</strong> 같은 앱을 미리 깔아두면 메뉴판 해석 속도가 크게 줄어듭니다.</li>
+                                    <li><span class="inline-flex rounded-full bg-white/10 px-2 py-0.5 text-[11px] font-bold text-stone-200 mr-1">Field Tip</span>식당명 검색은 한글보다 <strong>중문 점명</strong>이 훨씬 정확합니다.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div data-briefing-panel="transport" class="briefing-panel hidden space-y-6">
+                        <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
+                            <div class="rounded-2xl border border-purple-400/20 bg-purple-500/10 p-5">
+                                <p class="text-xs font-bold uppercase tracking-[0.2em] text-purple-200 mb-2">Official</p>
+                                <h3 class="text-xl font-black text-white mb-3">대중교통 외국 카드 결제 확대</h3>
+                                <p class="text-sm text-stone-200">상하이는 <strong>2024년 4월 18일</strong>부터 메트로, 버스, 페리 등 대중교통에서 외국 은행카드 결제 범위를 넓혔습니다.</p>
+                                <p class="mt-3 text-xs text-stone-300">모바일 교통 앱을 쓰지 않더라도 카드 기반 백업 수단이 있다는 뜻입니다.</p>
+                            </div>
+                            <div class="rounded-2xl border border-sky-400/20 bg-sky-500/10 p-5">
+                                <p class="text-xs font-bold uppercase tracking-[0.2em] text-sky-200 mb-2">Official</p>
+                                <h3 class="text-xl font-black text-white mb-3">1일권 18위안 / 3일권 45위안</h3>
+                                <p class="text-sm text-stone-200">상하이 공식 여행 가이드북은 메트로 단기 이용권으로 <strong>1일권 18위안</strong>, <strong>3일권 45위안</strong>을 안내합니다.</p>
+                                <p class="mt-3 text-xs text-stone-300">3박 4일 일정에서 도심 위주로 많이 움직이면 계산기가 필요 없다는 점이 장점입니다.</p>
+                            </div>
+                            <div class="rounded-2xl border border-amber-400/20 bg-amber-500/10 p-5">
+                                <p class="text-xs font-bold uppercase tracking-[0.2em] text-amber-200 mb-2">Official</p>
+                                <h3 class="text-xl font-black text-white mb-3">Maglev는 2025-06-14부터 외국 카드 탭 결제</h3>
+                                <p class="text-sm text-stone-200">푸동공항과 롱양루를 잇는 마그레브는 <strong>2025년 6월 14일</strong>부터 Visa, Mastercard, AMEX, JCB 등 외국 카드를 직접 태그해 결제할 수 있습니다.</p>
+                                <p class="mt-3 text-xs text-stone-300">푸동공항 도착 후 가장 빠른 도심 접근 옵션 중 하나입니다.</p>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                            <div class="rounded-2xl border border-white/10 bg-stone-950/50 p-5">
+                                <h4 class="text-lg font-bold text-white mb-3">공항에서 시내로 들어올 때</h4>
+                                <ul class="space-y-2 text-sm text-stone-300">
+                                    <li><strong>푸동공항:</strong> 마그레브 + 메트로 환승, 메트로 Line 2, 공식 택시/공식 승차구역 호출 모두 선택 가능.</li>
+                                    <li><strong>홍차오공항:</strong> 시내와 가깝고 메트로 접근성이 좋습니다. 도심 중심 일정이면 체감상 훨씬 편합니다.</li>
+                                    <li>공항에서는 <strong>호객 차량보다 공식 택시 승강장/공식 호출 구역</strong>을 우선으로 잡는 편이 안전합니다.</li>
+                                </ul>
+                            </div>
+                            <div class="rounded-2xl border border-white/10 bg-stone-950/50 p-5">
+                                <h4 class="text-lg font-bold text-white mb-3">앱 이동 팁</h4>
+                                <ul class="space-y-2 text-sm text-stone-300">
+                                    <li><strong>Shanghai Pass</strong>는 버스, 메트로, 택시, 페리까지 커버하는 관광객용 카드라 앱 결제가 불안한 사람에게 안정적인 백업입니다.</li>
+                                    <li>상하이 공식 여행 자료는 <strong>Didi</strong>를 현지 택시 호출 대표 앱으로 안내합니다.</li>
+                                    <li><span class="inline-flex rounded-full bg-white/10 px-2 py-0.5 text-[11px] font-bold text-stone-200 mr-1">Field Tip</span>지하철은 출퇴근 시간에 보안검색 줄까지 겹쳐 체감 이동시간이 늘어납니다. 공항 이동은 최소 20~30분 버퍼를 두는 편이 안전합니다.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div data-briefing-panel="payment" class="briefing-panel hidden space-y-6">
+                        <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
+                            <div class="rounded-2xl border border-emerald-400/20 bg-emerald-500/10 p-5">
+                                <p class="text-xs font-bold uppercase tracking-[0.2em] text-emerald-200 mb-2">Official</p>
+                                <h3 class="text-xl font-black text-white mb-3">알리페이·위챗은 해외 카드 연동 가능</h3>
+                                <p class="text-sm text-stone-200">상하이 정부 결제 가이드는 Alipay와 WeChat Pay가 <strong>해외 전화번호</strong>와 <strong>해외 카드</strong> 연동을 지원한다고 안내합니다.</p>
+                                <p class="mt-3 text-xs text-stone-300">단, 카드 명의와 앱 실명 정보가 일치해야 연동이 안정적입니다.</p>
+                            </div>
+                            <div class="rounded-2xl border border-orange-400/20 bg-orange-500/10 p-5">
+                                <p class="text-xs font-bold uppercase tracking-[0.2em] text-orange-200 mb-2">Official</p>
+                                <h3 class="text-xl font-black text-white mb-3">3% 수수료 기준은 200위안 초과</h3>
+                                <p class="text-sm text-stone-200">중국 비즈니스 생활 가이드 기준으로, 국제카드를 묶어 QR 결제를 할 때 <strong>단건 200위안 초과</strong> 금액에는 <strong>3% 수수료</strong>가 붙습니다.</p>
+                                <p class="mt-3 text-xs text-stone-300">200위안 이하 거래는 추가 수수료가 면제됩니다.</p>
+                            </div>
+                            <div class="rounded-2xl border border-sky-400/20 bg-sky-500/10 p-5">
+                                <p class="text-xs font-bold uppercase tracking-[0.2em] text-sky-200 mb-2">Official</p>
+                                <h3 class="text-xl font-black text-white mb-3">결제 한도도 확인</h3>
+                                <p class="text-sm text-stone-200">국제카드 바인딩 기준 안내 한도는 <strong>단건 5,000달러</strong>, <strong>연간 50,000달러</strong>입니다.</p>
+                                <p class="mt-3 text-xs text-stone-300">고가 쇼핑, 호텔 보증금, 다인 식사 결제는 한도와 수수료를 같이 보세요.</p>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                            <div class="rounded-2xl border border-white/10 bg-stone-950/50 p-5">
+                                <h4 class="text-lg font-bold text-white mb-3">현금과 카드도 완전히 버리지는 마세요</h4>
+                                <ul class="space-y-2 text-sm text-stone-300">
+                                    <li>상하이 공식 결제 페이지는 <strong>외국 카드 직접 결제</strong>, <strong>현금 인출</strong>, <strong>환전</strong>도 모두 가능하다고 안내합니다.</li>
+                                    <li>공항에는 환전 카운터가 있고, 대부분의 은행 ATM에서 Visa/Mastercard 등 해외 카드로 인출이 가능합니다.</li>
+                                    <li>앱 결제가 막혔을 때를 대비해 <strong>소액 현금</strong>과 <strong>실물 카드</strong>를 함께 들고 가는 편이 안정적입니다.</li>
+                                </ul>
+                            </div>
+                            <div class="rounded-2xl border border-white/10 bg-stone-950/50 p-5">
+                                <h4 class="text-lg font-bold text-white mb-3">실전 결제 팁</h4>
+                                <ul class="space-y-2 text-sm text-stone-300">
+                                    <li><span class="inline-flex rounded-full bg-white/10 px-2 py-0.5 text-[11px] font-bold text-stone-200 mr-1">Field Tip</span>식당이나 마사지숍에서 200위안이 조금 넘는다면, <strong>분할 결제가 가능한지 먼저 확인</strong>한 뒤 나누는 편이 낫습니다.</li>
+                                    <li><span class="inline-flex rounded-full bg-white/10 px-2 py-0.5 text-[11px] font-bold text-stone-200 mr-1">Field Tip</span>처음 결제는 편의점이나 카페처럼 금액이 작은 곳에서 시험해두면 현지에서 덜 당황합니다.</li>
+                                    <li><span class="inline-flex rounded-full bg-white/10 px-2 py-0.5 text-[11px] font-bold text-stone-200 mr-1">Field Tip</span>택시는 QR, 외국 카드, 현금 가능 여부가 차량마다 다를 수 있어 탑승 전 한 번 더 확인하는 편이 좋습니다.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div data-briefing-panel="stay" class="briefing-panel hidden space-y-6">
+                        <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
+                            <div class="rounded-2xl border border-emerald-400/20 bg-emerald-500/10 p-5">
+                                <p class="text-xs font-bold uppercase tracking-[0.2em] text-emerald-200 mb-2">Official</p>
+                                <h3 class="text-xl font-black text-white mb-3">호텔은 숙박 등록을 대신 처리</h3>
+                                <p class="text-sm text-stone-200">상하이 FAQ와 관련 법령 안내에 따르면 호텔, 게스트하우스, 학교 등 정식 숙박시설은 외국인 숙박 등록을 처리합니다.</p>
+                                <p class="mt-3 text-xs text-stone-300">대형 호텔이 상대적으로 수속이 매끄러운 이유가 여기 있습니다.</p>
+                            </div>
+                            <div class="rounded-2xl border border-sky-400/20 bg-sky-500/10 p-5">
+                                <p class="text-xs font-bold uppercase tracking-[0.2em] text-sky-200 mb-2">Official</p>
+                                <h3 class="text-xl font-black text-white mb-3">지인 집·임대 숙소면 24시간 내 등록</h3>
+                                <p class="text-sm text-stone-200">상하이 안내 기준으로 친구 집, 단기 임대 주택, 아파트에 머물면 <strong>도착 24시간 내</strong> 경찰 등록이 필요합니다. 상하이는 온라인 자가신고 시스템도 안내하고 있습니다.</p>
+                                <p class="mt-3 text-xs text-stone-300">따라서 소규모 숙소나 비정형 숙소는 예약 전 외국인 투숙 가능 여부를 먼저 확인하는 편이 좋습니다.</p>
+                            </div>
+                            <div class="rounded-2xl border border-orange-400/20 bg-orange-500/10 p-5">
+                                <p class="text-xs font-bold uppercase tracking-[0.2em] text-orange-200 mb-2">Climate</p>
+                                <h3 class="text-xl font-black text-white mb-3">7~8월은 걷는 여행 난도가 올라갑니다</h3>
+                                <p class="text-sm text-stone-200">기후 평균치 기준으로 상하이의 <strong>7~8월 평균 최고기온은 약 32~33도</strong> 수준이고 습도도 높습니다. 반대로 겨울은 영하권 장기 한파보다 <strong>습한 냉기</strong>가 더 피곤하게 느껴질 수 있습니다.</p>
+                                <p class="mt-3 text-xs text-stone-300">도보 여행 중심이면 보통 <strong>4~5월</strong>, <strong>10~11월</strong>이 훨씬 편합니다.</p>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                            <div class="rounded-2xl border border-white/10 bg-stone-950/50 p-5">
+                                <h4 class="text-lg font-bold text-white mb-3">먹는 법과 생활 감각</h4>
+                                <ul class="space-y-2 text-sm text-stone-300">
+                                    <li><span class="inline-flex rounded-full bg-white/10 px-2 py-0.5 text-[11px] font-bold text-stone-200 mr-1">Field Tip</span>고수를 빼고 싶으면 <strong>不要香菜</strong> (bu yao xiang cai, "부야오 샹차이")를 준비해두면 실패 확률이 크게 줄어듭니다.</li>
+                                    <li><span class="inline-flex rounded-full bg-white/10 px-2 py-0.5 text-[11px] font-bold text-stone-200 mr-1">Field Tip</span>공중 화장실이나 오래된 상가 화장실은 휴지 비치가 들쭉날쭉한 편이라 <strong>포켓 티슈</strong>가 실사용 준비물입니다.</li>
+                                    <li><span class="inline-flex rounded-full bg-white/10 px-2 py-0.5 text-[11px] font-bold text-stone-200 mr-1">Field Tip</span>QR 주문이 많은 식당에서는 메뉴 사진을 가리키며 <strong>这个</strong> ("쩌거", 이거요)만 해도 웬만하면 통합니다.</li>
+                                </ul>
+                            </div>
+                            <div class="rounded-2xl border border-white/10 bg-stone-950/50 p-5">
+                                <h4 class="text-lg font-bold text-white mb-3">체감상 챙길 가치가 큰 준비물</h4>
+                                <ul class="space-y-2 text-sm text-stone-300">
+                                    <li><span class="inline-flex rounded-full bg-white/10 px-2 py-0.5 text-[11px] font-bold text-stone-200 mr-1">Field Tip</span><strong>보조배터리</strong>: 지도, 결제, 번역, 카메라를 다 휴대폰으로 해결하면 배터리 소모가 빠릅니다.</li>
+                                    <li><span class="inline-flex rounded-full bg-white/10 px-2 py-0.5 text-[11px] font-bold text-stone-200 mr-1">Field Tip</span><strong>가습기 요청 / 마스크팩 / 립밤</strong>: 겨울철이나 난방이 강한 객실에서 체감 만족도가 올라갑니다.</li>
+                                    <li><span class="inline-flex rounded-full bg-white/10 px-2 py-0.5 text-[11px] font-bold text-stone-200 mr-1">Field Tip</span><strong>샤워기 필터</strong>, <strong>마스크</strong>: 수질이나 공기질에 민감한 사람에게는 체감 차이가 큽니다.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div data-briefing-panel="disney" class="briefing-panel hidden space-y-6">
+                        <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
+                            <div class="rounded-2xl border border-purple-400/20 bg-purple-500/10 p-5">
+                                <p class="text-xs font-bold uppercase tracking-[0.2em] text-purple-200 mb-2">Official</p>
+                                <h3 class="text-xl font-black text-white mb-3">가격은 날짜별 변동, 30일 달력으로 확인</h3>
+                                <p class="text-sm text-stone-200">상하이 디즈니 리조트는 <strong>2025년 10월 중순</strong>부터 세분화된 다단계 가격 구조를 운영 중이며, <strong>30일 롤링 가격 달력</strong>을 공식 채널에서 제공합니다.</p>
+                                <p class="mt-3 text-xs text-stone-300">공식 발표상 엔트리 티어와 최고 티어는 각각 <strong>475위안</strong>, <strong>799위안</strong>을 유지합니다.</p>
+                            </div>
+                            <div class="rounded-2xl border border-emerald-400/20 bg-emerald-500/10 p-5">
+                                <p class="text-xs font-bold uppercase tracking-[0.2em] text-emerald-200 mb-2">Official</p>
+                                <h3 class="text-xl font-black text-white mb-3">외부 음식 반입은 가능하되 조건이 있습니다</h3>
+                                <p class="text-sm text-stone-200">리조트 규정 기준으로 개인이 먹을 외부 음식과 음료는 반입 가능하지만, <strong>가열·재가열·냉장 보관·온도 유지가 필요하거나 냄새가 강한 음식</strong>은 반입할 수 없습니다.</p>
+                                <p class="mt-3 text-xs text-stone-300">즉, 샌드위치·빵·과자·생수처럼 바로 먹는 형태가 안전합니다.</p>
+                            </div>
+                            <div class="rounded-2xl border border-orange-400/20 bg-orange-500/10 p-5">
+                                <p class="text-xs font-bold uppercase tracking-[0.2em] text-orange-200 mb-2">Inference</p>
+                                <h3 class="text-xl font-black text-white mb-3">가장 효율적인 날짜 고르는 법</h3>
+                                <p class="text-sm text-stone-200">공식 자료는 가격이 수요 예측을 반영한다고 설명합니다. 따라서 <strong>달력상 낮은 가격대 날짜</strong>를 먼저 고르면 상대적으로 덜 붐빌 가능성이 높다고 볼 수 있습니다.</p>
+                                <p class="mt-3 text-xs text-stone-300">다만 이는 공식 혼잡도 표가 아니라 <strong>가격 구조에서 합리적으로 추론한 내용</strong>입니다.</p>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                            <div class="rounded-2xl border border-white/10 bg-stone-950/50 p-5">
+                                <h4 class="text-lg font-bold text-white mb-3">실전 준비</h4>
+                                <ul class="space-y-2 text-sm text-stone-300">
+                                    <li><span class="inline-flex rounded-full bg-white/10 px-2 py-0.5 text-[11px] font-bold text-stone-200 mr-1">Field Tip</span>파크 내 식비가 높게 느껴지면 허용 범위 안의 간단한 간식과 물을 챙기는 편이 효율적입니다.</li>
+                                    <li><span class="inline-flex rounded-full bg-white/10 px-2 py-0.5 text-[11px] font-bold text-stone-200 mr-1">Field Tip</span>머리띠나 코디 소품은 현장보다 미리 사는 쪽이 보통 저렴합니다.</li>
+                                    <li><span class="inline-flex rounded-full bg-white/10 px-2 py-0.5 text-[11px] font-bold text-stone-200 mr-1">Field Tip</span>디즈니 일정은 상하이 시내 도보 일정과 같은 날에 과하게 겹치지 않는 편이 좋습니다. 체력 소모가 큽니다.</li>
+                                </ul>
+                            </div>
+                            <div class="rounded-2xl border border-white/10 bg-stone-950/50 p-5">
+                                <h4 class="text-lg font-bold text-white mb-3">공식 확인 링크</h4>
+                                <ul class="space-y-2 text-sm text-stone-300">
+                                    <li><a class="text-amber-200 hover:text-amber-100 font-semibold break-all" href="https://www.shanghaidisneyresort.com/en/" target="_blank" rel="noopener noreferrer">상하이 디즈니 리조트 공식 홈페이지</a></li>
+                                    <li><a class="text-amber-200 hover:text-amber-100 font-semibold break-all" href="https://www.shanghaidisneyresort.com/en/" target="_blank" rel="noopener noreferrer">상하이 디즈니 공식 티켓·운영정보 확인</a></li>
+                                    <li><a class="text-amber-200 hover:text-amber-100 font-semibold break-all" href="https://shcorporate.shanghaidisneyresort.com/wp-content/uploads/2025/08/Press-Release-Shanghai-Disney-Resort-Welcomes-a-Golden-Autumn-With-All-Things-Duffy-and-Friends-a-Wicked-Fun-Halloween-and-Holiday-Celebrations.pdf" target="_blank" rel="noopener noreferrer">2025년 8월 가격 구조 공식 보도자료</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="rounded-2xl border border-white/10 bg-stone-950/60 p-5">
+                    <p class="text-xs font-bold uppercase tracking-[0.2em] text-stone-400 mb-3">검증 출처</p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-3 text-sm">
+                        <a class="rounded-xl border border-white/10 bg-white/5 p-3 hover:bg-white/10 transition-colors" href="https://kr.china-embassy.gov.cn/lsfw/hzlxzyw/zgqz/202511/t20251104_11746485.htm" target="_blank" rel="noopener noreferrer">주한중국대사관: 한국 포함 30일 무비자 공지</a>
+                        <a class="rounded-xl border border-white/10 bg-white/5 p-3 hover:bg-white/10 transition-colors" href="https://en.nia.gov.cn/n147418/n147463/c191530/content.html" target="_blank" rel="noopener noreferrer">NIA: 온라인 입국신고 사기 사이트 주의 및 무료 안내</a>
+                        <a class="rounded-xl border border-white/10 bg-white/5 p-3 hover:bg-white/10 transition-colors" href="https://www.nia.gov.cn/2022cn/files/basic-html/page10.html" target="_blank" rel="noopener noreferrer">NIA 안내서: 입국카드·지문 채취 기준</a>
+                        <a class="rounded-xl border border-white/10 bg-white/5 p-3 hover:bg-white/10 transition-colors" href="https://english.shanghai.gov.cn/cmsres/46/46fb01aff21a41d48bd4ae57be8bbda9/3e350b415280adf5ba42fe7ee7ca866e.pdf" target="_blank" rel="noopener noreferrer">Feel Shanghai 가이드북: SIM, 앱, 교통, 핫라인</a>
+                        <a class="rounded-xl border border-white/10 bg-white/5 p-3 hover:bg-white/10 transition-colors" href="https://english.shanghai.gov.cn/en-UsefulApps/20240223/06d761174b294dad869d395cc3e38382.html" target="_blank" rel="noopener noreferrer">상하이시: Amap 사용 안내</a>
+                        <a class="rounded-xl border border-white/10 bg-white/5 p-3 hover:bg-white/10 transition-colors" href="https://english.shanghai.gov.cn/en-PaymentMethods/20240313/6f4e58272f1a4cea9aec59c518915bdf.html" target="_blank" rel="noopener noreferrer">상하이시: 외국인 결제 수단</a>
+                        <a class="rounded-xl border border-white/10 bg-white/5 p-3 hover:bg-white/10 transition-colors" href="https://english.shanghai.gov.cn/en-FAQs-TalentInShanghai/20231217/eb6fe4559a184ec6b5acd1d5711c039b.html" target="_blank" rel="noopener noreferrer">상하이시 FAQ: 임시 숙소 등록</a>
+                        <a class="rounded-xl border border-white/10 bg-white/5 p-3 hover:bg-white/10 transition-colors" href="https://english.shanghai.gov.cn/en-ArrivalChecklist/20231214/8418f9e06a3248beaa96f8e65331a0b1.html" target="_blank" rel="noopener noreferrer">상하이시: 주거지 등록 온라인 자가신고</a>
+                        <a class="rounded-xl border border-white/10 bg-white/5 p-3 hover:bg-white/10 transition-colors" href="https://english.shanghai.gov.cn/en-Latest-WhatsNew/20240422/5251c321845b4a488723bb51dd23adc2.html" target="_blank" rel="noopener noreferrer">상하이시: 대중교통 외국 카드 결제 확대</a>
+                        <a class="rounded-xl border border-white/10 bg-white/5 p-3 hover:bg-white/10 transition-colors" href="https://english.shanghai.gov.cn/en-Latest-WhatsNew/20250614/a5c7bac93f024324ace770d3275d28b6.html" target="_blank" rel="noopener noreferrer">상하이시: 마그레브 외국 카드 결제</a>
+                        <a class="rounded-xl border border-white/10 bg-white/5 p-3 hover:bg-white/10 transition-colors" href="https://www.timeanddate.com/weather/china/shanghai/climate" target="_blank" rel="noopener noreferrer">Climate reference: Shanghai monthly climate averages</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
         <!-- ===== 여행 체크리스트 섹션 ===== -->
         <section id="checklist" class="scroll-mt-20 bg-gradient-to-b from-sky-50/70 to-white -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 py-16 rounded-3xl border border-sky-100">
             <div class="max-w-6xl mx-auto space-y-14">
@@ -449,9 +744,9 @@
                                 <div>
                                     <h4 class="font-bold text-lg text-stone-800 mb-2">3. 통신 및 데이터</h4>
                                     <div class="space-y-2 text-sm text-stone-700">
-                                        <p>중국 현지 일반 와이파이로는 <strong>카카오톡·유튜브·인스타그램</strong> 차단됨.</p>
-                                        <p><span class="inline-block bg-sky-100 text-sky-700 text-xs font-bold px-2 py-0.5 rounded mr-1">추천</span><strong>로밍 도깨비(이심)</strong> 또는 VPN 포함 유심을 한국에서 미리 구매. 별도 VPN 없이도 한국 앱 사용 가능.</p>
-                                        <p>일반 로밍 이용 시에도 사전 신청 필수.</p>
+                                        <p>상하이 공식 가이드는 출국 전 <strong>국제 로밍 활성화 여부와 요금</strong>을 먼저 통신사에 확인하라고 안내합니다.</p>
+                                        <p><span class="inline-block bg-sky-100 text-sky-700 text-xs font-bold px-2 py-0.5 rounded mr-1">추천</span>공항과 시내에서 <strong>7·15·30일 단기 SIM</strong>을 구입할 수 있고, 해외 번호 그대로 SMS 수신이 가능하면 앱 인증이 편합니다.</p>
+                                        <p>해외 앱 사용이 중요하다면 출국 전에 실제 접속 방식까지 한 번 더 점검하세요.</p>
                                     </div>
                                 </div>
                             </div>
@@ -480,7 +775,7 @@
                                     <h4 class="font-bold text-lg text-stone-800 mb-2">5. 물가 및 결제</h4>
                                     <div class="space-y-2 text-sm text-stone-700">
                                         <p><strong>알리페이 / 위챗페이</strong> 필수. 현금·일반 카드 불가능한 곳이 많음.</p>
-                                        <p><span class="inline-block bg-yellow-100 text-yellow-700 text-xs font-bold px-2 py-0.5 rounded mr-1">절약 팁</span>1회 <strong>200위안 이상 결제 시 3% 수수료</strong> 발생 → 200위안 미만으로 나눠 결제.</p>
+                                        <p><span class="inline-block bg-yellow-100 text-yellow-700 text-xs font-bold px-2 py-0.5 rounded mr-1">절약 팁</span>국제카드 연동 QR 결제는 <strong>단건 200위안 초과 시 3% 수수료</strong>가 붙으므로, 가능한 경우에만 금액을 나눠 결제하는 편이 유리합니다.</p>
                                         <p>물가는 한국 대비 약간 저렴. 식당 가성비 체감 좋음. 택시·지하철 교통비도 저렴한 편.</p>
                                     </div>
                                 </div>
@@ -515,7 +810,7 @@
                                         </div>
                                         <div class="bg-stone-50 rounded-xl p-3 border border-stone-200">
                                             <p class="font-bold text-stone-800 mb-1">🗺️ 고덕지도 (Amap)</p>
-                                            <p class="text-stone-600 text-xs">중국판 네이버 지도. 2026년부터 한국어 지원 가능. 길찾기·지하철·도보 경로 모두 커버.</p>
+                                            <p class="text-stone-600 text-xs">중국 현지 최적화 지도. 앱 전체 영어 지원은 아니지만 <strong>영문 주소 검색</strong>이 가능하고 길찾기·지하철·도보 경로 모두 커버.</p>
                                         </div>
                                         <div class="bg-stone-50 rounded-xl p-3 border border-stone-200">
                                             <p class="font-bold text-stone-800 mb-1">🌐 파파고 (Papago)</p>
@@ -557,8 +852,8 @@
                                     <h4 class="font-bold text-lg text-stone-800 mb-2">9. 입국 심사 & 전자입국신고서</h4>
                                     <div class="space-y-2 text-sm text-stone-700">
                                         <p>초방문 시 기계로 <strong>열 손가락 지문 등록</strong> 필수.</p>
-                                        <p>2026년 기준 무비자 정책 유지. 기존 종이 입국 카드 폐지 → <strong>전자입국신고 제도</strong> 도입.</p>
-                                        <p><span class="inline-block bg-sky-100 text-sky-700 text-xs font-bold px-2 py-0.5 rounded mr-1">핵심</span>출국 <strong>72시간 전</strong>에 온라인으로 미리 작성 후 QR코드 저장. 호텔 주소 등 숙박 정보 숙지 필요.</p>
+                                        <p>2026년 기준 한국 여권은 <strong>30일 이하 무비자</strong> 적용. <strong>2025-11-20</strong>부터 온라인 입국신고가 도입되었고 종이 카드도 현장에서 여전히 사용 가능.</p>
+                                        <p><span class="inline-block bg-sky-100 text-sky-700 text-xs font-bold px-2 py-0.5 rounded mr-1">핵심</span>온라인 작성은 미리 해두면 편하지만, 공식 공지상 <strong>72시간 제한</strong>은 확인되지 않았습니다. 호텔 주소 등 숙박 정보는 반드시 바로 꺼낼 수 있게 저장하세요.</p>
                                     </div>
                                 </div>
                             </div>
@@ -633,9 +928,9 @@
                                 <div>
                                     <h4 class="font-bold text-lg text-stone-800 mb-2">전자입국신고서 도입 <span class="text-xs font-normal text-orange-600 bg-orange-50 px-2 py-0.5 rounded border border-orange-200 ml-1">2026 NEW</span></h4>
                                     <div class="space-y-2 text-sm text-stone-700">
-                                        <p>기존 <strong>종이 입국 카드 폐지</strong> → 온라인 전자입국신고 전환.</p>
-                                        <p>출국 <strong>72시간 전</strong> 온라인 작성 후 <strong>QR 코드</strong> 저장 필수.</p>
-                                        <p>미리 준비해야 입국장에서 우왕좌왕하지 않고 빠르게 통과 가능.</p>
+                                        <p><strong>2025-11-20</strong>부터 온라인 전자입국신고 도입. 종이 카드도 현장에서 사용 가능.</p>
+                                        <p>미리 작성하면 편하지만, 공식 공지상 <strong>72시간 전 필수</strong> 규정은 확인되지 않음.</p>
+                                        <p>숙소 주소와 여권 정보를 바로 제시할 수 있게 저장해두면 입국장에서 훨씬 수월합니다.</p>
                                     </div>
                                 </div>
                             </div>
@@ -646,10 +941,10 @@
                             <div class="flex items-start gap-4">
                                 <div class="text-3xl flex-shrink-0">🗺️</div>
                                 <div>
-                                    <h4 class="font-bold text-lg text-stone-800 mb-2">고덕지도 한국어 지원 <span class="text-xs font-normal text-orange-600 bg-orange-50 px-2 py-0.5 rounded border border-orange-200 ml-1">2026 NEW</span></h4>
+                                    <h4 class="font-bold text-lg text-stone-800 mb-2">고덕지도 검색 팁 <span class="text-xs font-normal text-orange-600 bg-orange-50 px-2 py-0.5 rounded border border-orange-200 ml-1">2026 CHECK</span></h4>
                                     <div class="space-y-2 text-sm text-stone-700">
-                                        <p>고덕지도(Amap)가 <strong>한국어 지원</strong>을 시작해 이전보다 훨씬 편리하게 사용 가능.</p>
-                                        <p>네이버 지도처럼 직관적 UI로 길찾기·대중교통 경로 확인.</p>
+                                        <p>상하이시 공식 안내 기준으로 고덕지도(Amap)는 <strong>앱 전체 영어판은 아니지만 영문 주소 검색</strong>이 가능합니다.</p>
+                                        <p>공항·호텔·맛집은 영문과 중문 주소를 함께 저장해두면 길찾기와 택시 호출 정확도가 높아집니다.</p>
                                     </div>
                                 </div>
                             </div>
@@ -664,7 +959,7 @@
                                     <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 text-sm">
                                         <div class="bg-stone-50 rounded-xl p-4 border border-stone-200">
                                             <p class="font-bold text-stone-800 mb-1">🎫 티켓 예약</p>
-                                            <p class="text-stone-600 text-xs">날짜별 가격 차이 큼. <strong>평일 또는 일요일</strong>을 공략하면 저렴. 약 112,820원 수준(1인 기준).</p>
+                                            <p class="text-stone-600 text-xs">날짜별 가격 차이가 큼. 공식 <strong>30일 가격 달력</strong>을 먼저 보고 방문일을 고르는 편이 가장 정확합니다.</p>
                                         </div>
                                         <div class="bg-stone-50 rounded-xl p-4 border border-stone-200">
                                             <p class="font-bold text-stone-800 mb-1">🧃 먹거리 준비</p>
@@ -1410,12 +1705,40 @@
             }
         }
 
+        function initBriefingTabs() {
+            const buttons = document.querySelectorAll('[data-briefing-tab]');
+            const panels = document.querySelectorAll('[data-briefing-panel]');
+            if (!buttons.length || !panels.length) return;
+
+            function activateTab(tabId) {
+                buttons.forEach((btn) => {
+                    const active = btn.dataset.briefingTab === tabId;
+                    btn.classList.toggle('bg-white', active);
+                    btn.classList.toggle('text-stone-900', active);
+                    btn.classList.toggle('shadow-sm', active);
+                    btn.classList.toggle('bg-white/5', !active);
+                    btn.classList.toggle('text-stone-200', !active);
+                });
+
+                panels.forEach((panel) => {
+                    panel.classList.toggle('hidden', panel.dataset.briefingPanel !== tabId);
+                });
+            }
+
+            buttons.forEach((btn) => {
+                btn.addEventListener('click', () => activateTab(btn.dataset.briefingTab));
+            });
+
+            activateTab(buttons[0].dataset.briefingTab);
+        }
+
         window.onload = () => {
             renderFilters();
             renderGrid();
             initChart();
             showRoute('nanjing');
             initShanghaiAllMap();
+            initBriefingTabs();
         };
     </script>
 </body>
