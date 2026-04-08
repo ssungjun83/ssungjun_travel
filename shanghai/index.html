@@ -4,18 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>상하이 여행·미식 통합 실전 가이드</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <link
-        rel="stylesheet"
-        href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-        integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
-        crossorigin=""
-    >
+    <script src="./assets/vendor/tailwind/tailwind-playcdn.js"></script>
+    <script src="./assets/vendor/chart/chart.umd.js"></script>
+    <link rel="stylesheet" href="./assets/vendor/leaflet/leaflet.css">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap');
         body {
-            font-family: 'Noto Sans KR', sans-serif;
+            font-family: "Noto Sans KR", "PingFang SC", "Microsoft YaHei", "Malgun Gothic", sans-serif;
             background-color: #fcfaf8;
             color: #292524;
         }
@@ -44,6 +38,10 @@
             border: 1px solid #e7e5e4;
             border-radius: 1rem;
             overflow: hidden;
+            background:
+                radial-gradient(circle at top left, rgba(251, 191, 36, 0.2), transparent 35%),
+                radial-gradient(circle at bottom right, rgba(249, 115, 22, 0.14), transparent 32%),
+                linear-gradient(180deg, #fffaf3 0%, #fff7ed 100%);
         }
         .copy-address {
             border: 0;
@@ -75,6 +73,27 @@
         .leaflet-top,
         .leaflet-bottom {
             z-index: 450;
+        }
+        .all-map-box .leaflet-container {
+            background:
+                linear-gradient(180deg, rgba(255, 251, 235, 0.98) 0%, rgba(255, 247, 237, 0.98) 100%),
+                repeating-linear-gradient(90deg, rgba(249, 115, 22, 0.06) 0, rgba(249, 115, 22, 0.06) 1px, transparent 1px, transparent 72px),
+                repeating-linear-gradient(0deg, rgba(249, 115, 22, 0.05) 0, rgba(249, 115, 22, 0.05) 1px, transparent 1px, transparent 72px);
+        }
+        .district-label span {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 999px;
+            padding: 4px 10px;
+            border: 1px solid rgba(194, 65, 12, 0.18);
+            background: rgba(255, 255, 255, 0.92);
+            color: #9a3412;
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 0.02em;
+            white-space: nowrap;
+            box-shadow: 0 8px 20px rgba(41, 37, 36, 0.08);
         }
     </style>
     <!-- Chosen Palette: Warm Neutrals with Subtle Terracotta Accents (Background: #fcfaf8, Text: #292524, Accent: #c2410c) -->
@@ -134,6 +153,20 @@
             </div>
         </div>
     </header>
+
+    <section class="border-b border-orange-100 bg-gradient-to-r from-orange-50 via-amber-50 to-stone-50">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+            <div class="flex flex-col gap-2 rounded-2xl border border-orange-200 bg-white/90 px-5 py-4 shadow-sm md:flex-row md:items-center md:justify-between">
+                <div>
+                    <p class="text-sm font-black uppercase tracking-[0.16em] text-orange-700">China Ready</p>
+                    <p class="mt-1 text-sm text-stone-700">스타일, 차트, 지도, 엑셀 다운로드 스크립트를 이 페이지 내부 파일로 묶었습니다. 중국 본토에서는 <strong>고덕지도 링크를 우선</strong> 사용하고, Google·YouTube 링크는 제한될 수 있습니다.</p>
+                </div>
+                <div class="inline-flex items-center rounded-full bg-orange-100 px-4 py-2 text-sm font-bold text-orange-800">
+                    중국 접속 대응 버전
+                </div>
+            </div>
+        </div>
+    </section>
 
     <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-24">
 
@@ -1066,6 +1099,9 @@
                         주소 엑셀 다운로드
                     </button>
                 </div>
+                <div class="mb-4 rounded-2xl border border-orange-200 bg-orange-50/80 px-4 py-3 text-sm text-stone-700">
+                    중국 현지에서는 구글맵보다 <strong>고덕지도 링크</strong>가 더 안정적입니다. 이 지도 자체는 페이지 안에 포함된 스크립트만으로 동작합니다.
+                </div>
                 <div id="shanghaiAllMap" class="all-map-box"></div>
                 <div class="mt-4 flex flex-wrap gap-3 text-xs text-stone-600">
                     <span class="inline-flex items-center gap-1.5"><span class="h-2.5 w-2.5 rounded-full bg-orange-600 inline-block"></span>맛집</span>
@@ -1077,6 +1113,9 @@
                 </div>
                 <p class="mt-3 text-sm text-stone-500">* 체인점/노점은 검색이 쉬운 대표 지점(또는 대표 권역) 기준으로 표기했습니다.</p>
                 <p class="mt-4 text-sm text-stone-600">아래 아이콘을 누르면 해당 위치로 지도 화면이 이동하고, 같은 팝업이 바로 열립니다.</p>
+                <div class="mt-4 rounded-2xl border border-stone-200 bg-stone-50 px-4 py-3 text-sm text-stone-600">
+                    아래 아이콘을 누르면 해당 위치로 지도가 이동하고, 현지에서 바로 쓸 수 있는 주소와 고덕지도 링크가 함께 열립니다.
+                </div>
                 <div id="allPlaceQuickLinks" class="mt-3 space-y-4"></div>
             </div>
         </section>
@@ -1109,12 +1148,8 @@
         <p class="text-sm">Based on Higaengs + Daily Joy YouTube Travel/Food Guide</p>
     </footer>
 
-    <script
-        src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
-        integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
-        crossorigin=""
-    ></script>
-    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+    <script src="./assets/vendor/leaflet/leaflet.js"></script>
+    <script src="./assets/vendor/xlsx/xlsx.full.min.js"></script>
 
     <script>
         const restaurants = [
@@ -1576,7 +1611,7 @@
                 iconSize: [30, 42],
                 iconAnchor: [15, 41],
                 popupAnchor: [0, -34],
-                shadowUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png',
+                shadowUrl: './assets/vendor/leaflet/marker-shadow.png',
                 shadowSize: [41, 41],
                 shadowAnchor: [13, 41]
             });
@@ -1925,11 +1960,53 @@
             const quickEl = document.getElementById('allPlaceQuickLinks');
             if (!mapEl || !quickEl) return;
 
-            const map = L.map('shanghaiAllMap', { scrollWheelZoom: true });
-            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                maxZoom: 19,
-                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            const map = L.map('shanghaiAllMap', {
+                scrollWheelZoom: true,
+                preferCanvas: true,
+                attributionControl: false
+            });
+            map.setView([31.2304, 121.4737], 11);
+
+            L.rectangle([[31.08, 121.30], [31.33, 121.58]], {
+                color: '#fdba74',
+                weight: 1,
+                fillColor: '#fff7ed',
+                fillOpacity: 0.28,
+                interactive: false
             }).addTo(map);
+
+            L.polyline([
+                [31.278, 121.455],
+                [31.258, 121.470],
+                [31.240, 121.490],
+                [31.222, 121.506],
+                [31.205, 121.525],
+                [31.190, 121.546]
+            ], {
+                color: '#f97316',
+                weight: 3,
+                opacity: 0.35,
+                dashArray: '8 8',
+                interactive: false
+            }).addTo(map);
+
+            [
+                { name: '난징둥루', lat: 31.2385, lng: 121.4908 },
+                { name: '인민광장', lat: 31.2317, lng: 121.4735 },
+                { name: '징안사', lat: 31.2239, lng: 121.4451 },
+                { name: '와이탄', lat: 31.2400, lng: 121.4904 },
+                { name: '루자쭈이', lat: 31.2397, lng: 121.5067 },
+                { name: '푸동공항', lat: 31.1443, lng: 121.8083 }
+            ].forEach((district) => {
+                L.marker([district.lat, district.lng], {
+                    interactive: false,
+                    keyboard: false,
+                    icon: L.divIcon({
+                        className: 'district-label',
+                        html: `<span>${district.name}</span>`
+                    })
+                }).addTo(map);
+            });
 
             const bounds = L.latLngBounds();
             quickEl.innerHTML = '';
@@ -2049,6 +2126,7 @@
             } else {
                 map.setView([31.2304, 121.4737], 11);
             }
+            window.setTimeout(() => map.invalidateSize(), 0);
         }
 
         function initBriefingTabs() {
