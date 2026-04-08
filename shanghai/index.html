@@ -102,6 +102,41 @@
             padding: 4px 10px;
             background: rgba(255, 255, 255, 0.9);
         }
+        .leaflet-tooltip.marker-label {
+            background: rgba(255, 255, 255, 0.96);
+            border-radius: 999px;
+            padding: 5px 10px;
+            border: 1px solid #fed7aa;
+            color: #7c2d12;
+            box-shadow: 0 8px 20px rgba(41, 37, 36, 0.14);
+            font-size: 12px;
+            font-weight: 900;
+            letter-spacing: -0.01em;
+            white-space: nowrap;
+        }
+        .leaflet-tooltip.marker-label::before {
+            display: none;
+        }
+        .leaflet-tooltip.marker-label.marker-label--food {
+            border-color: #fdba74;
+            color: #9a3412;
+        }
+        .leaflet-tooltip.marker-label.marker-label--hotel {
+            border-color: #c4b5fd;
+            color: #5b21b6;
+        }
+        .leaflet-tooltip.marker-label.marker-label--airport {
+            border-color: #93c5fd;
+            color: #1d4ed8;
+        }
+        .leaflet-tooltip.marker-label.marker-label--disney {
+            border-color: #fca5a5;
+            color: #b91c1c;
+        }
+        .leaflet-tooltip.marker-label.marker-label--attraction {
+            border-color: #99f6e4;
+            color: #0f766e;
+        }
     </style>
     <!-- Chosen Palette: Warm Neutrals with Subtle Terracotta Accents (Background: #fcfaf8, Text: #292524, Accent: #c2410c) -->
     <!-- Application Structure Plan: The SPA uses a dashboard-style, thematic layout to break away from the linear markdown format. It starts with an engaging header, followed by a 'Travel Essentials' quick-reference card section. The core is an interactive 'Restaurant Explorer' with category filters (Noodles, Meat, Dimsum, etc.) to allow users to find what they crave, rather than forcing them to read chronologically. A dedicated 'History' section uses Chart.js to visually emphasize the age of the traditional restaurants. Finally, a 'Route Planner' section organizes places geographically. This structure prioritizes user goals (finding specific food, planning routes) over the source report's chronological 'Part 1/Part 2' split. -->
@@ -1545,6 +1580,33 @@
             return escapeHtml(value).replace(/`/g, '&#96;');
         }
 
+        function shortenMapLabel(value) {
+            const text = String(value || '').trim();
+            if (text.length <= 12) return text;
+            return `${text.slice(0, 11)}…`;
+        }
+
+        function getMarkerLabelPlacement(point, index) {
+            const directionCycle = point.type === 'food'
+                ? ['right', 'top', 'bottom', 'left']
+                : ['right', 'left', 'top', 'bottom'];
+            const direction = directionCycle[index % directionCycle.length];
+            const offsets = {
+                right: [18 + ((index % 3) * 2), 0],
+                left: [-18 - ((index % 3) * 2), 0],
+                top: [0, -18 - ((index % 2) * 2)],
+                bottom: [0, 18 + ((index % 2) * 2)]
+            };
+
+            return {
+                direction,
+                offset: L.point(offsets[direction][0], offsets[direction][1]),
+                opacity: 1,
+                permanent: true,
+                className: `marker-label marker-label--${point.type || 'food'}`
+            };
+        }
+
         function buildCopyAddressLine(label, text, extraClass = 'text-xs text-stone-500') {
             const raw = (text || '').trim();
             const safeText = escapeHtml(raw || '-');
@@ -2051,7 +2113,7 @@
             });
             specialPlaces.forEach((p) => mapPoints.push(p));
 
-            mapPoints.forEach((p) => {
+            mapPoints.forEach((p, index) => {
                 const style = mapCategoryStyle[p.type] || mapCategoryStyle.food;
                 const searchKeyword = `${p.name} ${p.cn || p.en || 'Shanghai'}`;
                 const amapUrl = `https://uri.amap.com/search?keyword=${encodeURIComponent(searchKeyword)}&city=上海`;
@@ -2075,6 +2137,10 @@
                     icon: getCategoryPinIcon(p.type)
                 }).addTo(map);
                 marker.bindPopup(popupHtml);
+                marker.bindTooltip(
+                    escapeHtml(shortenMapLabel(p.name)),
+                    getMarkerLabelPlacement(p, index)
+                );
                 bounds.extend([p.lat, p.lng]);
                 markersById[p.id] = marker;
             });
