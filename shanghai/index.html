@@ -1085,14 +1085,14 @@
             <div class="max-w-6xl mx-auto space-y-10">
                 <div class="text-center">
                     <h2 class="text-3xl md:text-4xl font-black text-stone-800 mb-4">🗣️ 상하이 실전 여행 회화</h2>
-                    <p class="text-stone-600 max-w-3xl mx-auto">공항, 택시, 식당, 결제처럼 여행 중 바로 쓰게 되는 표현만 모았습니다. <strong>발음 듣기</strong>를 누르면 브라우저에서 중국어 음성을 재생하고, <strong>문장 복사</strong>를 누르면 바로 클립보드로 복사할 수 있습니다.</p>
+                    <p class="text-stone-600 max-w-3xl mx-auto">공항, 택시, 식당, 결제처럼 여행 중 바로 쓰게 되는 표현만 모았습니다. <strong>현지인에게 들려주기</strong>를 누르면 브라우저에서 중국어 음성을 재생하고, <strong>문장 복사</strong>를 누르면 바로 클립보드로 복사할 수 있습니다.</p>
                 </div>
 
                 <div class="bg-white rounded-2xl border border-stone-200 p-5 shadow-sm">
                     <div class="flex flex-wrap items-center justify-between gap-3">
                         <div>
                             <p class="text-sm font-bold text-stone-800">상황별로 바로 찾기</p>
-                            <p class="mt-1 text-sm text-stone-500">중국어 음성은 브라우저/기기 설치 음성에 따라 다르게 들릴 수 있습니다.</p>
+                            <p class="mt-1 text-sm text-stone-500">중국어 음성은 브라우저/기기 설치 음성에 따라 다르게 들릴 수 있습니다. 기사, 직원, 식당 사장님에게 화면을 보여주며 바로 눌러 들려주는 방식으로 쓰면 가장 편합니다.</p>
                         </div>
                         <div id="phraseFilterContainer" class="flex flex-wrap gap-2"></div>
                     </div>
@@ -1385,29 +1385,107 @@
             malls: '대형 쇼핑몰권',
             all: '시내 전역'
         };
-        const travelPhraseCategories = ['전체', '공항/입국', '택시/길찾기', '식당/주문', '결제/쇼핑', '도움요청'];
         const travelPhrases = [
-            { category: '공항/입국', icon: '🛂', title: '입국 심사', zh: '我来旅游。', pinyin: 'Wǒ lái lǚyóu.', korean: '워 라이 뤼여우', meaning: '관광하러 왔어요.', tip: '입국 심사에서 방문 목적을 말할 때 가장 짧고 무난합니다.' },
-            { category: '공항/입국', icon: '🏨', title: '숙소 보여주기', zh: '这是我酒店的地址。', pinyin: 'Zhè shì wǒ jiǔdiàn de dìzhǐ.', korean: '쩌 스 워 지우디앤 더 디즈', meaning: '이게 제 호텔 주소예요.', tip: '입국 심사나 택시 기사에게 주소를 보여줄 때 같이 쓰면 편합니다.' },
-            { category: '공항/입국', icon: '🧳', title: '수하물 문의', zh: '请问行李转盘在哪里？', pinyin: 'Qǐngwèn xíngli zhuǎnpán zài nǎli?', korean: '칭원 싱리 좐판 짜이 날리', meaning: '수하물 찾는 곳이 어디예요?', tip: '공항 직원에게 길을 물을 때 유용합니다.' },
+            { category: '공항/입국', icon: '🛂', title: '입국 목적 말하기', zh: '我来旅游。', pinyin: 'Wǒ lái lǚyóu.', korean: '워 라이 뤼여우', meaning: '관광하러 왔어요.', tip: '입국 심사에서 방문 목적을 짧고 분명하게 말할 때 씁니다.' },
+            { category: '공항/입국', icon: '🏨', title: '호텔 주소 보여주기', zh: '这是我酒店的地址。', pinyin: 'Zhè shì wǒ jiǔdiàn de dìzhǐ.', korean: '쩌 스 워 지우디앤 더 디즈', meaning: '이게 제 호텔 주소예요.', tip: '입국 심사, 공항 안내, 택시 기사에게 보여줄 때 가장 실전적입니다.' },
+            { category: '공항/입국', icon: '🧳', title: '수하물 찾는 곳 묻기', zh: '请问行李转盘在哪里？', pinyin: 'Qǐngwèn xíngli zhuǎnpán zài nǎli?', korean: '칭원 싱리 좐판 짜이 날리', meaning: '수하물 찾는 곳이 어디예요?', tip: '공항 직원에게 물을 때 유용합니다.' },
+            { category: '공항/입국', icon: '📄', title: '전자 입국신고 보여주기', zh: '这是我的入境申报。', pinyin: 'Zhè shì wǒ de rùjìng shēnbào.', korean: '쩌 스 워 더 루징 션바오', meaning: '이게 제 입국 신고예요.', tip: '휴대폰 화면을 보여주면서 쓰기 좋습니다.' },
+            { category: '공항/입국', icon: '🛄', title: '짐이 안 보여요', zh: '我的行李还没出来。', pinyin: 'Wǒ de xíngli hái méi chūlái.', korean: '워 더 싱리 하이 메이 추라이', meaning: '제 짐이 아직 안 나왔어요.', tip: '수하물 문제를 문의할 때 바로 쓸 수 있습니다.' },
+            { category: '공항/입국', icon: '📱', title: '와이파이 문의', zh: '机场有免费无线网吗？', pinyin: 'Jīchǎng yǒu miǎnfèi wúxiànwǎng ma?', korean: '지창 요우 미앤페이 우시앤왕 마', meaning: '공항에 무료 와이파이 있나요?', tip: '공항, 호텔, 카페 어디서든 응용 가능합니다.' },
+
             { category: '택시/길찾기', icon: '🚕', title: '택시 목적지', zh: '请带我去这里。', pinyin: 'Qǐng dài wǒ qù zhèlǐ.', korean: '칭 따이 워 취 쩔리', meaning: '여기로 데려다 주세요.', tip: '지도 화면이나 주소를 같이 보여주면 가장 정확합니다.' },
             { category: '택시/길찾기', icon: '📍', title: '여기서 내려주세요', zh: '请在这里停车。', pinyin: 'Qǐng zài zhèlǐ tíngchē.', korean: '칭 짜이 쩔리 팅처', meaning: '여기서 세워 주세요.', tip: '택시나 차량 호출 서비스에서 하차 지점을 조정할 때 좋습니다.' },
-            { category: '택시/길찾기', icon: '🚇', title: '지하철역 찾기', zh: '地铁站怎么走？', pinyin: 'Dìtiě zhàn zěnme zǒu?', korean: '띠티에 잔 전머 조우', meaning: '지하철역은 어떻게 가요?', tip: '길 묻는 기본 문장입니다.' },
-            { category: '택시/길찾기', icon: '🧭', title: '가까운지 묻기', zh: '这里离外滩远吗？', pinyin: 'Zhèlǐ lí Wàitān yuǎn ma?', korean: '쩔리 리 와이탄 위앤 마', meaning: '여기서 와이탄까지 멀어요?', tip: '목적지만 바꿔 넣으면 여러 곳에 응용됩니다.' },
+            { category: '택시/길찾기', icon: '🧭', title: '길 묻기 기본형', zh: '请问怎么去外滩？', pinyin: 'Qǐngwèn zěnme qù Wàitān?', korean: '칭원 전머 취 와이탄', meaning: '와이탄은 어떻게 가요?', tip: '목적지만 바꾸면 거의 모든 길찾기에 응용됩니다.' },
+            { category: '택시/길찾기', icon: '🗺️', title: '지도 보며 확인', zh: '是在这附近吗？', pinyin: 'Shì zài zhè fùjìn ma?', korean: '스 짜이 쩌 푸진 마', meaning: '이 근처가 맞나요?', tip: '택시 기사나 행인에게 위치를 확인할 때 좋습니다.' },
+            { category: '택시/길찾기', icon: '📏', title: '멀어요?', zh: '这里离南京东路远吗？', pinyin: 'Zhèlǐ lí Nánjīng Dōnglù yuǎn ma?', korean: '쩔리 리 난징 똥루 위앤 마', meaning: '여기서 난징동루까지 멀어요?', tip: '관광지 이름만 바꾸면 바로 활용됩니다.' },
+            { category: '택시/길찾기', icon: '↩️', title: '잘못 온 것 같아요', zh: '好像走错了。', pinyin: 'Hǎoxiàng zǒu cuò le.', korean: '하오시앙 조우 추어 러', meaning: '길을 잘못 든 것 같아요.', tip: '택시, 도보, 환승 중 모두 쓸 수 있습니다.' },
+
+            { category: '교통/지하철', icon: '🚇', title: '지하철역 찾기', zh: '地铁站怎么走？', pinyin: 'Dìtiě zhàn zěnme zǒu?', korean: '띠티에 잔 전머 조우', meaning: '지하철역은 어떻게 가요?', tip: '길 묻는 기본 문장입니다.' },
+            { category: '교통/지하철', icon: '🎫', title: '이 노선 맞나요?', zh: '请问这条线到人民广场吗？', pinyin: 'Qǐngwèn zhè tiáo xiàn dào Rénmín Guǎngchǎng ma?', korean: '칭원 쩌 티아오 시앤 따오 런민 광창 마', meaning: '이 노선이 인민광장 가나요?', tip: '역 이름만 바꿔서 노선 확인에 쓰기 좋습니다.' },
+            { category: '교통/지하철', icon: '🔄', title: '환승 어디서 해요?', zh: '在哪里换乘？', pinyin: 'Zài nǎli huànchéng?', korean: '짜이 날리 환청', meaning: '어디서 환승해요?', tip: '지하철역 직원에게 묻기 좋은 짧은 문장입니다.' },
+            { category: '교통/지하철', icon: '🚉', title: '출구 묻기', zh: '请问几号出口？', pinyin: 'Qǐngwèn jǐ hào chūkǒu?', korean: '칭원 지 하오 추커우', meaning: '몇 번 출구예요?', tip: '상하이에서는 출구 번호가 정말 중요합니다.' },
+            { category: '교통/지하철', icon: '⏰', title: '막차 확인', zh: '末班车几点？', pinyin: 'Mòbānchē jǐ diǎn?', korean: '모반처 지 디앤', meaning: '막차가 몇 시예요?', tip: '밤 늦게 이동할 때 유용합니다.' },
+            { category: '교통/지하철', icon: '🚏', title: '버스 정류장 찾기', zh: '公交车站在哪里？', pinyin: 'Gōngjiāochē zhàn zài nǎli?', korean: '공지아오처 잔 짜이 날리', meaning: '버스 정류장이 어디예요?', tip: '버스 이용 시 가장 기본적인 문장입니다.' },
+
+            { category: '호텔/체크인', icon: '🏨', title: '체크인할게요', zh: '我想办理入住。', pinyin: 'Wǒ xiǎng bànlǐ rùzhù.', korean: '워 시앙 빤리 루주', meaning: '체크인하고 싶어요.', tip: '호텔 프런트에서 가장 먼저 쓰는 문장입니다.' },
+            { category: '호텔/체크인', icon: '🛏️', title: '예약 확인', zh: '我有预订。', pinyin: 'Wǒ yǒu yùdìng.', korean: '워 요우 위딩', meaning: '예약이 있어요.', tip: '여권과 예약 화면을 같이 보여주면 가장 빠릅니다.' },
+            { category: '호텔/체크인', icon: '🧼', title: '수건 더 주세요', zh: '请再给我两条毛巾。', pinyin: 'Qǐng zài gěi wǒ liǎng tiáo máojīn.', korean: '칭 짜이 게이 워 리앙 티아오 마오진', meaning: '수건 두 장 더 주세요.', tip: '수량만 바꾸면 생수, 베개 등에도 응용됩니다.' },
+            { category: '호텔/체크인', icon: '💧', title: '가습기 있나요?', zh: '请问有加湿器吗？', pinyin: 'Qǐngwèn yǒu jiāshīqì ma?', korean: '칭원 요우 지아스치 마', meaning: '가습기 있나요?', tip: '겨울철 상하이 호텔에서 체감상 아주 유용합니다.' },
+            { category: '호텔/체크인', icon: '🧹', title: '청소 부탁', zh: '请帮我打扫房间。', pinyin: 'Qǐng bāng wǒ dǎsǎo fángjiān.', korean: '칭 빵 워 다사오 팡지앤', meaning: '방 청소 부탁해요.', tip: '하우스키핑 요청용입니다.' },
+            { category: '호텔/체크인', icon: '🔌', title: '충전기 빌릴 수 있나요?', zh: '可以借我充电器吗？', pinyin: 'Kěyǐ jiè wǒ chōngdiànqì ma?', korean: '커이 지에 워 총디앤치 마', meaning: '충전기 빌릴 수 있나요?', tip: '호텔 프런트에서 자주 통하는 요청입니다.' },
+
             { category: '식당/주문', icon: '🥢', title: '주문 시작', zh: '我要这个。', pinyin: 'Wǒ yào zhège.', korean: '워 야오 쪄거', meaning: '이거 주세요.', tip: '사진이나 메뉴를 가리키면서 쓰면 거의 다 통합니다.' },
             { category: '식당/주문', icon: '🌿', title: '고수 빼기', zh: '不要香菜。', pinyin: 'Bú yào xiāngcài.', korean: '부야오 샹차이', meaning: '고수 빼주세요.', tip: '상하이 식당에서 가장 실전적인 문장 중 하나입니다.' },
             { category: '식당/주문', icon: '🌶️', title: '맵기 조절', zh: '不要太辣。', pinyin: 'Bú yào tài là.', korean: '부야오 타이 라', meaning: '너무 맵지 않게 해주세요.', tip: '훠궈, 면, 볶음류 주문 때 유용합니다.' },
             { category: '식당/주문', icon: '🥣', title: '추천 메뉴 묻기', zh: '你们推荐什么？', pinyin: 'Nǐmen tuījiàn shénme?', korean: '니먼 퉤이지앤 션머', meaning: '뭐가 제일 추천이에요?', tip: '로컬 식당에서 실패 확률을 줄이기 좋습니다.' },
+            { category: '식당/주문', icon: '🍚', title: '밥 하나 추가', zh: '再来一碗米饭。', pinyin: 'Zài lái yì wǎn mǐfàn.', korean: '짜이 라이 이 완 미판', meaning: '밥 한 공기 더 주세요.', tip: '면, 공깃밥, 음료 모두 같은 패턴으로 바꿔 쓸 수 있습니다.' },
+            { category: '식당/주문', icon: '🥤', title: '차가운 물 있나요?', zh: '有冰水吗？', pinyin: 'Yǒu bīngshuǐ ma?', korean: '요우 빙쉐이 마', meaning: '찬물 있나요?', tip: '중국 식당은 따뜻한 물이 기본인 경우가 많습니다.' },
+            { category: '식당/주문', icon: '🚫', title: '이건 빼 주세요', zh: '这个不要。', pinyin: 'Zhège bú yào.', korean: '쩌거 부야오', meaning: '이건 빼 주세요.', tip: '토핑, 사이드, 특정 재료를 뺄 때 편합니다.' },
+            { category: '식당/주문', icon: '📦', title: '포장해 주세요', zh: '请帮我打包。', pinyin: 'Qǐng bāng wǒ dǎbāo.', korean: '칭 빵 워 다바오', meaning: '포장해 주세요.', tip: '남은 음식 포장 요청용입니다.' },
             { category: '식당/주문', icon: '🧾', title: '계산 요청', zh: '买单。', pinyin: 'Mǎidān.', korean: '마이단', meaning: '계산할게요.', tip: '중국 식당에서 가장 많이 쓰는 계산 표현입니다.' },
+            { category: '식당/주문', icon: '🥜', title: '알레르기 말하기', zh: '我对花生过敏。', pinyin: 'Wǒ duì huāshēng guòmǐn.', korean: '워 뚜이 화성 꾸어민', meaning: '저는 땅콩 알레르기가 있어요.', tip: '알레르기 대상만 바꾸면 매우 실용적입니다.' },
+
             { category: '결제/쇼핑', icon: '💳', title: '카드 결제 가능?', zh: '可以刷卡吗？', pinyin: 'Kěyǐ shuākǎ ma?', korean: '커이 솨카 마', meaning: '카드 결제 되나요?', tip: '실물 카드 결제 가능 여부를 확인할 때 씁니다.' },
             { category: '결제/쇼핑', icon: '📱', title: 'QR 결제 가능?', zh: '可以扫码支付吗？', pinyin: 'Kěyǐ sǎomǎ zhīfù ma?', korean: '커이 사오마 즈푸 마', meaning: 'QR 결제 되나요?', tip: '알리페이/위챗페이 결제 여부 확인용입니다.' },
             { category: '결제/쇼핑', icon: '💸', title: '너무 비싸요', zh: '有点贵。', pinyin: 'Yǒudiǎn guì.', korean: '요우디앤 꾸이', meaning: '조금 비싸네요.', tip: '시장이나 흥정 가능한 상황에서만 쓰는 편이 좋습니다.' },
-            { category: '결제/쇼핑', icon: '🛍️', title: '이거 다른 색 있나요?', zh: '这个有别的颜色吗？', pinyin: 'Zhège yǒu bié de yánsè ma?', korean: '쩌거 요우 비에 더 옌써 마', meaning: '이거 다른 색 있나요?', tip: '기념품, 의류, 잡화 쇼핑에서 바로 써먹기 좋습니다.' },
+            { category: '결제/쇼핑', icon: '🛍️', title: '다른 색 있나요?', zh: '这个有别的颜色吗？', pinyin: 'Zhège yǒu bié de yánsè ma?', korean: '쩌거 요우 비에 더 옌써 마', meaning: '이거 다른 색 있나요?', tip: '기념품, 의류, 잡화 쇼핑에서 바로 써먹기 좋습니다.' },
+            { category: '결제/쇼핑', icon: '📏', title: '다른 사이즈 있나요?', zh: '有别的尺寸吗？', pinyin: 'Yǒu bié de chǐcùn ma?', korean: '요우 비에 더 츠춘 마', meaning: '다른 사이즈 있나요?', tip: '의류나 액세서리 구매 때 유용합니다.' },
+            { category: '결제/쇼핑', icon: '🧾', title: '영수증 주세요', zh: '请给我小票。', pinyin: 'Qǐng gěi wǒ xiǎopiào.', korean: '칭 게이 워 샤오피아오', meaning: '영수증 주세요.', tip: '환불, 정산, 출장 증빙용으로 유용합니다.' },
+            { category: '결제/쇼핑', icon: '↔️', title: '따로 결제할게요', zh: '我们分开付。', pinyin: 'Wǒmen fēnkāi fù.', korean: '워먼 펀카이 푸', meaning: '각자 따로 계산할게요.', tip: '수수료를 피하려고 분할 결제할 때도 쓸 수 있습니다.' },
+            { category: '결제/쇼핑', icon: '🎁', title: '포장해 주세요', zh: '请帮我包装一下。', pinyin: 'Qǐng bāng wǒ bāozhuāng yíxià.', korean: '칭 빵 워 바오좡 이샤', meaning: '포장 좀 해 주세요.', tip: '선물 구매 때 특히 많이 씁니다.' },
+
+            { category: '카페/배달', icon: '☕', title: '당도 줄이기', zh: '少糖。', pinyin: 'Shǎo táng.', korean: '샤오 탕', meaning: '당도 적게 해 주세요.', tip: '밀크티, 과일차, 음료 주문 때 매우 자주 씁니다.' },
+            { category: '카페/배달', icon: '🧊', title: '얼음 적게', zh: '少冰。', pinyin: 'Shǎo bīng.', korean: '샤오 빙', meaning: '얼음 적게 해 주세요.', tip: '중국 음료 주문에서 거의 필수 표현입니다.' },
+            { category: '카페/배달', icon: '🥡', title: '배달 주소 확인', zh: '可以送到这个地址吗？', pinyin: 'Kěyǐ sòng dào zhège dìzhǐ ma?', korean: '커이 쏭 따오 쩌거 디즈 마', meaning: '이 주소로 배달 가능해요?', tip: '메이투안, 어러머 주문 시 주소 확인용입니다.' },
+            { category: '카페/배달', icon: '🚪', title: '문 앞에 놔 주세요', zh: '请放在门口。', pinyin: 'Qǐng fàng zài ménkǒu.', korean: '칭 팡 짜이 먼커우', meaning: '문 앞에 놓아 주세요.', tip: '배달 기사와 메시지로 주고받기 좋습니다.' },
+            { category: '카페/배달', icon: '🥤', title: '뜨거운 음료 말고 차가운 걸로', zh: '我要冰的。', pinyin: 'Wǒ yào bīng de.', korean: '워 야오 빙 더', meaning: '차가운 걸로 주세요.', tip: '음료 온도 선택을 간단히 말할 때 좋습니다.' },
+            { category: '카페/배달', icon: '🧋', title: '테이크아웃 할게요', zh: '我要打包带走。', pinyin: 'Wǒ yào dǎbāo dàizǒu.', korean: '워 야오 다바오 따이조우', meaning: '포장해서 가져갈게요.', tip: '카페와 간식집 모두에서 자주 씁니다.' },
+
+            { category: '관광/사진', icon: '📸', title: '사진 한 장 부탁', zh: '可以帮我拍一张照片吗？', pinyin: 'Kěyǐ bāng wǒ pāi yì zhāng zhàopiàn ma?', korean: '커이 빵 워 파이 이 장 자오피앤 마', meaning: '사진 한 장 찍어주실 수 있나요?', tip: '관광지에서 가장 실전적인 부탁입니다.' },
+            { category: '관광/사진', icon: '🖼️', title: '세로로 찍어 주세요', zh: '请帮我竖着拍。', pinyin: 'Qǐng bāng wǒ shùzhe pāi.', korean: '칭 빵 워 슈저 파이', meaning: '세로로 찍어 주세요.', tip: 'SNS용 사진을 원할 때 바로 통합니다.' },
+            { category: '관광/사진', icon: '👥', title: '저희 같이 나오게 찍어 주세요', zh: '请帮我们一起拍。', pinyin: 'Qǐng bāng wǒmen yìqǐ pāi.', korean: '칭 빵 워먼 이치 파이', meaning: '저희 함께 나오게 찍어 주세요.', tip: '두 명 이상일 때 더 정확합니다.' },
+            { category: '관광/사진', icon: '🎟️', title: '입장권 어디서 사요?', zh: '门票在哪里买？', pinyin: 'Ménpiào zài nǎli mǎi?', korean: '먼피아오 짜이 날리 마이', meaning: '입장권은 어디서 사요?', tip: '전망대, 전시, 관광지에서 공통으로 쓸 수 있습니다.' },
+            { category: '관광/사진', icon: '🕒', title: '언제가 덜 붐벼요?', zh: '什么时候人比较少？', pinyin: 'Shénme shíhou rén bǐjiào shǎo?', korean: '션머 스허우 런 비교 샤오', meaning: '언제가 사람 좀 적어요?', tip: '디즈니, 카페, 관광지 대기 시간 물을 때 좋습니다.' },
+
+            { category: '생활/편의', icon: '🧻', title: '휴지 있나요?', zh: '有纸吗？', pinyin: 'Yǒu zhǐ ma?', korean: '요우 즈 마', meaning: '휴지 있나요?', tip: '공중화장실, 식당 화장실에서 특히 유용합니다.' },
+            { category: '생활/편의', icon: '💧', title: '생수 한 병 주세요', zh: '我要一瓶水。', pinyin: 'Wǒ yào yì píng shuǐ.', korean: '워 야오 이 핑 쉐이', meaning: '생수 한 병 주세요.', tip: '편의점, 카페, 식당 모두에서 바로 씁니다.' },
+            { category: '생활/편의', icon: '🛒', title: '편의점 어디예요?', zh: '便利店在哪里？', pinyin: 'Biànlìdiàn zài nǎli?', korean: '비앤리디앤 짜이 날리', meaning: '편의점이 어디예요?', tip: '숙소 주변에서 가장 자주 찾게 되는 장소입니다.' },
+            { category: '생활/편의', icon: '🧺', title: '세탁 서비스 있나요?', zh: '有洗衣服务吗？', pinyin: 'Yǒu xǐyī fúwù ma?', korean: '요우 시이 푸우 마', meaning: '세탁 서비스 있나요?', tip: '여름철 장기 숙박에서 매우 실용적입니다.' },
+            { category: '생활/편의', icon: '🌡️', title: '에어컨 좀 켜 주세요', zh: '请开一下空调。', pinyin: 'Qǐng kāi yíxià kōngtiáo.', korean: '칭 카이 이샤 콩탸오', meaning: '에어컨 좀 켜 주세요.', tip: '객실, 차량, 식당 자리 요청 모두에 응용됩니다.' },
+
+            { category: '도움요청', icon: '🔁', title: '다시 한 번 말해 주세요', zh: '请再说一遍。', pinyin: 'Qǐng zài shuō yí biàn.', korean: '칭 짜이 슈어 이 비앤', meaning: '다시 한 번 말씀해 주세요.', tip: '한 번 더 정확히 듣고 싶을 때 좋습니다.' },
+            { category: '도움요청', icon: '🔢', title: '숫자만 적어 주세요', zh: '请把数字写下来。', pinyin: 'Qǐng bǎ shùzì xiě xiàlái.', korean: '칭 바 수즈 시에 샤라이', meaning: '숫자만 적어 주세요.', tip: '금액, 시간, 출구 번호 확인에 아주 유용합니다.' },
+            { category: '도움요청', icon: '📍', title: '지도에서 가리켜 주세요', zh: '可以在地图上指给我看吗？', pinyin: 'Kěyǐ zài dìtú shàng zhǐ gěi wǒ kàn ma?', korean: '커이 짜이 띠투 상 즈 게이 워 칸 마', meaning: '지도에서 가리켜 주실 수 있나요?', tip: '말보다 지도 표시가 빠를 때 특히 좋습니다.' },
+
             { category: '도움요청', icon: '🙋', title: '도와주세요', zh: '请帮我一下。', pinyin: 'Qǐng bāng wǒ yíxià.', korean: '칭 빵 워 이샤', meaning: '잠깐 도와주세요.', tip: '직원이나 지나가는 사람에게 정중하게 도움을 요청할 때 씁니다.' },
             { category: '도움요청', icon: '🗣️', title: '천천히 말해 주세요', zh: '请说慢一点。', pinyin: 'Qǐng shuō màn yìdiǎn.', korean: '칭 슈어 만 이디앤', meaning: '조금 천천히 말해 주세요.', tip: '중국어가 빠르게 들릴 때 가장 유용합니다.' },
             { category: '도움요청', icon: '❓', title: '못 알아들었어요', zh: '我听不懂。', pinyin: 'Wǒ tīng bù dǒng.', korean: '워 팅 부 동', meaning: '잘 못 알아들었어요.', tip: '이 문장 하나면 대화 속도를 늦추기 좋습니다.' },
-            { category: '도움요청', icon: '🚻', title: '화장실 어디예요?', zh: '洗手间在哪里？', pinyin: 'Xǐshǒujiān zài nǎli?', korean: '시쇼우지앤 짜이 날리', meaning: '화장실이 어디예요?', tip: '쇼핑몰, 식당, 지하철역 어디서든 바로 필요해집니다.' }
+            { category: '도움요청', icon: '✍️', title: '적어 주세요', zh: '请写下来。', pinyin: 'Qǐng xiě xiàlái.', korean: '칭 시에 샤라이', meaning: '적어 주세요.', tip: '주소, 숫자, 출구 번호를 확인할 때 매우 유용합니다.' },
+            { category: '도움요청', icon: '📱', title: '번역기로 보여줄게요', zh: '我用翻译软件给你看。', pinyin: 'Wǒ yòng fānyì ruǎnjiàn gěi nǐ kàn.', korean: '워 용 판이 롼지앤 게이 니 칸', meaning: '번역 앱으로 보여드릴게요.', tip: '대화가 안 통할 때 분위기를 부드럽게 만듭니다.' },
+            { category: '도움요청', icon: '🚻', title: '화장실 어디예요?', zh: '洗手间在哪里？', pinyin: 'Xǐshǒujiān zài nǎli?', korean: '시쇼우지앤 짜이 날리', meaning: '화장실이 어디예요?', tip: '쇼핑몰, 식당, 지하철역 어디서든 바로 필요해집니다.' },
+
+            { category: '문제해결', icon: '📶', title: '인터넷이 안 돼요', zh: '网络不能用。', pinyin: 'Wǎngluò bù néng yòng.', korean: '왕루어 부 넝 용', meaning: '인터넷이 안 돼요.', tip: '호텔, 카페, 공항에서 바로 쓸 수 있습니다.' },
+            { category: '문제해결', icon: '💳', title: '결제가 안 돼요', zh: '支付失败了。', pinyin: 'Zhīfù shībài le.', korean: '즈푸 스바이 러', meaning: '결제에 실패했어요.', tip: 'QR 결제, 카드 결제 모두에 응용 가능합니다.' },
+            { category: '문제해결', icon: '📱', title: '배터리가 없어요', zh: '我的手机快没电了。', pinyin: 'Wǒ de shǒujī kuài méi diàn le.', korean: '워 더 쇼우지 콰이 메이 띠앤 러', meaning: '휴대폰 배터리가 거의 없어요.', tip: '보조배터리나 충전 장소를 요청할 때 연결해서 쓰기 좋습니다.' },
+            { category: '문제해결', icon: '🔌', title: '충전할 수 있나요?', zh: '可以在这里充电吗？', pinyin: 'Kěyǐ zài zhèlǐ chōngdiàn ma?', korean: '커이 짜이 쩔리 총디앤 마', meaning: '여기서 충전해도 되나요?', tip: '카페, 식당, 호텔 로비에서 유용합니다.' },
+            { category: '문제해결', icon: '🤒', title: '몸이 안 좋아요', zh: '我不太舒服。', pinyin: 'Wǒ bú tài shūfu.', korean: '워 부 타이 수푸', meaning: '몸이 좀 안 좋아요.', tip: '아플 때 가장 무난하게 시작할 수 있는 표현입니다.' },
+            { category: '문제해결', icon: '💊', title: '약국 어디예요?', zh: '药店在哪里？', pinyin: 'Yàodiàn zài nǎli?', korean: '야오디앤 짜이 날리', meaning: '약국이 어디예요?', tip: '감기약, 소화제, 밴드 구매에 유용합니다.' },
+            { category: '문제해결', icon: '🚑', title: '병원 가야 해요', zh: '我需要去医院。', pinyin: 'Wǒ xūyào qù yīyuàn.', korean: '워 쉬야오 취 이위앤', meaning: '병원에 가야 해요.', tip: '호텔 프런트나 주변인에게 바로 도움을 요청할 때 씁니다.' },
+            { category: '문제해결', icon: '📦', title: '물건을 잃어버렸어요', zh: '我丢了东西。', pinyin: 'Wǒ diū le dōngxi.', korean: '워 띠우 러 똥시', meaning: '물건을 잃어버렸어요.', tip: '휴대폰, 지갑, 가방 분실 시 기본 문장입니다.' },
+            { category: '문제해결', icon: '🚓', title: '경찰에 신고하고 싶어요', zh: '我想报警。', pinyin: 'Wǒ xiǎng bàojǐng.', korean: '워 시앙 바오징', meaning: '경찰에 신고하고 싶어요.', tip: '분실, 도난, 사고 상황에 대비한 기본 표현입니다.' },
+            { category: '문제해결', icon: '🧾', title: '잘못 결제된 것 같아요', zh: '好像扣错了。', pinyin: 'Hǎoxiàng kòu cuò le.', korean: '하오시앙 커우 추어 러', meaning: '결제가 잘못된 것 같아요.', tip: '금액이 이상할 때 짧고 빠르게 문제를 알릴 수 있습니다.' },
+            { category: '문제해결', icon: '💰', title: '환불 가능할까요?', zh: '可以退款吗？', pinyin: 'Kěyǐ tuìkuǎn ma?', korean: '커이 퇘이콴 마', meaning: '환불 가능할까요?', tip: '쇼핑, 예매, 중복 결제에 두루 쓰기 좋습니다.' },
+            { category: '문제해결', icon: '📱', title: '휴대폰을 잃어버렸어요', zh: '我的手机丢了。', pinyin: 'Wǒ de shǒujī diū le.', korean: '워 더 쇼우지 띠우 러', meaning: '휴대폰을 잃어버렸어요.', tip: '분실물 센터, 호텔, 경찰 모두에 쓸 수 있습니다.' },
+            { category: '문제해결', icon: '👛', title: '지갑을 잃어버렸어요', zh: '我的钱包丢了。', pinyin: 'Wǒ de qiánbāo diū le.', korean: '워 더 치앤바오 띠우 러', meaning: '지갑을 잃어버렸어요.', tip: '신분증과 결제수단 문제를 같이 설명할 때 유용합니다.' },
+            { category: '문제해결', icon: '🆘', title: '긴급 상황이에요', zh: '现在是紧急情况。', pinyin: 'Xiànzài shì jǐnjí qíngkuàng.', korean: '시앤짜이 스 진지 칭쿠앙', meaning: '지금 긴급 상황이에요.', tip: '상대가 상황 심각도를 바로 알게 해주는 문장입니다.' },
+            { category: '문제해결', icon: '🚑', title: '구급차 불러 주세요', zh: '请帮我叫救护车。', pinyin: 'Qǐng bāng wǒ jiào jiùhùchē.', korean: '칭 빵 워 지아오 지우후처', meaning: '구급차를 불러 주세요.', tip: '응급 상황 대비용 핵심 문장입니다.' },
+
+            { category: '친절표현', icon: '🙏', title: '감사합니다', zh: '谢谢。', pinyin: 'Xièxie.', korean: '시에시에', meaning: '감사합니다.', tip: '짧지만 가장 많이 쓰게 되는 기본 표현입니다.' },
+            { category: '친절표현', icon: '😊', title: '정말 감사합니다', zh: '非常感谢。', pinyin: 'Fēicháng gǎnxiè.', korean: '페이창 간시에', meaning: '정말 감사합니다.', tip: '큰 도움을 받았을 때 더 공손하게 들립니다.' },
+            { category: '친절표현', icon: '🙇', title: '실례합니다 / 죄송합니다', zh: '不好意思。', pinyin: 'Bù hǎoyìsi.', korean: '부 하오이스', meaning: '실례합니다 / 죄송합니다.', tip: '사람을 부를 때, 부딪혔을 때, 부탁 시작할 때 모두 쓸 수 있는 만능 표현입니다.' },
+            { category: '친절표현', icon: '👍', title: '좋아요, 괜찮아요', zh: '可以。', pinyin: 'Kěyǐ.', korean: '커이', meaning: '좋아요 / 괜찮아요.', tip: '짧고 깔끔하게 동의 의사를 전할 때 편합니다.' }
         ];
+        const travelPhraseCategories = ['전체', ...new Set(travelPhrases.map((item) => item.category))];
         let currentPhraseCategory = '전체';
         let preferredChineseVoice = null;
 
@@ -1676,7 +1754,7 @@
                     <p class="mt-4 text-sm text-stone-700"><strong>뜻:</strong> ${escapeHtml(item.meaning)}</p>
                     <p class="mt-2 text-sm text-stone-500">${escapeHtml(item.tip)}</p>
                     <div class="mt-4 flex flex-wrap gap-2">
-                        <button type="button" class="phrase-play inline-flex items-center rounded-full bg-stone-900 px-4 py-2 text-sm font-bold text-white hover:bg-stone-800 transition-colors" data-text="${escapeAttr(item.zh)}">발음 듣기</button>
+                        <button type="button" class="phrase-play inline-flex items-center rounded-full bg-stone-900 px-4 py-2 text-sm font-bold text-white hover:bg-stone-800 transition-colors" data-text="${escapeAttr(item.zh)}">현지인에게 들려주기</button>
                         <button type="button" class="copy-address inline-flex items-center rounded-full border border-stone-300 bg-white px-4 py-2 text-sm font-bold text-stone-700 hover:border-orange-400 hover:text-orange-700 transition-colors" data-copy="${escapeAttr(item.zh)}" title="문장이 복사됩니다">문장 복사</button>
                     </div>
                 </article>
