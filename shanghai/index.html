@@ -1170,6 +1170,16 @@
                     <p class="text-stone-600 max-w-3xl mx-auto">공항, 택시, 식당, 결제처럼 여행 중 바로 쓰게 되는 표현만 모았습니다. <strong>재생</strong>을 누르면 브라우저에서 중국어 음성을 재생하고, <strong>문장 복사</strong>를 누르면 바로 클립보드로 복사할 수 있습니다.</p>
                 </div>
 
+                <div class="bg-white rounded-2xl border border-orange-200 p-5 shadow-sm">
+                    <div class="flex flex-wrap items-center justify-between gap-3">
+                        <div>
+                            <p class="text-sm font-black uppercase tracking-[0.18em] text-orange-700">핵심 회화</p>
+                            <p class="mt-1 text-sm text-stone-500">실제로 바로 써야 하는 문장만 따로 모아둔 빠른 실행 카드입니다.</p>
+                        </div>
+                    </div>
+                    <div id="corePhraseGrid" class="mt-4 grid grid-cols-1 lg:grid-cols-2 gap-5"></div>
+                </div>
+
                 <div class="bg-white rounded-2xl border border-stone-200 p-5 shadow-sm">
                     <div class="flex flex-wrap items-center justify-between gap-3">
                         <div>
@@ -1463,6 +1473,19 @@
             malls: '대형 쇼핑몰권',
             all: '시내 전역'
         };
+        const essentialTravelPhrases = [
+            {
+                category: '호텔/조식',
+                icon: '🍳',
+                title: '조식 하루 추가',
+                zh: '我们想只加一天早餐，就是明天早上的。请帮我们结算4月25日两个人的早餐费用。',
+                pinyin: 'Women xiang zhi jia yi tian zao can, jiu shi mingtian zaoshang de. Qing bang women jie suan si yue ershiwu ri liang ge ren de zao can feiyong.',
+                korean: '워먼 시앙 즈 지아 이 톈 짜오찬, 지우 스 밍톈 짜오상 더. 칭 빵 워먼 지에쑤안 쓰웨 얼스우 르 량거런 더 짜오찬 페이용',
+                meaning: '우리는 내일 아침 조식을 하루만 추가하고 싶어요. 4월 25일 2명 조식 비용 결제해주세요.',
+                tip: '호텔 프런트에서 조식 추가를 요청할 때 바로 보여주거나 재생하면 됩니다.'
+            }
+        ];
+
         const travelPhrases = [
             { category: '공항/입국', icon: '🛂', title: '입국 목적 말하기', zh: '我来旅游。', pinyin: 'Wǒ lái lǚyóu.', korean: '워 라이 뤼여우', meaning: '관광하러 왔어요.', tip: '입국 심사에서 방문 목적을 짧고 분명하게 말할 때 씁니다.' },
             { category: '공항/입국', icon: '🏨', title: '호텔 주소 보여주기', zh: '这是我酒店的地址。', pinyin: 'Zhè shì wǒ jiǔdiàn de dìzhǐ.', korean: '쩌 스 워 지우디앤 더 디즈', meaning: '이게 제 호텔 주소예요.', tip: '입국 심사, 공항 안내, 택시 기사에게 보여줄 때 가장 실전적입니다.' },
@@ -1833,6 +1856,36 @@
             });
         }
 
+        function renderCorePhraseGrid() {
+            const grid = document.getElementById('corePhraseGrid');
+            if (!grid) return;
+
+            grid.innerHTML = essentialTravelPhrases.map((item) => `
+                <article class="rounded-2xl border border-orange-200 bg-orange-50/50 p-5 shadow-sm">
+                    <div class="flex items-start justify-between gap-3 mb-4">
+                        <div class="flex items-center gap-3">
+                            <div class="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-white text-2xl ring-1 ring-orange-200">${item.icon}</div>
+                            <div>
+                                <p class="text-xs font-bold uppercase tracking-[0.18em] text-orange-700">${item.category}</p>
+                                <h3 class="text-lg font-black text-stone-800">${item.title}</h3>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="rounded-2xl bg-white border border-orange-200 p-4">
+                        <p class="text-2xl font-black text-stone-900">${escapeHtml(item.zh)}</p>
+                        <p class="mt-2 text-sm font-semibold text-orange-700">${escapeHtml(item.pinyin)}</p>
+                        <p class="mt-1 text-sm text-stone-600">한국식 발음: <strong>${escapeHtml(item.korean)}</strong></p>
+                    </div>
+                    <p class="mt-4 text-sm text-stone-700"><strong>뜻:</strong> ${escapeHtml(item.meaning)}</p>
+                    <p class="mt-2 text-sm text-stone-500">${escapeHtml(item.tip)}</p>
+                    <div class="mt-4 flex flex-wrap gap-2">
+                        <button type="button" class="phrase-play inline-flex items-center rounded-full bg-stone-900 px-4 py-2 text-sm font-bold text-white hover:bg-stone-800 transition-colors" data-text="${escapeAttr(item.zh)}">재생</button>
+                        <button type="button" class="copy-address inline-flex items-center rounded-full border border-stone-300 bg-white px-4 py-2 text-sm font-bold text-stone-700 hover:border-orange-400 hover:text-orange-700 transition-colors" data-copy="${escapeAttr(item.zh)}" title="문장이 복사됩니다">문장 복사</button>
+                    </div>
+                </article>
+            `).join('');
+        }
+
         function renderPhraseGrid() {
             const grid = document.getElementById('phraseGrid');
             if (!grid) return;
@@ -1871,6 +1924,7 @@
             if ('speechSynthesis' in window) {
                 window.speechSynthesis.onvoiceschanged = pickChineseVoice;
             }
+            renderCorePhraseGrid();
             renderPhraseFilters();
             renderPhraseGrid();
 
