@@ -1103,6 +1103,7 @@
                     중국 현지에서는 구글맵보다 <strong>고덕지도 링크</strong>가 더 안정적입니다. 이 지도 자체는 페이지 안에 포함된 스크립트만으로 동작합니다.
                 </div>
                 <div id="shanghaiAllMap" class="all-map-box"></div>
+                <p class="mt-2 text-[11px] text-stone-400">배경 지도 이미지: © OpenStreetMap contributors</p>
                 <div class="mt-4 flex flex-wrap gap-3 text-xs text-stone-600">
                     <span class="inline-flex items-center gap-1.5"><span class="h-2.5 w-2.5 rounded-full bg-orange-600 inline-block"></span>맛집</span>
                     <span class="inline-flex items-center gap-1.5"><span class="h-2.5 w-2.5 rounded-full bg-violet-600 inline-block"></span>호텔</span>
@@ -1969,9 +1970,9 @@
             });
             map.setView([31.2304, 121.52], 10);
 
-            const overviewBounds = [[31.08, 121.30], [31.33, 121.84]];
+            const overviewBounds = [[31.085, 121.3142], [31.33, 121.84]];
             map.setMaxBounds(overviewBounds);
-            L.imageOverlay('./assets/images/shanghai-overview-map.svg', overviewBounds, {
+            L.imageOverlay('./assets/images/shanghai-osm-static.png', overviewBounds, {
                 interactive: false,
                 opacity: 0.98
             }).addTo(map);
