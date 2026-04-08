@@ -1972,12 +1972,12 @@
                 scrollWheelZoom: true,
                 preferCanvas: true,
                 attributionControl: false,
-                minZoom: 9,
+                minZoom: 10,
                 maxZoom: 14
             });
-            map.setView([31.215, 121.555], 9);
+            map.setView([31.22, 121.54], 10);
 
-            const overviewBounds = [[31.02, 121.235], [31.37, 121.90]];
+            const overviewBounds = [[31.064, 121.28], [31.34, 121.85]];
             map.setMaxBounds(overviewBounds);
             L.imageOverlay('./assets/images/shanghai-osm-static.png', overviewBounds, {
                 interactive: false,
@@ -2128,7 +2128,7 @@
             if (bounds.isValid()) {
                 map.fitBounds(overviewBounds, { padding: [18, 18] });
             } else {
-                map.setView([31.215, 121.555], 9);
+                map.setView([31.22, 121.54], 10);
             }
             window.setTimeout(() => map.invalidateSize(), 0);
         }
