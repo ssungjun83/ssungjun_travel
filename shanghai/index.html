@@ -1965,13 +1965,60 @@
                 preferCanvas: true,
                 attributionControl: false
             });
-            map.setView([31.2304, 121.4737], 11);
+            map.setView([31.2304, 121.52], 10);
 
-            L.rectangle([[31.08, 121.30], [31.33, 121.58]], {
+            const overviewBounds = [[31.08, 121.30], [31.33, 121.84]];
+            const backdropSvg = `
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900">
+                    <defs>
+                        <linearGradient id="bg" x1="0" x2="1" y1="0" y2="1">
+                            <stop offset="0%" stop-color="#fff9ef"/>
+                            <stop offset="100%" stop-color="#ffefd8"/>
+                        </linearGradient>
+                        <linearGradient id="river" x1="0" x2="1">
+                            <stop offset="0%" stop-color="#fde68a"/>
+                            <stop offset="100%" stop-color="#fdba74"/>
+                        </linearGradient>
+                    </defs>
+                    <rect width="1600" height="900" fill="url(#bg)"/>
+                    <g opacity="0.18" stroke="#f59e0b" stroke-width="1">
+                        <path d="M180 120H1420M180 250H1420M180 380H1420M180 510H1420M180 640H1420M180 770H1420"/>
+                        <path d="M220 80V820M420 80V820M620 80V820M820 80V820M1020 80V820M1220 80V820"/>
+                    </g>
+                    <rect x="240" y="130" width="820" height="540" rx="40" fill="#fff7ed" stroke="#fdba74" stroke-width="2"/>
+                    <rect x="1085" y="190" width="250" height="180" rx="26" fill="#fffbeb" stroke="#fcd34d" stroke-width="2"/>
+                    <rect x="1180" y="610" width="210" height="130" rx="24" fill="#fff7ed" stroke="#fb923c" stroke-width="2"/>
+                    <rect x="1340" y="470" width="180" height="100" rx="22" fill="#eff6ff" stroke="#60a5fa" stroke-width="2"/>
+                    <path d="M760 90C720 170 705 250 730 330C755 410 825 455 850 520C875 585 860 660 810 810" fill="none" stroke="url(#river)" stroke-width="86" stroke-linecap="round" opacity="0.88"/>
+                    <path d="M780 105C742 183 730 260 750 330C770 400 840 450 864 520C888 590 875 666 828 800" fill="none" stroke="#f97316" stroke-width="4" stroke-dasharray="14 14" opacity="0.35"/>
+                    <g fill="#9a3412" font-family="Arial, sans-serif" font-weight="700">
+                        <text x="420" y="210" font-size="30">Jing'an / Xintiandi</text>
+                        <text x="445" y="300" font-size="24">People's Square</text>
+                        <text x="600" y="390" font-size="24">Nanjing Rd / Bund</text>
+                        <text x="945" y="330" font-size="28">Lujiazui</text>
+                        <text x="1215" y="690" font-size="24">Disney Resort</text>
+                        <text x="1365" y="528" font-size="22">Pudong Airport</text>
+                        <text x="1110" y="255" font-size="22">Hongqiao</text>
+                    </g>
+                    <g fill="#ffffff" opacity="0.88">
+                        <circle cx="560" cy="350" r="24"/>
+                        <circle cx="700" cy="430" r="24"/>
+                        <circle cx="1010" cy="355" r="24"/>
+                        <circle cx="1285" cy="645" r="24"/>
+                        <circle cx="1400" cy="520" r="24"/>
+                    </g>
+                </svg>
+            `;
+            const backdropUrl = `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(backdropSvg)}`;
+            L.imageOverlay(backdropUrl, overviewBounds, {
+                interactive: false,
+                opacity: 0.98
+            }).addTo(map);
+
+            L.rectangle(overviewBounds, {
                 color: '#fdba74',
                 weight: 1,
-                fillColor: '#fff7ed',
-                fillOpacity: 0.28,
+                fillOpacity: 0,
                 interactive: false
             }).addTo(map);
 
@@ -1989,24 +2036,6 @@
                 dashArray: '8 8',
                 interactive: false
             }).addTo(map);
-
-            [
-                { name: '난징둥루', lat: 31.2385, lng: 121.4908 },
-                { name: '인민광장', lat: 31.2317, lng: 121.4735 },
-                { name: '징안사', lat: 31.2239, lng: 121.4451 },
-                { name: '와이탄', lat: 31.2400, lng: 121.4904 },
-                { name: '루자쭈이', lat: 31.2397, lng: 121.5067 },
-                { name: '푸동공항', lat: 31.1443, lng: 121.8083 }
-            ].forEach((district) => {
-                L.marker([district.lat, district.lng], {
-                    interactive: false,
-                    keyboard: false,
-                    icon: L.divIcon({
-                        className: 'district-label',
-                        html: `<span>${district.name}</span>`
-                    })
-                }).addTo(map);
-            });
 
             const bounds = L.latLngBounds();
             quickEl.innerHTML = '';
