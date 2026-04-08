@@ -19,7 +19,7 @@
             max-width: 800px;
             margin-left: auto;
             margin-right: auto;
-            height: 40vh;
+            height: min(40vh, 400px);
             max-height: 400px;
         }
         .hide-scroll::-webkit-scrollbar {
@@ -34,11 +34,13 @@
         }
         .all-map-box {
             width: 100%;
-            height: 560px;
+            height: clamp(360px, 62vh, 560px);
             border: 1px solid #e7e5e4;
             border-radius: 1rem;
             overflow: hidden;
             background:
+                linear-gradient(180deg, rgba(255, 250, 243, 0.24) 0%, rgba(255, 247, 237, 0.34) 100%),
+                url('./assets/images/shanghai-osm-static.png') center / cover no-repeat,
                 radial-gradient(circle at top left, rgba(251, 191, 36, 0.2), transparent 35%),
                 radial-gradient(circle at bottom right, rgba(249, 115, 22, 0.14), transparent 32%),
                 linear-gradient(180deg, #fffaf3 0%, #fff7ed 100%);
@@ -75,10 +77,7 @@
             z-index: 450;
         }
         .all-map-box .leaflet-container {
-            background:
-                linear-gradient(180deg, rgba(255, 251, 235, 0.98) 0%, rgba(255, 247, 237, 0.98) 100%),
-                repeating-linear-gradient(90deg, rgba(249, 115, 22, 0.06) 0, rgba(249, 115, 22, 0.06) 1px, transparent 1px, transparent 72px),
-                repeating-linear-gradient(0deg, rgba(249, 115, 22, 0.05) 0, rgba(249, 115, 22, 0.05) 1px, transparent 1px, transparent 72px);
+            background: transparent;
         }
         .district-label span {
             display: inline-flex;
@@ -136,6 +135,66 @@
         .leaflet-tooltip.marker-label.marker-label--attraction {
             border-color: #99f6e4;
             color: #0f766e;
+        }
+        .fallback-card {
+            border-radius: 1rem;
+            border: 1px solid #fed7aa;
+            background: linear-gradient(180deg, #fffaf3 0%, #fff7ed 100%);
+            padding: 1rem;
+        }
+        .fallback-bars {
+            display: grid;
+            gap: 0.75rem;
+        }
+        .fallback-bar {
+            display: grid;
+            gap: 0.35rem;
+        }
+        .fallback-bar__head {
+            display: flex;
+            align-items: baseline;
+            justify-content: space-between;
+            gap: 0.75rem;
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: #292524;
+        }
+        .fallback-bar__track {
+            height: 0.7rem;
+            overflow: hidden;
+            border-radius: 999px;
+            background: #fed7aa;
+        }
+        .fallback-bar__value {
+            height: 100%;
+            border-radius: 999px;
+            background: linear-gradient(90deg, #f97316 0%, #ea580c 100%);
+        }
+        .map-fallback-badge {
+            position: absolute;
+            right: 14px;
+            bottom: 14px;
+            z-index: 500;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.96);
+            border: 1px solid rgba(251, 146, 60, 0.4);
+            padding: 0.45rem 0.75rem;
+            font-size: 0.72rem;
+            font-weight: 800;
+            color: #9a3412;
+            box-shadow: 0 10px 20px rgba(41, 37, 36, 0.12);
+        }
+        @media (max-width: 767px) {
+            .chart-container {
+                height: 280px;
+            }
+            .all-map-box {
+                height: 380px;
+            }
+            .leaflet-tooltip.marker-label {
+                font-size: 11px;
+                padding: 4px 8px;
+            }
         }
     </style>
     <!-- Chosen Palette: Warm Neutrals with Subtle Terracotta Accents (Background: #fcfaf8, Text: #292524, Accent: #c2410c) -->
@@ -1604,6 +1663,14 @@
         const travelPhraseCategories = ['전체', ...new Set(travelPhrases.map((item) => item.category))];
         let currentPhraseCategory = '전체';
         let preferredChineseVoice = null;
+        const historyArchiveData = [
+            { name: '달다천', years: 150, menu: '파튀 황위빙' },
+            { name: '왕보허', years: 105, menu: '갈비탕' },
+            { name: '진시지', years: 100, menu: '게살 국수' },
+            { name: '샤오양생전', years: 94, menu: '생전바오' },
+            { name: '타오타오쥐', years: 93, menu: '창펀' },
+            { name: '아샹면관', years: 80, menu: '마장면' }
+        ].sort((a, b) => b.years - a.years);
 
         function escapeHtml(value) {
             return String(value ?? '')
@@ -1952,6 +2019,33 @@
             });
         }
 
+        function renderPhraseFallback() {
+            const coreGrid = document.getElementById('corePhraseGrid');
+            const phraseGrid = document.getElementById('phraseGrid');
+            if (coreGrid) {
+                coreGrid.innerHTML = essentialTravelPhrases.slice(0, 2).map((item) => `
+                    <article class="fallback-card">
+                        <p class="text-xs font-black uppercase tracking-[0.18em] text-orange-700">${escapeHtml(item.category)}</p>
+                        <h3 class="mt-2 text-lg font-black text-stone-800">${escapeHtml(item.title)}</h3>
+                        <p class="mt-3 text-xl font-black text-stone-900">${escapeHtml(item.zh)}</p>
+                        <p class="mt-1 text-sm font-semibold text-orange-700">${escapeHtml(item.pinyin)}</p>
+                        <p class="mt-3 text-sm text-stone-600">${escapeHtml(item.meaning)}</p>
+                    </article>
+                `).join('');
+            }
+            if (phraseGrid) {
+                phraseGrid.innerHTML = travelPhrases.slice(0, 6).map((item) => `
+                    <article class="rounded-2xl border border-stone-200 bg-white p-4 shadow-sm">
+                        <p class="text-xs font-bold uppercase tracking-[0.18em] text-stone-400">${escapeHtml(item.category)}</p>
+                        <h3 class="mt-2 text-base font-black text-stone-800">${escapeHtml(item.title)}</h3>
+                        <p class="mt-3 text-lg font-black text-stone-900">${escapeHtml(item.zh)}</p>
+                        <p class="mt-1 text-sm font-semibold text-orange-700">${escapeHtml(item.pinyin)}</p>
+                        <p class="mt-2 text-sm text-stone-600">${escapeHtml(item.meaning)}</p>
+                    </article>
+                `).join('');
+            }
+        }
+
         function renderFilters() {
             const container = document.getElementById('filter-container');
             container.innerHTML = `<button onclick="setFilter('전체')" class="filter-btn px-4 py-2 rounded-full text-sm font-medium transition-colors ${currentFilter === '전체' ? 'bg-stone-800 text-white' : 'bg-white text-stone-600 border border-stone-200 hover:bg-stone-100'}">전체 보기</button>`;
@@ -2006,23 +2100,25 @@
         }
 
         function initChart() {
-            const ctx = document.getElementById('historyChart').getContext('2d');
-            const historyData = [
-                { name: '선다청', years: 150, menu: '계란 노른자 떡' },
-                { name: '선득내', years: 105, menu: '갈비 떡' },
-                { name: '위싱지', years: 100, menu: '게알 국수' },
-                { name: '따오춘', years: 94, menu: '성젠바오' },
-                { name: '점도덕', years: 93, menu: '홍미 창판' },
-                { name: '위상하이', years: 80, menu: '마장면' }
-            ].sort((a, b) => b.years - a.years);
+            const canvas = document.getElementById('historyChart');
+            if (!canvas || typeof Chart === 'undefined') {
+                renderHistoryFallback();
+                return;
+            }
+
+            const ctx = canvas.getContext('2d');
+            if (!ctx) {
+                renderHistoryFallback();
+                return;
+            }
 
             new Chart(ctx, {
                 type: 'bar',
                 data: {
-                    labels: historyData.map(d => d.name),
+                    labels: historyArchiveData.map(d => d.name),
                     datasets: [{
                         label: '전통 (년)',
-                        data: historyData.map(d => d.years),
+                        data: historyArchiveData.map(d => d.years),
                         backgroundColor: '#ea580c',
                         borderRadius: 6,
                         barThickness: 'flex',
@@ -2039,7 +2135,7 @@
                             backgroundColor: 'rgba(41, 37, 36, 0.95)',
                             callbacks: {
                                 label: function(context) {
-                                    const item = historyData[context.dataIndex];
+                                    const item = historyArchiveData[context.dataIndex];
                                     return `역사: ${item.years}년 | 대표: ${item.menu}`;
                                 }
                             }
@@ -2051,6 +2147,31 @@
                     }
                 }
             });
+        }
+
+        function renderHistoryFallback() {
+            const container = document.querySelector('#history .chart-container');
+            if (!container) return;
+
+            container.innerHTML = `
+                <div class="fallback-card h-full overflow-auto">
+                    <p class="text-sm font-bold text-orange-700">모바일/오프라인 간편 보기</p>
+                    <div class="fallback-bars mt-4">
+                        ${historyArchiveData.map((item) => `
+                            <div class="fallback-bar">
+                                <div class="fallback-bar__head">
+                                    <span>${escapeHtml(item.name)}</span>
+                                    <span>${item.years}년</span>
+                                </div>
+                                <div class="fallback-bar__track">
+                                    <div class="fallback-bar__value" style="width:${Math.max(36, Math.round((item.years / historyArchiveData[0].years) * 100))}%"></div>
+                                </div>
+                                <p class="text-xs text-stone-500">${escapeHtml(item.menu)}</p>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
         }
 
         const routeDescriptions = {
@@ -2093,11 +2214,38 @@
             container.innerHTML = html;
         }
 
+        function renderRouteFallback() {
+            const container = document.getElementById('route-details');
+            if (!container) return;
+            const data = routeDescriptions.nanjing;
+            container.innerHTML = `
+                <div class="fallback-card">
+                    <p class="text-sm font-bold text-orange-700">모바일 빠른 보기</p>
+                    <h3 class="mt-2 text-xl font-black text-stone-800">${escapeHtml(data.title)}</h3>
+                    <p class="mt-2 text-sm text-stone-600">${escapeHtml(data.desc)}</p>
+                    <div class="mt-4 space-y-3">
+                        ${data.items.slice(0, 4).map((item) => `
+                            <div class="rounded-2xl border border-orange-100 bg-white px-4 py-3">
+                                <p class="font-bold text-stone-800">${item.icon} ${escapeHtml(item.name)}</p>
+                                <p class="mt-1 text-xs text-orange-700">${escapeHtml(item.menu)}</p>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+        }
+
         function initShanghaiAllMap() {
-            if (typeof L === 'undefined') return;
+            if (typeof L === 'undefined') {
+                renderMapFallback();
+                return;
+            }
             const mapEl = document.getElementById('shanghaiAllMap');
             const quickEl = document.getElementById('allPlaceQuickLinks');
-            if (!mapEl || !quickEl) return;
+            if (!mapEl || !quickEl) {
+                renderMapFallback();
+                return;
+            }
 
             const map = L.map('shanghaiAllMap', {
                 scrollWheelZoom: true,
@@ -2265,7 +2413,14 @@
             } else {
                 map.setView([31.22, 121.54], 10);
             }
+            window.shanghaiAllMapInstance = map;
             window.setTimeout(() => map.invalidateSize(), 0);
+        }
+
+        function renderMapFallback() {
+            const mapEl = document.getElementById('shanghaiAllMap');
+            if (!mapEl) return;
+            mapEl.innerHTML = '<div class="map-fallback-badge">정적 지도 모드</div>';
         }
 
         function initBriefingTabs() {
@@ -2295,16 +2450,43 @@
             activateTab(buttons[0].dataset.briefingTab);
         }
 
-        window.onload = () => {
-            renderFilters();
-            renderGrid();
-            initChart();
-            showRoute('nanjing');
-            initShanghaiAllMap();
-            initBriefingTabs();
-            initPlaceExportButtons();
-            initTravelPhrases();
-        };
+        function runInitStep(label, initFn, fallbackFn = null) {
+            try {
+                initFn();
+            } catch (error) {
+                console.error(`[Shanghai Guide] ${label} init failed`, error);
+                if (typeof fallbackFn === 'function') {
+                    try {
+                        fallbackFn(error);
+                    } catch (fallbackError) {
+                        console.error(`[Shanghai Guide] ${label} fallback failed`, fallbackError);
+                    }
+                }
+            }
+        }
+
+        function bootstrapPage() {
+            runInitStep('filters', renderFilters);
+            runInitStep('restaurant-grid', renderGrid);
+            runInitStep('history-chart', initChart, renderHistoryFallback);
+            runInitStep('routes', () => showRoute('nanjing'), renderRouteFallback);
+            runInitStep('all-map', initShanghaiAllMap, renderMapFallback);
+            runInitStep('briefing-tabs', initBriefingTabs);
+            runInitStep('export-buttons', initPlaceExportButtons);
+            runInitStep('travel-phrases', initTravelPhrases, renderPhraseFallback);
+        }
+
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', bootstrapPage, { once: true });
+        } else {
+            bootstrapPage();
+        }
+
+        window.addEventListener('load', () => {
+            if (window.shanghaiAllMapInstance && typeof window.shanghaiAllMapInstance.invalidateSize === 'function') {
+                window.setTimeout(() => window.shanghaiAllMapInstance.invalidateSize(), 80);
+            }
+        });
     </script>
 </body>
 </html>
