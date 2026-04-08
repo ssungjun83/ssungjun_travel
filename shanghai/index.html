@@ -85,15 +85,22 @@
             align-items: center;
             justify-content: center;
             border-radius: 999px;
-            padding: 4px 10px;
-            border: 1px solid rgba(194, 65, 12, 0.18);
-            background: rgba(255, 255, 255, 0.92);
-            color: #9a3412;
-            font-size: 11px;
-            font-weight: 800;
+            padding: 6px 12px;
+            border: 1px solid rgba(194, 65, 12, 0.2);
+            background: rgba(255, 255, 255, 0.94);
+            color: #7c2d12;
+            font-size: 13px;
+            font-weight: 900;
             letter-spacing: 0.02em;
             white-space: nowrap;
-            box-shadow: 0 8px 20px rgba(41, 37, 36, 0.08);
+            box-shadow: 0 10px 22px rgba(41, 37, 36, 0.12);
+            text-shadow: 0 1px 0 rgba(255, 255, 255, 0.7);
+        }
+        .district-label--minor span {
+            font-size: 11px;
+            font-weight: 800;
+            padding: 4px 10px;
+            background: rgba(255, 255, 255, 0.9);
         }
     </style>
     <!-- Chosen Palette: Warm Neutrals with Subtle Terracotta Accents (Background: #fcfaf8, Text: #292524, Accent: #c2410c) -->
@@ -1966,7 +1973,7 @@
                 preferCanvas: true,
                 attributionControl: false,
                 minZoom: 10,
-                maxZoom: 13
+                maxZoom: 14
             });
             map.setView([31.2304, 121.52], 10);
 
@@ -1983,6 +1990,27 @@
                 fillOpacity: 0,
                 interactive: false
             }).addTo(map);
+
+            [
+                { name: '징안사', lat: 31.2265, lng: 121.4445, minor: false },
+                { name: '인민광장', lat: 31.2315, lng: 121.4735, minor: false },
+                { name: '난징동루·와이탄', lat: 31.2385, lng: 121.4895, minor: false },
+                { name: '루자쭈이', lat: 31.2394, lng: 121.5072, minor: false },
+                { name: '신톈디', lat: 31.2196, lng: 121.4747, minor: true },
+                { name: '홍차오', lat: 31.2255, lng: 121.3420, minor: false },
+                { name: '디즈니랜드', lat: 31.1458, lng: 121.6574, minor: false },
+                { name: '푸동공항', lat: 31.1485, lng: 121.8050, minor: false }
+            ].forEach((district) => {
+                L.marker([district.lat, district.lng], {
+                    interactive: false,
+                    keyboard: false,
+                    zIndexOffset: -1000,
+                    icon: L.divIcon({
+                        className: district.minor ? 'district-label district-label--minor' : 'district-label',
+                        html: `<span>${district.name}</span>`
+                    })
+                }).addTo(map);
+            });
 
             const bounds = L.latLngBounds();
             quickEl.innerHTML = '';
