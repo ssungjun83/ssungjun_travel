@@ -210,6 +210,21 @@
         </div>
     </section>
 
+    <section class="border-b border-stone-200 bg-white/80">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+            <div class="flex flex-col gap-3 rounded-2xl border border-stone-200 bg-stone-50 px-5 py-4 shadow-sm md:flex-row md:items-center md:justify-between">
+                <div>
+                    <p class="text-sm font-black uppercase tracking-[0.16em] text-stone-800">Offline Pack</p>
+                    <p class="mt-1 text-sm text-stone-600">폰에 넣어 바로 열 수 있는 단일 HTML 파일을 내려받습니다. 지도, 회화, 체크리스트는 함께 들어가고, 외부 링크는 인터넷 연결 시에만 동작합니다.</p>
+                    <p class="mt-1 text-xs text-stone-500">음성은 별도 파일이 아니라 기기 브라우저의 중국어 음성 엔진을 사용합니다. 기기에 중국어 TTS가 없으면 재생이 제한될 수 있습니다.</p>
+                </div>
+                <button id="downloadOfflineHtml" type="button" class="inline-flex items-center justify-center rounded-full bg-stone-900 px-5 py-3 text-sm font-bold text-white shadow-sm transition-colors hover:bg-stone-800">
+                    오프라인 HTML 다운로드
+                </button>
+            </div>
+        </div>
+    </section>
+
     <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-24">
 
         <section id="tips" class="scroll-mt-20">
@@ -1662,6 +1677,47 @@
             }
         }
 
+        function downloadTextFile(filename, content, mime = 'text/plain;charset=utf-8') {
+            const blob = new Blob([content], { type: mime });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = filename;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            window.setTimeout(() => URL.revokeObjectURL(url), 1000);
+        }
+
+        function blobToDataUrl(blob) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onload = () => resolve(reader.result);
+                reader.onerror = reject;
+                reader.readAsDataURL(blob);
+            });
+        }
+
+        async function fetchTextAsset(path) {
+            const response = await fetch(path, { cache: 'no-store' });
+            if (!response.ok) {
+                throw new Error(`Asset fetch failed: ${path}`);
+            }
+            return response.text();
+        }
+
+        async function fetchDataUrlAsset(path) {
+            const response = await fetch(path, { cache: 'no-store' });
+            if (!response.ok) {
+                throw new Error(`Asset fetch failed: ${path}`);
+            }
+            return blobToDataUrl(await response.blob());
+        }
+
+        function escapeInlineScript(text) {
+            return String(text).replace(/<\/script>/gi, '<\\/script>');
+        }
+
         function showCopyToast(message) {
             let toast = document.getElementById('copyToast');
             if (!toast) {
@@ -1808,10 +1864,75 @@
             showCopyToast('주소 엑셀 파일 다운로드를 시작했습니다.');
         }
 
+        async function buildOfflineHtmlContent() {
+            const [
+                sourceHtml,
+                tailwindJs,
+                chartJs,
+                leafletCss,
+                leafletJs,
+                xlsxJs,
+                mapImageUrl,
+                markerShadowUrl
+            ] = await Promise.all([
+                fetchTextAsset('./index.html'),
+                fetchTextAsset('./assets/vendor/tailwind/tailwind-playcdn.js'),
+                fetchTextAsset('./assets/vendor/chart/chart.umd.js'),
+                fetchTextAsset('./assets/vendor/leaflet/leaflet.css'),
+                fetchTextAsset('./assets/vendor/leaflet/leaflet.js'),
+                fetchTextAsset('./assets/vendor/xlsx/xlsx.full.min.js'),
+                fetchDataUrlAsset('./assets/images/shanghai-osm-static.png'),
+                fetchDataUrlAsset('./assets/vendor/leaflet/marker-shadow.png')
+            ]);
+
+            let html = sourceHtml.replace('<html lang="ko">', '<html lang="ko" data-offline-pack="true">');
+            html = html.replace('<script src="./assets/vendor/tailwind/tailwind-playcdn.js"></script>', `<script>${escapeInlineScript(tailwindJs)}</script>`);
+            html = html.replace('<script src="./assets/vendor/chart/chart.umd.js"></script>', `<script>${escapeInlineScript(chartJs)}</script>`);
+            html = html.replace('<link rel="stylesheet" href="./assets/vendor/leaflet/leaflet.css">', `<style>${leafletCss}</style>`);
+            html = html.replace('<script src="./assets/vendor/leaflet/leaflet.js"></script>', `<script>${escapeInlineScript(leafletJs)}</script>`);
+            html = html.replace('<script src="./assets/vendor/xlsx/xlsx.full.min.js"></script>', `<script>${escapeInlineScript(xlsxJs)}</script>`);
+            html = html.replaceAll('./assets/images/shanghai-osm-static.png', mapImageUrl);
+            html = html.replaceAll('./assets/vendor/leaflet/marker-shadow.png', markerShadowUrl);
+            return html;
+        }
+
+        async function downloadOfflineHtml() {
+            const btn = document.getElementById('downloadOfflineHtml');
+            if (btn) {
+                btn.disabled = true;
+                btn.textContent = '생성 중...';
+            }
+
+            try {
+                if (document.documentElement.dataset.offlinePack === 'true' || window.location.protocol === 'file:') {
+                    downloadTextFile('shanghai_offline_pack.html', '<!DOCTYPE html>\n' + document.documentElement.outerHTML, 'text/html;charset=utf-8');
+                    showCopyToast('현재 오프라인 HTML 파일을 다시 저장했습니다.');
+                    return;
+                }
+
+                const html = await buildOfflineHtmlContent();
+                downloadTextFile('shanghai_offline_pack.html', html, 'text/html;charset=utf-8');
+                showCopyToast('오프라인 HTML 다운로드를 시작했습니다.');
+            } catch (error) {
+                showCopyToast('오프라인 HTML 생성에 실패했습니다.');
+            } finally {
+                if (btn) {
+                    btn.disabled = false;
+                    btn.textContent = '오프라인 HTML 다운로드';
+                }
+            }
+        }
+
         function initPlaceExportButtons() {
             const xlsxBtn = document.getElementById('downloadShanghaiPlacesXlsx');
-            if (!xlsxBtn) return;
-            xlsxBtn.addEventListener('click', downloadShanghaiPlacesXlsx);
+            if (xlsxBtn) {
+                xlsxBtn.addEventListener('click', downloadShanghaiPlacesXlsx);
+            }
+
+            const offlineBtn = document.getElementById('downloadOfflineHtml');
+            if (offlineBtn) {
+                offlineBtn.addEventListener('click', downloadOfflineHtml);
+            }
         }
 
         function pickChineseVoice() {
